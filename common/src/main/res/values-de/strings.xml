@@ -82,7 +82,7 @@ Ausweisdokument gültig"</string>
     <string name="verifier_verify_error_title">"Covid-Zertifikat ungültig"</string>
 
     <!-- Fehler Infotext bei Prüfung (Nationale Regeln) -->
-    <string name="verifier_verify_error_info_for_national_rules">"Entspricht nicht den Gültigkeitskriterien der Schweiz"</string>
+    <string name="verifier_verify_error_info_for_national_rules">"Entspricht nicht den Gültigkeitskriterien Österreichs"</string>
 
     <!-- Fehler Infotext bei Prüfung (Zertifikat Fehler) -->
     <string name="verifier_verify_error_info_for_certificate_invalid">"Das Covid-Zertifikat hat keine gültige Signatur"</string>
@@ -246,7 +246,7 @@ Beachten Sie, dass sie in jedem Fall auf Verlangen auch noch ein Ausweisdokument
     <string name="wallet_faq_works_answer_2">"Ja das ist möglich. So können Sie z. B. alle Covid-Zertifikate von Familienangehörigen in Ihrer App speichern. Auch in diesem Fall gilt: Das Covid-Zertifikat ist nur in Kombination mit einem Ausweisdokument des Zertifikatsinhabers / der Zertifikatsinhaberin gültig."</string>
 
     <!-- Antwort 8 im FAQ-Screen der Wallet App -->
-    <string name="wallet_faq_works_answer_3">"In der COVID Certificate App wird ausgewiesen, wann Ihr Covid-Zertifikat in der Schweiz ablaufen wird. Sie können in der Detail-Ansicht zudem per Knopfdruck überprüfen, ob Ihr Covid-Zertifikat aktuell gültig ist."</string>
+    <string name="wallet_faq_works_answer_3">"In der COVID Certificate App wird ausgewiesen, wann Ihr Covid-Zertifikat in Österreich ablaufen wird. Sie können in der Detail-Ansicht zudem per Knopfdruck überprüfen, ob Ihr Covid-Zertifikat aktuell gültig ist."</string>
 
     <!-- Antwort 9 im FAQ-Screen der Wallet App -->
     <string name="wallet_faq_works_answer_4">"Ihre persönlichen Daten werden in keinem zentralen System gespeichert, sondern befinden sich ausschliesslich bei Ihnen lokal auf dem Mobilgerät, respektive im QR-Code auf dem Covid-Zertifikat in Papierform."</string>
@@ -280,7 +280,7 @@ die App?"</string>
     <string name="force_update_button">"Aktualisieren"</string>
 
     <!-- Wallet: Zertifikat gültig ab: {DATE} -->
-    <string name="wallet_certificate_valid_from">"In der Schweiz gültig ab:
+    <string name="wallet_certificate_valid_from">"In Österreich gültig ab:
 {DATE}"</string>
 
     <!-- Wallet: Zertifikat Detail Geimpft -->
@@ -302,7 +302,7 @@ die App?"</string>
     <string name="wallet_onboarding_store_text1">"Covid-Zertifikate können einfach zur App hinzugefügt und digital aufbewahrt werden."</string>
 
     <!-- Text2 im Onboardingscreen "Vorteile, Aufbewahren" -->
-    <string name="wallet_onboarding_store_text2">"Die App prüft die Zertifikate auf ihre Gültigkeit in der Schweiz. So können Sie sich versichern, dass Ihre Zertifikate gültig sind."</string>
+    <string name="wallet_onboarding_store_text2">"Die App prüft die Zertifikate auf ihre Gültigkeit in Österreich. So können Sie sich versichern, dass Ihre Zertifikate gültig sind."</string>
 
     <!-- Header im Onboarding-Screen "Vorteile, Vorweisen" -->
     <string name="wallet_onboarding_show_header">"Vorteile"</string>
@@ -335,10 +335,10 @@ die App?"</string>
     <string name="unknown_error">"Ein unbekannter Fehler ist aufgetreten."</string>
 
     <!-- Verifier: Die Gültigkeit des Zertifikat ist abgelaufen -->
-    <string name="verifier_verifiy_error_expired">"Entspricht nicht den Gültigkeitskriterien der Schweiz: Die Gültigkeit des Zertifikat ist abgelaufen."</string>
+    <string name="verifier_verifiy_error_expired">"Entspricht nicht den Gültigkeitskriterien Österreichs: Die Gültigkeit des Zertifikat ist abgelaufen."</string>
 
     <!-- Verifier: Zertifikat ist erst gültig ab {DATE} -->
-    <string name="verifier_verifiy_error_notyetvalid">"Entspricht nicht den Gültigkeitskriterien der Schweiz: Das Zertifikat ist noch nicht gültig."</string>
+    <string name="verifier_verifiy_error_notyetvalid">"Entspricht nicht den Gültigkeitskriterien Österreichs: Das Zertifikat ist noch nicht gültig."</string>
 
     <!-- Verifier: Ein Netzwerkfehler ist aufgetreten. -->
     <string name="verifier_retry_network_error">"Ein Netzwerkfehler ist aufgetreten."</string>
@@ -347,11 +347,11 @@ die App?"</string>
     <string name="verifier_retry_flightmode_error">"Das Gerät befindet sich im Flugmodus."</string>
 
     <!-- Wallet: Zertifikat gültig ab: {DATE} -->
-    <string name="wallet_error_valid_from">"In der Schweiz gültig ab:
+    <string name="wallet_error_valid_from">"In Österreich gültig ab:
 {DATE}"</string>
 
     <!-- Wallet: Fehler wenn Zertifikat nicht den CH-Gültigkeitskriterien entspricht -->
-    <string name="wallet_error_national_rules">"Entspricht nicht den Gültigkeitskriterien der Schweiz"</string>
+    <string name="wallet_error_national_rules">"Entspricht nicht den Gültigkeitskriterien Österreichs"</string>
 
     <!-- Wallet: Gültigkeit des Zertifikats abgelaufen -->
     <string name="wallet_error_expired">"Gültigkeit des Zertifikats
@@ -378,8 +378,8 @@ ungültiger Signatur"</string>
     <string name="wallet_certificate_already_exists">"Dieses Zertifikat ist bereits in der App gespeichert"</string>
 
     <!-- Titel Gültigkeit im Zertifikatsdetail -->
-    <string name="wallet_certificate_validity">"Gültigkeit in der
-Schweiz"</string>
+    <string name="wallet_certificate_validity">"Gültigkeit in
+Österreich"</string>
 
     <!-- "Bis" Label im Zertifikats-Detail -->
     <string name="wallet_certificate_valid_until">"bis"</string>
@@ -473,7 +473,7 @@ Schweiz"</string>
     <string name="verifier_faq_works_answer_2">"Beim Scannen werden drei Aspekte geprüft:
 – Enthält das Zertifikat eine gültige elektronische Signatur?
 – Ist das Zertifikat nicht widerrufen worden?
-– Entspricht das Zertifikat den Gültigkeitskriterien der Schweiz?
+– Entspricht das Zertifikat den Gültigkeitskriterien Österreichs?
 
 Wenn alle drei Aspekte positiv bewertet werden, wird das Covid-Zertifikat als gültig ausgewiesen."</string>
 
@@ -487,7 +487,7 @@ Wenn alle drei Aspekte positiv bewertet werden, wird das Covid-Zertifikat als g�
     <string name="verifier_faq_works_question_4">"Können auch ausländische Zertifikate geprüft werden?"</string>
 
     <!-- Antwort 4 im FAQ der Verifier App -->
-    <string name="verifier_faq_works_answer_4">"Ja, Covid-Zertifikate, die mit dem digitalen COVID-Zertifikat der EU kompatibel sind, können mit der COVID Certificate Check App gegen die Gültigkeitskriterien der Schweiz geprüft werden."</string>
+    <string name="verifier_faq_works_answer_4">"Ja, Covid-Zertifikate, die mit dem digitalen COVID-Zertifikat der EU kompatibel sind, können mit der COVID Certificate Check App gegen die Gültigkeitskriterien Österreichs geprüft werden."</string>
 
     <!-- Frage 5 im FAQ der Verifier App -->
     <string name="verifier_faq_works_question_5">"Welche Daten sehe ich beim Prüfvorgang?"</string>

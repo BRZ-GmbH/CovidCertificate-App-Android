@@ -82,7 +82,7 @@ an identity document"</string>
     <string name="verifier_verify_error_title">"COVID Certificate invalid"</string>
 
     <!-- Fehler Infotext bei Prüfung (Nationale Regeln) -->
-    <string name="verifier_verify_error_info_for_national_rules">"Does not meet Switzerland's validity criteria"</string>
+    <string name="verifier_verify_error_info_for_national_rules">"Does not meet Austria's validity criteria"</string>
 
     <!-- Fehler Infotext bei Prüfung (Zertifikat Fehler) -->
     <string name="verifier_verify_error_info_for_certificate_invalid">"The COVID certificate does not have a valid signature"</string>
@@ -246,7 +246,7 @@ Please note that you will also need to show an identification document (passport
     <string name="wallet_faq_works_answer_2">"Yes, that is possible. For example, you can save the COVID certificates of all family members in your app. Also in this case, each COVID certificate is valid only in combination with an identification document (passport or ID card) of the certificate holder."</string>
 
     <!-- Antwort 8 im FAQ-Screen der Wallet App -->
-    <string name="wallet_faq_works_answer_3">"The COVID Certificate app shows when your COVID certificate will expire in Switzerland. You can also use the details view to check at the touch of a button whether your COVID certificate is currently valid."</string>
+    <string name="wallet_faq_works_answer_3">"The COVID Certificate app shows when your COVID certificate will expire in Austria. You can also use the details view to check at the touch of a button whether your COVID certificate is currently valid."</string>
 
     <!-- Antwort 9 im FAQ-Screen der Wallet App -->
     <string name="wallet_faq_works_answer_4">"Your personal data is not stored in a central system; instead, it can be found solely locally on the mobile device or in the QR code in the case of the paper COVID certificate."</string>
@@ -279,7 +279,7 @@ Please note that you will also need to show an identification document (passport
     <string name="force_update_button">"Update"</string>
 
     <!-- Wallet: Zertifikat gültig ab: {DATE} -->
-    <string name="wallet_certificate_valid_from">"Valid in Switzerland from:
+    <string name="wallet_certificate_valid_from">"Valid in Austria from:
 {DATE}"</string>
 
     <!-- Wallet: Zertifikat Detail Geimpft -->
@@ -301,7 +301,7 @@ Please note that you will also need to show an identification document (passport
     <string name="wallet_onboarding_store_text1">"COVID certificates can be simply added to the app and stored digitally. "</string>
 
     <!-- Text2 im Onboardingscreen "Vorteile, Aufbewahren" -->
-    <string name="wallet_onboarding_store_text2">"The app checks the validity of certificates in Switzerland. This way, you can be sure that your certificates are valid."</string>
+    <string name="wallet_onboarding_store_text2">"The app checks the validity of certificates in Austria. This way, you can be sure that your certificates are valid."</string>
 
     <!-- Header im Onboarding-Screen "Vorteile, Vorweisen" -->
     <string name="wallet_onboarding_show_header">"Advantages"</string>
@@ -334,10 +334,10 @@ Please note that you will also need to show an identification document (passport
     <string name="unknown_error">"An unknown error has occurred"</string>
 
     <!-- Verifier: Die Gültigkeit des Zertifikat ist abgelaufen -->
-    <string name="verifier_verifiy_error_expired">"Does not meet Switzerland's validity criteria: The certificate is no longer valid."</string>
+    <string name="verifier_verifiy_error_expired">"Does not meet Austria's validity criteria: The certificate is no longer valid."</string>
 
     <!-- Verifier: Zertifikat ist erst gültig ab {DATE} -->
-    <string name="verifier_verifiy_error_notyetvalid">"Does not meet Switzerland's validity criteria: The certificate is not yet valid"</string>
+    <string name="verifier_verifiy_error_notyetvalid">"Does not meet Austria's validity criteria: The certificate is not yet valid"</string>
 
     <!-- Verifier: Ein Netzwerkfehler ist aufgetreten. -->
     <string name="verifier_retry_network_error">"A network error has occurred"</string>
@@ -346,11 +346,11 @@ Please note that you will also need to show an identification document (passport
     <string name="verifier_retry_flightmode_error">"Your device is in flight mode"</string>
 
     <!-- Wallet: Zertifikat gültig ab: {DATE} -->
-    <string name="wallet_error_valid_from">"Valid in Switzerland from:
+    <string name="wallet_error_valid_from">"Valid in Austria from:
 {DATE}"</string>
 
     <!-- Wallet: Fehler wenn Zertifikat nicht den CH-Gültigkeitskriterien entspricht -->
-    <string name="wallet_error_national_rules">"Does not meet the validity criteria for Switzerland"</string>
+    <string name="wallet_error_national_rules">"Does not meet the validity criteria for Austria"</string>
 
     <!-- Wallet: Gültigkeit des Zertifikats abgelaufen -->
     <string name="wallet_error_expired">"Certificate validity 
@@ -378,7 +378,7 @@ invalid signature"</string>
 
     <!-- Titel Gültigkeit im Zertifikatsdetail -->
     <string name="wallet_certificate_validity">"Validity in 
-Switzerland"</string>
+Austria"</string>
 
     <!-- "Bis" Label im Zertifikats-Detail -->
     <string name="wallet_certificate_valid_until">"until"</string>
@@ -387,7 +387,7 @@ Switzerland"</string>
     <string name="wallet_certificate_verifying">"The certificate is being verified"</string>
 
     <!-- Message nach erfolgreicher Prüfung im Zertifikatdetail -->
-    <string name="wallet_certificate_verify_success">"Validity in Switzerland"</string>
+    <string name="wallet_certificate_verify_success">"Validity in Austria"</string>
 
     <!-- Accessibility: Info Box Butto -->
     <string name="accessibility_info_box">"Information"</string>
@@ -472,7 +472,7 @@ Switzerland"</string>
     <string name="verifier_faq_works_answer_2">"Three aspects are checked when scanning:
 – Does the certificate contain a valid electronic signature?
 – Is the certificate non-revoked?
-– Does the certificate meet Switzerland's validity criteria?
+– Does the certificate meet Austria's validity criteria?
 
 If the answer to all three questions is affirmative, the COVID certificate is shown as valid."</string>
 
@@ -486,7 +486,7 @@ If the answer to all three questions is affirmative, the COVID certificate is sh
     <string name="verifier_faq_works_question_4">"Can foreign certificates also be checked?"</string>
 
     <!-- Antwort 4 im FAQ der Verifier App -->
-    <string name="verifier_faq_works_answer_4">"Yes, COVID certificates that are compatible with the EU digital COVID certificate can be checked according to Switzerland's validity criteria using the COVID Certificate check app."</string>
+    <string name="verifier_faq_works_answer_4">"Yes, COVID certificates that are compatible with the EU digital COVID certificate can be checked according to Austria's validity criteria using the COVID Certificate check app."</string>
 
     <!-- Frage 5 im FAQ der Verifier App -->
     <string name="verifier_faq_works_question_5">"What data do I see during the verification process?"</string>
