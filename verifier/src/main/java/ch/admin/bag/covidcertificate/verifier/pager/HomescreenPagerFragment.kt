@@ -31,7 +31,7 @@ class HomescreenPagerFragment : Fragment() {
 		fun getDescriptions(): List<Int> {
 			val strings = mutableListOf<Int>()
 			strings.add(R.string.verifier_homescreen_pager_description_1)
-			strings.add(R.string.verifier_homescreen_pager_description_2)
+			//strings.add(R.string.verifier_homescreen_pager_description_2)
 			return strings
 		}
 	}

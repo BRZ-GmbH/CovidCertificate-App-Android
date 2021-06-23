@@ -62,8 +62,20 @@ class OnboardingContentFragment : Fragment(R.layout.fragment_onboarding_content)
 		icon1.setImageResource(args.getInt(ARG_RES_DESCR_ICON_1))
 		(view.findViewById<View>(R.id.onboarding_description_1) as TextView).setText(args.getInt(ARG_RES_DESCRIPTION_1))
 		val icon2 = view.findViewById<ImageView>(R.id.onboarding_description_2_icon)
-		icon2.setImageResource(args.getInt(ARG_RES_DESCR_ICON_2))
-		(view.findViewById<View>(R.id.onboarding_description_2) as TextView).setText(args.getInt(ARG_RES_DESCRIPTION_2))
+		args.getInt(ARG_RES_DESCR_ICON_2).let {
+			if (it != 0) {
+				icon2.setImageResource(it)
+			} else {
+				icon2.visibility = View.GONE
+			}
+		}
+		args.getInt(ARG_RES_DESCRIPTION_2).let {
+			if (it != 0) {
+				(view.findViewById<View>(R.id.onboarding_description_2) as TextView).setText(args.getInt(ARG_RES_DESCRIPTION_2))
+			} else {
+				(view.findViewById<View>(R.id.onboarding_description_2) as TextView).visibility = View.GONE
+			}
+		}
 		val continueButton = view.findViewById<Button>(R.id.onboarding_continue_button)
 		continueButton.setOnClickListener { v: View? -> (activity as OnboardingActivity?)!!.continueToNextPage() }
 	}

@@ -25,8 +25,8 @@ class OnboardingSlidePageAdapter(fragmentActivity: FragmentActivity?) : Fragment
 				R.drawable.illu_onboarding_privacy,
 				R.string.wallet_onboarding_store_text1,
 				R.drawable.ic_privacy,
-				R.string.wallet_onboarding_store_text2,
-				R.drawable.ic_validation
+				0,
+				0
 			)
 			2 -> return OnboardingContentFragment.newInstance(
 				R.string.wallet_onboarding_show_title,
