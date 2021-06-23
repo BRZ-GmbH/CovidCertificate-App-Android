@@ -41,11 +41,13 @@ class ConfigRepository private constructor(private val configSpec: ConfigSpec) {
 		private const val MAX_AGE_STATUS_VALID_CACHED_CONFIG = 48 * 60 * 60 * 1000L // 48h
 	}
 
-	private val configService: ConfigService
+	// TODO: AT - Disable backend integration for configuration
+	//private val configService: ConfigService
 	private val storage = ConfigSecureStorage.getInstance(configSpec.context)
 
 	init {
-		val rootCa = CovidCertificateSdk.getRootCa(configSpec.context)
+		// TODO: AT - Disable backend integration for configuration
+		/*val rootCa = CovidCertificateSdk.getRootCa(configSpec.context)
 		val expectedCommonName = CovidCertificateSdk.getExpectedCommonName()
 		val okHttpBuilder = OkHttpClient.Builder()
 			.certificatePinner(CertificatePinning.pinner)
@@ -66,11 +68,12 @@ class ConfigRepository private constructor(private val configSpec: ConfigSpec) {
 			.client(okHttpBuilder.build())
 			.addConverterFactory(MoshiConverterFactory.create())
 			.build()
-			.create(ConfigService::class.java)
+			.create(ConfigService::class.java)*/
 	}
 
 	suspend fun loadConfig(context: Context): ConfigModel? {
-		val requestTimeStamp = System.currentTimeMillis()
+		// TODO: AT - Disable backend integration for configuration
+		/*val requestTimeStamp = System.currentTimeMillis()
 		val appVersion = APP_VERSION_PREFIX_ANDROID + configSpec.versionName
 		val osVersion = OS_VERSION_PREFIX_ANDROID + Build.VERSION.SDK_INT
 		val buildNumber = configSpec.buildTime
@@ -86,7 +89,9 @@ class ConfigRepository private constructor(private val configSpec: ConfigSpec) {
 					e.printStackTrace()
 					null
 				}
-			} else null
+			} else null*/
+
+		var config: ConfigModel? = null
 
 		if (config == null) config = storage.getConfig()
 		if (config == null) config = AssetUtil.loadDefaultConfig(context)
