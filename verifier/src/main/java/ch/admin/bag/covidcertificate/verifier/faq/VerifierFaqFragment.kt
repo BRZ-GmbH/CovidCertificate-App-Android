@@ -11,7 +11,7 @@
 package ch.admin.bag.covidcertificate.verifier.faq
 
 import androidx.fragment.app.activityViewModels
-import ch.admin.bag.covidcertificate.common.faq.FaqFragment
+import at.gv.brz.common.faq.FaqFragment
 import ch.admin.bag.covidcertificate.verifier.R
 import ch.admin.bag.covidcertificate.verifier.VerifierViewModel
 

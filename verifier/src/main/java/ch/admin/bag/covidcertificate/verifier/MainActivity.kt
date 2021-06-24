@@ -16,10 +16,10 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import ch.admin.bag.covidcertificate.common.config.ConfigModel
-import ch.admin.bag.covidcertificate.common.util.UrlUtil
-import ch.admin.bag.covidcertificate.common.util.setSecureFlagToBlockScreenshots
-import ch.admin.bag.covidcertificate.eval.CovidCertificateSdk
+import at.gv.brz.common.config.ConfigModel
+import at.gv.brz.common.util.UrlUtil
+import at.gv.brz.common.util.setSecureFlagToBlockScreenshots
+import at.gv.brz.eval.CovidCertificateSdk
 import ch.admin.bag.covidcertificate.verifier.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

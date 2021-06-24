@@ -20,7 +20,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent" />
 
-	<ch.admin.bag.covidcertificate.common.views.WindowInsetsLayout
+	<at.gv.brz.common.views.WindowInsetsLayout
 		android:id="@+id/main_error_view"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
@@ -34,5 +34,5 @@
 			layout="@layout/item_error_status"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"/>
-	</ch.admin.bag.covidcertificate.common.views.WindowInsetsLayout>
+	</at.gv.brz.common.views.WindowInsetsLayout>
 </FrameLayout>

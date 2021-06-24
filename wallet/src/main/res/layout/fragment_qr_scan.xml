@@ -30,7 +30,7 @@
 		app:layout_constraintBottom_toBottomOf="@id/fragment_qr_toolbar_inset_group"
 		app:layout_constraintTop_toTopOf="parent" />
 
-	<ch.admin.bag.covidcertificate.common.views.WindowInsetsLayout
+	<at.gv.brz.common.views.WindowInsetsLayout
 		android:id="@+id/fragment_qr_toolbar_inset_group"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -49,9 +49,9 @@
 			app:titleTextAppearance="@style/CovidCertificate.ToolbarTitle"
 			app:titleTextColor="@color/grey" />
 
-	</ch.admin.bag.covidcertificate.common.views.WindowInsetsLayout>
+	</at.gv.brz.common.views.WindowInsetsLayout>
 
-	<ch.admin.bag.covidcertificate.common.views.WindowInsetsLayout
+	<at.gv.brz.common.views.WindowInsetsLayout
 		android:layout_width="match_parent"
 		android:layout_height="0dp"
 		app:applyWindowInsets="left|right|bottom"
@@ -216,7 +216,7 @@
 
 		</androidx.constraintlayout.widget.ConstraintLayout>
 
-	</ch.admin.bag.covidcertificate.common.views.WindowInsetsLayout>
+	</at.gv.brz.common.views.WindowInsetsLayout>
 
 	<LinearLayout
 		android:id="@+id/qr_code_scanner_footer_group"
