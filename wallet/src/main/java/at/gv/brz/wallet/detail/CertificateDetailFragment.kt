@@ -196,7 +196,8 @@ class CertificateDetailFragment : Fragment() {
 		val context = context ?: return
 		showLoadingIndicator(false)
 		binding.certificateDetailInfoDescriptionGroup.isVisible = false
-		binding.certificateDetailInfoValidityGroup.isVisible = true
+		// TODO: AT - Hide validity info
+		binding.certificateDetailInfoValidityGroup.isVisible = false
 		binding.certificateDetailErrorCode.isVisible = false
 		showValidityDate(state.validityRange.validUntil, dccHolder.certType)
 		setInfoBubbleBackgrounds(R.color.blueish, R.color.greenish)
@@ -215,8 +216,9 @@ class CertificateDetailFragment : Fragment() {
 	private fun displayInvalidState(state: VerificationState.INVALID) {
 		val context = context ?: return
 		showLoadingIndicator(false)
+		// TODO: AT - Hide validity info
 		binding.certificateDetailInfoDescriptionGroup.isVisible = false
-		binding.certificateDetailInfoValidityGroup.isVisible = true
+		binding.certificateDetailInfoValidityGroup.isVisible = false
 		showValidityDate(state.validityRange?.validUntil, dccHolder.certType)
 
 		val info = state.getValidationStatusString(context)
