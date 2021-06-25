@@ -1,20 +1,3 @@
-<!--
-  ~ Copyright (c) 2021 Ubique Innovation AG <https://www.ubique.ch>
-  ~
-  ~ This Source Code Form is subject to the terms of the Mozilla Public
-  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
-  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
-  ~
-  ~ SPDX-License-Identifier: MPL-2.0
-  -->
-
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="24dp"
-    android:height="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
-  <path
-      android:pathData="M10,13c0.513,0 0.936,0.386 0.993,0.883L11,14v8c0,0.513 -0.386,0.936 -0.883,0.993L10,23L2,23c-0.513,0 -0.936,-0.386 -0.993,-0.883L1,22v-8c0,-0.513 0.386,-0.936 0.883,-0.993L2,13h8zM15.5,19v2L23,21v2h-8.5c-0.513,0 -0.936,-0.386 -0.993,-0.883L13.5,22v-3h2zM9,15L3,15v6h6v-6zM7.5,16.5v3h-3v-3h3zM15.5,13v3L17,16v-2c0,-0.513 0.386,-0.936 0.883,-0.993L18,13h4c0.513,0 0.936,0.386 0.993,0.883L23,14v5.182h-2L21,15h-2v2c0,0.513 -0.386,0.936 -0.883,0.993L18,18h-3.5c-0.513,0 -0.936,-0.386 -0.993,-0.883L13.5,17v-4h2zM10,1c0.513,0 0.936,0.386 0.993,0.883L11,2v8c0,0.513 -0.386,0.936 -0.883,0.993L10,11L2,11c-0.513,0 -0.936,-0.386 -0.993,-0.883L1,10L1,2c0,-0.513 0.386,-0.936 0.883,-0.993L2,1h8zM22,1c0.513,0 0.936,0.386 0.993,0.883L23,2v8c0,0.513 -0.386,0.936 -0.883,0.993L22,11h-8c-0.513,0 -0.936,-0.386 -0.993,-0.883L13,10L13,2c0,-0.513 0.386,-0.936 0.883,-0.993L14,1h8zM9,3L3,3v6h6L9,3zM21,3h-6v6h6L21,3zM7.5,4.5v3h-3v-3h3zM19.5,4.5v3h-3v-3h3z"
-      android:fillColor="@color/blue"
-      android:fillType="nonZero"/>
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="23dp" android:height="22dp" android:viewportWidth="23" android:viewportHeight="22">
+    <path android:pathData="M9.882 12c0.513 0 0.936 0.386 0.992 0.883L10.882 13v8c0 0.513-0.386 0.936-0.883 0.993L9.881 22h-8c-0.513 0-0.936-0.386-0.993-0.883L0.88 21v-8c0-0.513 0.387-0.936 0.883-0.993L1.881 12h8zm5.5 6v2h7.5v2h-8.5c-0.514 0-0.937-0.386-0.993-0.883L13.382 21v-3h2zm-6.5-4h-6v6h6v-6zm-1.5 1.5v3h-3v-3h3zm8-3.5v3h1.5v-2c0-0.513 0.385-0.936 0.883-0.993L17.88 12h4c0.514 0 0.936 0.386 0.994 0.883L22.88 13v5.182h-2V14h-2v2c0 0.513-0.386 0.936-0.883 0.993L17.881 17h-3.5c-0.513 0-0.936-0.386-0.992-0.883L13.382 16v-4h2zm-5.5-12c0.513 0 0.936 0.386 0.992 0.883L10.882 1v8c0 0.513-0.386 0.936-0.883 0.993L9.881 10h-8c-0.513 0-0.936-0.386-0.993-0.883L0.88 9V1c0-0.513 0.387-0.936 0.883-0.993L1.881 0h8zm12 0c0.512 0 0.935 0.386 0.992 0.883L22.883 1v8c0 0.513-0.387 0.936-0.884 0.993L21.881 10h-8c-0.513 0-0.936-0.386-0.992-0.883L12.882 9V1c0-0.513 0.386-0.936 0.883-0.993L13.882 0h8zm-13 2h-6v6h6V2zm12 0h-6v6h6V2zm-13.5 1.5v3h-3v-3h3zm12 0v3h-3v-3h3z" android:strokeWidth="1" android:fillColor="#30597E"/>
 </vector>
