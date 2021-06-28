@@ -40,7 +40,7 @@ android {
 		applicationId "at.gv.oe.covid.wallet"
 		minSdkVersion 24
 		targetSdkVersion 30
-		versionCode 2
+		versionCode 3
 		versionName "1.0.0"
 
 		buildConfigField "long", "BUILD_TIME", readPropertyWithDefault('buildTimestamp', System.currentTimeMillis()) + 'L'
