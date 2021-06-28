@@ -376,8 +376,8 @@ Nutzungsbedingungen"</string>
 
     <!-- Wallet: Hinweis im Zertifikat Detail -->
     <string name="wallet_certificate_detail_note">"Dieses Zertifikat ist kein Reisedokument. \n\nDie wissenschaftlichen Erkenntnisse über Covid-19-Impfungen und -Tests sowie über die Genesung von einer Covid-19-Infektion entwickeln sich ständig weiter, auch im Hinblick auf neue besorgniserregende Virusvarianten. \n\nBitte informieren Sie sich vor der Reise über die am Zielort geltenden Gesundheitsmassnahmen und damit verbundenen Beschränkungen."</string>
-    <string name="wallet_terms_privacy_link">"https://brz.gv.at/impressum"</string>
-    <string name="verifier_terms_privacy_link">"https://brz.gv.at/impressum"</string>
+    <string name="wallet_terms_privacy_link">"https://www.gruenerpass.gv.at"</string>
+    <string name="verifier_terms_privacy_link">"https://www.gruenerpass.gv.at"</string>
 
     <!-- Verifier: Titel in der App (z.B. Impressum) -->
     <string name="verifier_app_title">"COVID Certificate Check"</string>
