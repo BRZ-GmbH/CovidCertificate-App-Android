@@ -121,7 +121,7 @@ class CertificatePagerFragment : Fragment() {
 	private fun displaySuccessState() {
 		val context = context ?: return
 		showLoadingIndicator(false)
-		setInfoBubbleBackground(R.color.blueish)
+		setInfoBubbleBackground(R.color.greenish)
 		binding.certificatePageStatusIcon.setImageResource(R.drawable.ic_info_blue)
 		binding.certificatePageInfo.text = SpannableString(context.getString(R.string.verifier_verify_success_info))
 

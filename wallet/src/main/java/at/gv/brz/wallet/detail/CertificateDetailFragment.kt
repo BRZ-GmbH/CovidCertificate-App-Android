@@ -200,14 +200,14 @@ class CertificateDetailFragment : Fragment() {
 		binding.certificateDetailInfoValidityGroup.isVisible = false
 		binding.certificateDetailErrorCode.isVisible = false
 		showValidityDate(state.validityRange.validUntil, dccHolder.certType)
-		setInfoBubbleBackgrounds(R.color.blueish, R.color.greenish)
+		setInfoBubbleBackgrounds(R.color.greenish, R.color.greenish)
 
 		val info = SpannableString(context.getString(R.string.verifier_verify_success_info))
 		val forceValidationInfo = context.getString(R.string.wallet_certificate_verify_success).makeBold()
 		if (isForceValidate) {
 			showStatusInfoAndDescription(null, forceValidationInfo, R.drawable.ic_check_green)
 			showForceValidation(R.color.green, R.drawable.ic_check_green, R.drawable.ic_check_large, forceValidationInfo)
-			readjustStatusDelayed(R.color.blueish, R.drawable.ic_info_blue, info)
+			readjustStatusDelayed(R.color.greenish, R.drawable.ic_info_blue, info)
 		} else {
 			showStatusInfoAndDescription(null, info, R.drawable.ic_info_blue)
 		}

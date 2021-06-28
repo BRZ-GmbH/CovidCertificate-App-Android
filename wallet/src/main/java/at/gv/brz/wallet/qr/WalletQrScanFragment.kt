@@ -36,7 +36,7 @@ class WalletQrScanFragment : QrScanFragment() {
 	private val binding get() = _binding!!
 
 	override val viewFinderErrorColor: Int = R.color.red_error_qr_wallet
-	override val viewFinderColor: Int = R.color.blue
+	override val viewFinderColor: Int = R.color.green_dark
 	override val torchOnDrawable: Int = R.drawable.ic_light_on
 	override val torchOffDrawable: Int = R.drawable.ic_light_off_blue
 

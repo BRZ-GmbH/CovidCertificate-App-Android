@@ -73,7 +73,7 @@
 						android:layout_width="@dimen/icon_size_small"
 						android:layout_height="@dimen/icon_size_small"
 						android:layout_marginRight="@dimen/spacing_medium_large"
-						app:tint="@color/blue" />
+						app:tint="@color/green_dark" />
 
 					<TextView
 						android:id="@+id/onboarding_description_1"
@@ -98,7 +98,7 @@
 						android:layout_width="@dimen/icon_size_small"
 						android:layout_height="@dimen/icon_size_small"
 						android:layout_marginRight="@dimen/spacing_medium_large"
-						app:tint="@color/blue" />
+						app:tint="@color/green_dark" />
 
 					<TextView
 						android:id="@+id/onboarding_description_2"

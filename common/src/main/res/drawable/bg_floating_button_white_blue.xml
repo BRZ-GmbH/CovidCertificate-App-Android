@@ -21,7 +21,7 @@
 		<selector>
 			<item android:state_selected="true">
 				<shape android:shape="oval">
-					<solid android:color="@color/blue" />
+					<solid android:color="@color/green_dark" />
 					<corners android:radius="@dimen/button_radius" />
 				</shape>
 			</item>

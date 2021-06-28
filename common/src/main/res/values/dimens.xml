@@ -58,7 +58,7 @@
 	<dimen name="header_height_max">130dp</dimen>
 	<dimen name="header_shadow_height">5dp</dimen>
 
-	<dimen name="certificates_elevation">8dp</dimen>
+	<dimen name="certificates_elevation">5dp</dimen>
 	<dimen name="certificates_padding">30dp</dimen>
 
 	<dimen name="onboarding_illustration_height">250dp</dimen>

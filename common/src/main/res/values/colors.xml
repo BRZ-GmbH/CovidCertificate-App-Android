@@ -16,8 +16,8 @@
 	<color name="black_60">#99000000</color>
 	<color name="black_50">#80000000</color>
 	<color name="black_10">#1A000000</color>
-	<color name="grey">#394348</color>
-	<color name="grey_light">#e1e2e3</color>
+	<color name="grey">#2B2A29</color>
+	<color name="grey_light">#E9E4DF</color>
 	<color name="white">#FFFFFFFF</color>
 	<color name="white_50">#80FFFFFF</color>
 
@@ -25,16 +25,25 @@
 	<color name="red_error_qr_verifier">#ff448d</color>
 	<color name="red_error_qr_wallet">#a72702</color>
 
-	<color name="blue">#30597E</color>
-	<color name="green">#5fb564</color>
-	<color name="orange">#f59c00</color>
+	<color name="blue">#143E7F</color>
+	<color name="green">#91C88D</color>
+	<color name="green_dark">#4D9553</color>
+	<color name="orange">#C9872C</color>
 	<color name="red">#a72702</color>
 
-	<color name="greyish">#ebeced</color>
-	<color name="blueish">#d7e1f3</color>
+	<color name="recovery">#892252</color>
+	<color name="vaccination">#143E7F</color>
+	<color name="test">#C9872C</color>
+
+	<color name="recovery_contrast">#FFFFFF</color>
+	<color name="vaccination_contrast">#FFFFFF</color>
+	<color name="test_contrast">#FFFFFF</color>
+
+	<color name="greyish">#E9E4DF</color>
+	<color name="blueish">#BFCFE0</color>
 	<color name="greenish">#dfedda</color>
-	<color name="orangeish">#fee6c8</color>
+	<color name="orangeish">#FCE6BF</color>
 	<color name="redish">#f2cac6</color>
 
-	<color name="background_light">#f4f5f5</color>
+	<color name="background_light">#F6F4F0</color>
 </resources>

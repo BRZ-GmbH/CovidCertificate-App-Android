@@ -15,7 +15,7 @@
 	android:layout_marginHorizontal="@dimen/spacing_medium_large"
 	android:layout_marginBottom="@dimen/spacing_medium_large"
 	android:background="@drawable/bg_rect_rounded_small_blue_ripple"
-	android:backgroundTint="@color/blueish"
+	android:backgroundTint="@color/greenish"
 	android:orientation="vertical"
 	android:paddingVertical="@dimen/spacing_medium_small">
 

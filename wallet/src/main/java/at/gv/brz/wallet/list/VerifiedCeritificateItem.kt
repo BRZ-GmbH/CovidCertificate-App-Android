@@ -98,8 +98,16 @@ data class VerifiedCeritificateItem(val verifiedCertificate: CertificatesViewMod
 				textColorId = R.color.grey
 			}
 			certType == CertType.TEST -> {
-				backgroundColorId = R.color.blueish
-				textColorId = R.color.blue
+				backgroundColorId = R.color.test
+				textColorId = R.color.test_contrast
+			}
+			certType == CertType.VACCINATION -> {
+				backgroundColorId = R.color.vaccination
+				textColorId = R.color.vaccination_contrast
+			}
+			certType == CertType.RECOVERY -> {
+				backgroundColorId = R.color.recovery
+				textColorId = R.color.recovery_contrast
 			}
 			else -> {
 				backgroundColorId = R.color.blue

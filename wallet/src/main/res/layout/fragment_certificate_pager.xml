@@ -127,7 +127,7 @@
 				android:layout_height="wrap_content"
 				android:layout_marginTop="@dimen/spacing_huge"
 				android:background="@drawable/bg_certificate_bubble"
-				android:backgroundTint="@color/blueish"
+				android:backgroundTint="@color/greenish"
 				android:breakStrategy="high_quality"
 				android:gravity="center"
 				android:hyphenationFrequency="full"
