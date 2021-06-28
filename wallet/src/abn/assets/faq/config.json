@@ -3,29 +3,29 @@
   "infoBox": null,
   "questions": {
     "de": {
-      "faqTitle": "Was sind Covid-Zertifikate?",
-      "faqSubTitle": "Das Covid-Zertifikat bietet die Möglichkeit, eine Covid-19-Impfung, eine durchgemachte Erkrankung oder ein negatives Testergebnis fälschungssicher zu dokumentieren.",
+      "faqTitle": "Wo kann ich mich über die EU-konformen Zertifikate informieren?",
+      "faqSubTitle": "Alle Informationen zu den EU-konformen Zertifikaten des Grünen Passes erhalten Sie unter https://gruenerpass.gv.at/.",
       "faqIconIos": "ic-faq-image",
       "faqIconAndroid": "ic_faq_image",
       "faqEntries": [{
-        "title": "Wann und wo kann ich ein Covid-19-Zertifikat erhalten?",
-        "text": "Ein Covid-Zertifikat können Sie nach einer vollständigen Covid-19-Impfung, nach einer durchgemachten Erkrankung oder nach einem negativen Testergebnis erhalten. ",
+        "title": "Wo kann ich mich über die EU-konformen Zertifikate informieren?",
+        "text": "Alle Informationen zu den EU-konformen Zertifikaten des Grünen Passes erhalten Sie unter https://gruenerpass.gv.at/.",
         "iconAndroid": null,
         "iconIos": null,
-        "linkTitle": null,
-        "linkUrl": null
+        "linkTitle": "Weitere Informationen",
+        "linkUrl": "https://gruenerpass.gv.at/"
       },
         {
-          "title": "Wo sind meine Daten gespeichert?",
-          "text": "Ihre Daten werden nicht in einem zentralen System gespeichert, sondern nur lokal auf Ihrem Mobilgerät, respektive im QR-Code auf dem Covid-19-Zertifikat in Papierform.",
+          "title": "Wie kann ich meine EU-konformen Zertifikate vorweisen?",
+          "text": "Alle EU-konformen Zertifikate des Grünen Passes können entweder ausgedruckt (analog) oder digital vorgewiesen werden. Für den digitalen Vorweis steht Ihnen die Grüner Pass App zur Verfügung. In dieser App können Sie Ihre EU-konformen Zertifikate abspeichern und direkt aus der App vorweisen. \n\nBeachten Sie, dass Sie auf Verlangen der überprüfenden Stelle auch einen amtlichen Lichtbildausweis vorweisen müssen.",
           "iconAndroid": null,
           "iconIos": null,
           "linkTitle": null,
           "linkUrl": null
         },
         {
-          "title": "Wie werden Missbrauch und Fälschung verhindert?",
-          "text": "Der QR-Code auf dem Covid-19-Zertifikat enthält eine elektronische Signatur. Die Signatur ist ein wichtiges Sicherheitsmerkmal und macht das Covid-19-Zertifikat fälschungssicher. Das Covid-19-Zertifikat ist zudem nur in Kombination mit einem Ausweisdokument gültig.",
+          "title": "Wo sind meine Daten gespeichert?",
+          "text": "Ihre Daten in der Grüner Pass App werden nicht in einem zentralen System gespeichert, sondern nur lokal auf Ihrem Mobilgerät, beziehungsweise im EU-konformen QR-Code auf dem ausgedruckten Zertifikat.",
           "iconAndroid": null,
           "iconIos": null,
           "linkTitle": null,
@@ -37,29 +37,28 @@
   "works": {
     "de": {
       "faqTitle": "Wie funktioniert \ndie App?",
-      "faqSubTitle": "Mit der BRZ Wallet App können Sie Covid-19-Zertifikate einfach und sicher auf Ihrem Mobilgerät abspeichern und vorweisen.",
-
+      "faqSubTitle": "Mit der Grüner Pass App können Sie Ihre EU-konformen Zertifikate einfach und sicher auf Ihrem Smartphone abspeichern und vorweisen.",
       "faqIconIos": "ic-faq-image",
       "faqIconAndroid": "ic_faq_image",
       "faqEntries": [{
-        "title": "Wie kann ich ein Covid-19-Zertifikat zur App hinzufügen?",
-        "text": "Um ein Covid-19-Zertifikat zur App hinzuzufügen, benötigen Sie das Ihnen ausgestellte Originalzertifikat auf Papier oder als PDF-Dokument. Den darauf abgebildeten QR-Code können Sie mit der BRZ Wallet App scannen und hinzufügen. Anschließend erscheint das Covid-19-Zertifikat direkt in der App.",
+        "title": "Wie kann ich meine EU-konformen Zertifikate zur App hinzufügen?",
+        "text": "Um ein Zertifikat zur App hinzufügen zu können, benötigen Sie das Originalzertifikat auf Papier oder als PDF. Den darauf abgebildeten EU-konformen QR-Code können Sie mit der Grüner Pass App scannen und hinzufügen. Anschließend erscheint Ihr Zertifikat direkt in der App.",
         "iconAndroid": null,
         "iconIos": null,
         "linkTitle": null,
         "linkUrl": null
       },
         {
-          "title": "Können auch mehrere Covid-19-Zertifikate hinzugefügt werden?",
-          "text": "Ja das ist möglich. So können Sie z. B. alle Covid-Zertifikate von Familienangehörigen in Ihrer App speichern. Auch in diesem Fall gilt: Das Covid-Zertifikat ist nur in Kombination mit einem Ausweisdokument des Zertifikatsinhabers / der Zertifikatsinhaberin gültig.",
+          "title": "Können auch mehrere EU-konforme Zertifikate hinzugefügt werden?",
+          "text": "Ja, das ist möglich. So können Sie z. B. alle EU-konformen Zertifikate von Familienangehörigen in Ihrer App speichern. Auch in diesem Fall gilt: Das EU-konforme Zertifikat ist nur in Kombination mit einem amtlichen Lichtbildausweis des Zertifikatsinhabers / der Zertifikatsinhaberin gültig.",
           "iconAndroid": null,
           "iconIos": null,
           "linkTitle": null,
           "linkUrl": null
         },
         {
-          "title": "Sehe ich, ob mein Covid-19-Zertifikat gültig ist?",
-          "text": "In der aktuellen Version der BRZ Wallet App erfolgt keine Prüfung der Gültigkeit. Diese ist unter qr.gv.at oder greencheck.gv.at prüfbar.",
+          "title": "Sehe ich, ob mein EU-konformes Zertifikate gültig ist?",
+          "text": "In der aktuellen Version der Grüner Pass App erfolgt keine Prüfung der Gültigkeit. Diese ist unter qr.gv.at oder greencheck.gv.at prüfbar.",
           "iconAndroid": null,
           "iconIos": null,
           "linkTitle": null,
@@ -67,7 +66,7 @@
         },
         {
           "title": "Wie sind meine Daten geschützt?",
-          "text": "Ihre persönlichen Daten in der BRZ Wallet App werden nicht zentral gespeichert, sondern befinden sich ausschließlich bei Ihnen lokal auf dem Mobilgerät..",
+          "text": "Ihre persönlichen Daten in der Grüner Pass App werden in keinem zentralen System gespeichert, sondern befinden sich ausschließlich bei Ihnen lokal auf dem Smartphone.",
           "iconAndroid": null,
           "iconIos": null,
           "linkTitle": null,
@@ -75,15 +74,15 @@
         },
         {
           "title": "Welche Daten sind im QR-Code enthalten?",
-          "text": "Der QR-Code enthält alle Informationen, die Sie auf Ihrem Covid-19-Zertifikat in Papierform im Klartext finden. Weiter befindet sich im QR-Code eine elektronische Signatur, mit der sich die Echtheit des Covid-19-Zertifikats überprüfen lässt. Dadurch wird das Covid-19-Zertifikat fälschungssicher.",
+          "text": "Der QR-Code enthält alle Informationen, die Sie auf Ihrem EU-konformen Zertifikat in Papierform im Klartext finden. Weiter befindet sich im QR-Code eine elektronische Signatur, mit der sich die Echtheit des EU-konformen Zertifikates überprüfen lässt. Dadurch wird das EU-konforme Zertifikat fälschungssicher.",
           "iconAndroid": null,
           "iconIos": null,
           "linkTitle": null,
           "linkUrl": null
         },
         {
-          "title": "Was muss ich tun, wenn ich das Covid-19-Zertifikat oder die App lösche?",
-          "text": "Sie können Ihr Covid-19-Zertifikat einfach wieder auf Ihrem Mobilgerät speichern. Laden Sie dazu die App erneut herunter und scannen Sie anschließend den QR-Code auf Ihrem Covid-19-Zertifikat auf Papier oder als PDF.",
+          "title": "Was muss ich tun, wenn ich das EU-konforme Zertifikat oder die App lösche?",
+          "text": "Sie können Ihr EU-konformes Zertifikat einfach wieder auf Ihrem Smartphone speichern. Laden Sie dazu die App erneut herunter und scannen Sie anschließend den EU-konformen QR-Code auf Ihrem Zertifikat auf Papier oder als PDF.",
           "iconAndroid": null,
           "iconIos": null,
           "linkTitle": null,

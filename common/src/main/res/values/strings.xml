@@ -11,23 +11,23 @@
 <resources>
 
     <!-- Android App Name -->
-    <string name="verifier_app_name">"BRZ Wallet"</string>
+    <string name="verifier_app_name">"Grüner Pass"</string>
 
     <!-- Title for the qr scanning screen -->
-    <string name="verifier_title_qr_scan">"Prüfen"</string>
+    <string name="verifier_title_qr_scan">"QR-Code scannen"</string>
 
     <!-- Titel über dem Haupttitel -->
-    <string name="verifier_homescreen_header_title">"BRZ Wallet"</string>
+    <string name="verifier_homescreen_header_title">"Grüner Pass"</string>
 
     <!-- Homescreen App Name -->
-    <string name="verifier_homescreen_title">"BRZ Wallet"</string>
+    <string name="verifier_homescreen_title">"Grüner Pass"</string>
 
     <!-- Beschreibung für Pager Bild 1 -->
-    <string name="verifier_homescreen_pager_description_1">"Vorgewiesenes Zertifikat scannen"</string>
+    <string name="verifier_homescreen_pager_description_1">"EU-konformen QR-Code scannen"</string>
 
 
     <!-- Homescreen Button für Scanning -->
-    <string name="verifier_homescreen_scan_button">"Scannen"</string>
+    <string name="verifier_homescreen_scan_button">"QR-Code scannen"</string>
 
     <!-- Homescreen Button für Support -->
     <string name="verifier_homescreen_support_button">"So funktioniert's"</string>
@@ -45,7 +45,7 @@
     <string name="verifier_qr_scanner_scan_qr_text">"QR-Code scannen"</string>
 
     <!-- Titel auf dem Verifikations-Screen -->
-    <string name="covid_certificate_title">"Covid-19-Zertifikat"</string>
+    <string name="covid_certificate_title">"EU-konformes Zertifikat"</string>
 
     <!-- Name des/der Zertifikatsinhabers/Zertifikatsinhaberin -->
     <string name="verifier_covid_certificate_name">"Nachname"</string>
@@ -57,10 +57,10 @@
     <string name="wallet_add_certificate">"Hinzufügen"</string>
 
     <!-- Wallet: Homescreen Covid-Zertifikat -->
-    <string name="wallet_certificate">"Covid-19-Zertifikat"</string>
+    <string name="wallet_certificate">"EU-konformes Zertifikat"</string>
 
     <!-- Wallet: Homescreen Erklärung -->
-    <string name="wallet_homescreen_explanation">"Scannen Sie den QR-Code auf dem Covid-19-Zertifikat, um es zur App hinzuzufügen."</string>
+    <string name="wallet_homescreen_explanation">"Scannen Sie den EU-konformen QR-Code auf dem Zertifikat, um es zur App hinzuzufügen."</string>
 
     <!-- Wallet: Scanner Titel -->
     <string name="wallet_scanner_title">"Hinzufügen"</string>
@@ -69,8 +69,7 @@
     <string name="verifier_verify_success_title">"Prüfung erfolgreich"</string>
 
     <!-- Info Text bei erfolgreicher Prüfung -->
-    <string name="verifier_verify_success_info">"Nur mit einem 
-Ausweisdokument gültig"</string>
+    <string name="verifier_verify_success_info">"Nur mit einem amtlichen Lichtbildausweis gültig"</string>
 
     <!-- Prüfung loading text -->
     <string name="verifier_verify_loading_text">"Zertifikat wird geprüft"</string>
@@ -79,13 +78,13 @@ Ausweisdokument gültig"</string>
     <string name="verifier_verify_error_title">"Covid-Zertifikat ungültig"</string>
 
     <!-- Fehler Infotext bei Prüfung (Nationale Regeln) -->
-    <string name="verifier_verify_error_info_for_national_rules">"Entspricht nicht den Gültigkeitskriterien Österreichs"</string>
+    <string name="verifier_verify_error_info_for_national_rules">"Das Zertifikat entspricht nicht den gesetzlichen Erfordernissen."</string>
 
     <!-- Fehler Infotext bei Prüfung (Zertifikat Fehler) -->
-    <string name="verifier_verify_error_info_for_certificate_invalid">"Das Covid-Zertifikat hat keine gültige Signatur"</string>
+    <string name="verifier_verify_error_info_for_certificate_invalid">"Das Zertifikat hat keine gültige Signatur"</string>
 
     <!-- Fehler Infotext bei Prüfung (Blacklist) -->
-    <string name="verifier_verify_error_info_for_blacklist">"Das Covid-Zertifikat wurde widerrufen"</string>
+    <string name="verifier_verify_error_info_for_blacklist">"Das Zertifikat wurde widerrufen"</string>
 
     <!-- Fehler bei der geladen Liste -->
     <string name="verifier_verify_error_list_title">"Prüfung fehlgeschlagen"</string>
@@ -94,7 +93,7 @@ Ausweisdokument gültig"</string>
     <string name="verifier_verify_error_list_info_text">"Ein unerwarteter Fehler ist aufgetreten."</string>
 
     <!-- Wallet: Scanner Text unten -->
-    <string name="wallet_scanner_explanation">"Scannen Sie den QR-Code auf dem Covid-19-Zertifikat."</string>
+    <string name="wallet_scanner_explanation">"Scannen Sie den EU-konformen QR-Code auf dem Zertifikat."</string>
 
     <!-- Wallet: Scanner Info Button unten -->
     <string name="wallet_scanner_info_button">"So funktioniert's"</string>
@@ -106,22 +105,22 @@ Ausweisdokument gültig"</string>
     <string name="wallet_add_certificate_button">"Hinzufügen"</string>
 
     <!-- Wallet: Titel der Liste Zertifikate -->
-    <string name="wallet_certificate_list_title">"Zertifikate"</string>
+    <string name="wallet_certificate_list_title">"EU-konforme Zertifikate"</string>
 
     <!-- Wallet: Löschen Button Titel -->
     <string name="delete_button">"Löschen"</string>
 
     <!-- Android App Name für die Wallet -->
-    <string name="wallet_app_name">"BRZ Wallet"</string>
+    <string name="wallet_app_name">"Grüner Pass"</string>
 
     <!-- Header im Onboarding-Screen "Die App" -->
-    <string name="wallet_onboarding_app_header">"Die App"</string>
+    <string name="wallet_onboarding_app_header">"Grüner Pass"</string>
 
     <!-- Titel im Onboardingscreen "Die App" -->
-    <string name="wallet_onboarding_app_title">"BRZ Wallet"</string>
+    <string name="wallet_onboarding_app_title">"Grüner Pass"</string>
 
     <!-- Text im Onboardingscreen "Die App" -->
-    <string name="wallet_onboarding_app_text">"Mit der App können Sie Covid-19-Zertifikate sicher auf dem Smartphone aufbewahren und einfach vorweisen."</string>
+    <string name="wallet_onboarding_app_text">"Mit dieser App können Sie die EU-konformen Zertifikate des Grünen Passes sicher auf dem Smartphone aufbewahren und einfach vorweisen."</string>
 
     <!-- Weiter-Button Titel -->
     <string name="continue_button">"Weiter"</string>
@@ -140,10 +139,10 @@ in der App"</string>
     <string name="wallet_onboarding_show_title">"Zertifikate einfach vorweisen"</string>
 
     <!-- Text 1 im Onboardingscreen "Vorteile, Vorweisen" -->
-    <string name="wallet_onboarding_show_text1">"Die auf dem Covid-19-Zertifikat dargestellten Daten sind auch im QR-Code enthalten."</string>
+    <string name="wallet_onboarding_show_text1">"Die auf dem Zertifikat dargestellten Daten sind auch im EU-konformen QR-Code enthalten."</string>
 
     <!-- Text 2 im Onboardingscreen "Vorteile, Vorweisen" -->
-    <string name="wallet_onboarding_show_text2">"Beim Vorweisen wird der QR-Code mit einer Prüf-App gescannt. Die enthaltenen Daten werden dabei automatisch auf Echtheit und Gültigkeit überprüft."</string>
+    <string name="wallet_onboarding_show_text2">"Beim Vorweisen wird der EU-konforme QR-Code mit einer Prüfanwendung gescannt. Die enthaltenen Daten werden dabei automatisch auf Echtheit und Gültigkeit überprüft."</string>
 
     <!-- Titel des Datenschutzerklärungs-Elements im Onboardingscreen "Datenschutz" -->
     <string name="wallet_onboarding_privacy_privacypolicy_title">"Datenschutzerklärung"</string>
@@ -159,38 +158,38 @@ in der App"</string>
     <string name="wallet_scanner_howitworks_header">"So funktioniert's"</string>
 
     <!-- Titel im "So funktionierts" Screen beim Scannen -->
-    <string name="wallet_scanner_howitworks_title">"Covid-19-Zertifikate
+    <string name="wallet_scanner_howitworks_title">"Zertifikate
 hinzufügen"</string>
 
     <!-- Textblock 1 im "So funktionierts" Screen beim Scannen -->
-    <string name="wallet_scanner_howitworks_text1">"Um ein Covid-19-Zertifikat zur App hinzufügen zu können, benötigen Sie das Originalzertifikat auf Papier oder als PDF."</string>
+    <string name="wallet_scanner_howitworks_text1">"Um ein Zertifikat zur App hinzufügen zu können, benötigen Sie das Originalzertifikat auf Papier oder als PDF."</string>
 
     <!-- Textblock 2 im "So funktionierts" Screen beim Scannen -->
     <string name="wallet_scanner_howitworks_text2">"Tippen Sie in der App auf «Hinzufügen», um ein neues Zertifikat zur App hinzuzufügen."</string>
 
     <!-- Textblock 3 im "So funktionierts" Screen beim Scannen -->
-    <string name="wallet_scanner_howitworks_text3">"Halten Sie nun die Kamera des Smartphones über den QR-Code auf dem Originalzertifikat, um den Code einzuscannen."</string>
+    <string name="wallet_scanner_howitworks_text3">"Halten Sie nun die Kamera des Smartphones über den EU-konformen QR-Code auf dem Zertifikat, um diesen zu scannen."</string>
 
     <!-- Textblock 4 im "So funktionierts" Screen beim Scannen -->
-    <string name="wallet_scanner_howitworks_text4">"Es erscheint eine Vorschau des Covid-19-Zertifikats. Tippen Sie auf «Hinzufügen» um das Zertifikat sicher in der App zu speichern."</string>
+    <string name="wallet_scanner_howitworks_text4">"Es erscheint eine Vorschau des Zertifikats. Tippen Sie auf «Hinzufügen» um das Zertifikat sicher in der App zu speichern."</string>
 
     <!-- Frage 1 im "So funktionierts" Screen beim Scannen -->
-    <string name="wallet_scanner_howitworks_question1">"Wann und wo kann ich ein Covid-19-Zertifikat erhalten?"</string>
+    <string name="wallet_scanner_howitworks_question1">"Wie und wo erhalte ich ein EU-konformes Zertifikat?"</string>
 
     <!-- Header im FAQ-Screen der Wallet App -->
-    <string name="wallet_faq_header">"Häufige Fragen"</string>
+    <string name="wallet_faq_header">"Häufig gestellte Fragen"</string>
 
     <!-- Titel 1 im FAQ-Screen der Wallet App -->
-    <string name="wallet_faq_questions_title">"Was sind Covid-Zertifikate?"</string>
+    <string name="wallet_faq_questions_title">"Wo kann ich mich über Covid-19-Zertifikate informieren?"</string>
 
     <!-- Text 1im FAQ-Screen der Wallet App -->
-    <string name="wallet_faq_questions_subtitle">"Das Covid-Zertifikat bietet die Möglichkeit, eine Covid-19-Impfung, eine durchgemachte Erkrankung oder ein negatives Testergebnis fälschungssicher zu dokumentieren."</string>
+    <string name="wallet_faq_questions_subtitle">"Alle Informationen zum Grünen Pass in Österreich und den verschiedenen Covid-19-Zertifikaten erhalten sie auf https://gruenerpass.gv.at/."</string>
 
     <!-- Frage 1 im FAQ-Screen der Wallet App -->
     <string name="wallet_faq_questions_question_1">"Wann und wo kann ich ein Covid-Zertifikat erhalten?"</string>
 
     <!-- Frage 2 im FAQ-Screen der Wallet App -->
-    <string name="wallet_faq_questions_question_2">"Wie kann ich ein Covid-Zertifikat vorweisen?"</string>
+    <string name="wallet_faq_questions_question_2">"Wie kann ich ein Covid-19-Zertifikat vorweisen?"</string>
 
     <!-- Frage 3 im FAQ-Screen der Wallet App -->
     <string name="wallet_faq_questions_question_3">"Wo sind meine Daten gespeichert?"</string>
@@ -262,7 +261,7 @@ die App?"</string>
     <string name="wallet_faq_works_subtitle">"Mit der BRZ Wallet App können Sie Covid-19-Zertifikate einfach und sicher auf Ihrem Mobilgerät abspeichern und vorweisen."</string>
 
     <!-- Antwort 1 im "So funktionierts" Screen beim Scannen -->
-    <string name="wallet_scanner_howitworks_answer1">"Ein Covid-19-Zertifikat können Sie nach einer Covid-19-Impfung, nach einer durchgemachten Erkrankung oder nach einem negativen Testergebnis erhalten. "</string>
+    <string name="wallet_scanner_howitworks_answer1">"Alle EU-konformen Zertifikate des Grünen Passes können mittels Handy-Signatur oder Bürgerkarte über gesundheit.gv.at abgerufen werden."</string>
 
     <!-- Verifier: Detail Check Vorname -->
     <string name="verifier_covid_certificate_prename">"Vorname"</string>
@@ -293,10 +292,10 @@ die App?"</string>
     <string name="wallet_onboarding_store_header">"Vorteile"</string>
 
     <!-- Titel im Onboardingscreen "Vorteile, Aufbewahren" -->
-    <string name="wallet_onboarding_store_title">"Covid-19_Zertifikate digital aufbewahren"</string>
+    <string name="wallet_onboarding_store_title">"EU-konforme Zertifikate digital aufbewahren"</string>
 
     <!-- Text1 im Onboardingscreen "Vorteile, Aufbewahren" -->
-    <string name="wallet_onboarding_store_text1">"Covid-19-Zertifikate können einfach zur App hinzugefügt und digital aufbewahrt werden."</string>
+    <string name="wallet_onboarding_store_text1">"Die EU-konformen Zertifikate des Grünen Passes können einfach zur App hinzugefügt und digital aufbewahrt werden."</string>
 
 
     <!-- Header im Onboarding-Screen "Vorteile, Vorweisen" -->
@@ -309,7 +308,7 @@ die App?"</string>
     <string name="accessibility_faq_button">"Häufige Fragen"</string>
 
     <!-- Accessibility: Button zur Liste der Zertifikate -->
-    <string name="accessibility_list_button">"Zertifikate Liste"</string>
+    <string name="accessibility_list_button">"Liste Ihrer Zertifikate"</string>
 
     <!-- Accessibility: Zertifikate hinzufügen -->
     <string name="accessibility_add_button">"Zertifikat hinzufügen"</string>
@@ -346,7 +345,7 @@ die App?"</string>
 {DATE}"</string>
 
     <!-- Wallet: Fehler wenn Zertifikat nicht den CH-Gültigkeitskriterien entspricht -->
-    <string name="wallet_error_national_rules">"Entspricht nicht den Gültigkeitskriterien Österreichs"</string>
+    <string name="wallet_error_national_rules">"Das Zertifikat entspricht nicht den gesetzlichen Erfordernissen."</string>
 
     <!-- Wallet: Gültigkeit des Zertifikats abgelaufen -->
     <string name="wallet_error_expired">"Gültigkeit des Zertifikats
@@ -370,7 +369,7 @@ ungültiger Signatur"</string>
     <string name="wallet_error_expired_bold">"abgelaufen"</string>
 
     <!-- Meldung wenn erneute ein Zertifikat gescannt wurde, welches bereits in der App ist -->
-    <string name="wallet_certificate_already_exists">"Dieses Zertifikat ist bereits in der App gespeichert"</string>
+    <string name="wallet_certificate_already_exists">"Dieses EU-konforme Zertifikat ist bereits in der App gespeichert"</string>
 
     <!-- Titel Gültigkeit im Zertifikatsdetail -->
     <string name="wallet_certificate_validity">"Gültigkeit in
@@ -407,7 +406,7 @@ ungültiger Signatur"</string>
     <string name="wallet_certificate_test_land">"Land des Tests"</string>
     <string name="covid_certificate_test_title">"Test"</string>
     <string name="wallet_certificate_test_result_title">"Ergebnis"</string>
-    <string name="wallet_certificate_test_result_negativ">"Nicht erkannt (Negativ)"</string>
+    <string name="wallet_certificate_test_result_negativ">""Nicht nachgewiesen (Negativ)"</string>
     <string name="wallet_certificate_test_result_positiv">"Positiv"</string>
     <string name="wallet_certificate_test_type">"Typ"</string>
     <string name="wallet_certificate_test_name">"Name"</string>
@@ -520,7 +519,7 @@ Nutzungsbedingungen"</string>
     <string name="wallet_homescreen_add_title">"Zertifikat hinzufügen"</string>
 
     <!-- Wallet: Homescreen Zertifikat Description Text -->
-    <string name="wallet_homescreen_add_certificate_description">"Sie haben ein Covid-19-Zertifikat auf Papier oder als PDF und möchten es zur App hinzufügen."</string>
+    <string name="wallet_homescreen_add_certificate_description">"Sie haben ein EU-konformes Zertifikat auf Papier oder als PDF und möchten es zur App hinzufügen."</string>
 
     <!-- Wallet: Fehler Format des Zertifikat ungültig -->
     <string name="wallet_error_invalid_format">"Format des Zertifikat
@@ -530,7 +529,7 @@ ungültig"</string>
     <string name="wallet_error_invalid_format_bold">"ungültig"</string>
 
     <!-- Verifier: Error Ungültiges Format -->
-    <string name="verifier_error_invalid_format">"Das Format des Covid-Zertifikats ist ungültig."</string>
+    <string name="verifier_error_invalid_format">"Das Format des EU-konformen Zertifikats ist ungültig."</string>
 
     <!-- Homescreen Zertifikat: Offline Modus Text -->
     <string name="wallet_homescreen_offline">"Offline Modus"</string>
