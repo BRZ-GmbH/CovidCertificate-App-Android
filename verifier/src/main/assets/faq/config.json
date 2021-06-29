@@ -1,1 +1,95 @@
-{"forceUpdate":false,"infoBox":null,"questions":null,"works":{"de":{"faqTitle":"So werden Covid-Zertifikate geprüft","faqSubTitle":"Mit der COVID Certificate Check App können QR-Codes auf Covid-Zertifikaten gescannt und die Zertifikate auf Echtheit und Gültigkeit überprüft werden.","faqIconIos":"ic-faq-image","faqIconAndroid":"ic_faq_image","faqEntries":[{"title":"Wie können Covid-Zertifikate geprüft werden?","text":"Um ein Covid-Zertifikat zu prüfen, scannen Sie den QR-Code auf dem Papierzertifikat oder in der vorgewiesenen COVID Certificate App mit der dafür vorgesehenen COVID Certificate Check App.","iconAndroid":null,"iconIos":null,"linkTitle":null,"linkUrl":null},{"title":"Was wird genau geprüft?","text":"Beim Scannen werden drei Aspekte geprüft:\n– Enthält das Zertifikat eine gültige elektronische Signatur?\n– Ist das Zertifikat nicht widerrufen worden?\n– Entspricht das Zertifikat den Gültigkeitskriterien der Schweiz?\n\nWenn alle drei Aspekte positiv bewertet werden, wird das Covid-Zertifikat als gültig ausgewiesen.","iconAndroid":null,"iconIos":null,"linkTitle":null,"linkUrl":null},{"title":"Welche Ausweisdokumente sind gültig? Weshalb müssen die Personalien überprüft werden?","text":"Neben Pass oder ID werden auch andere Ausweisdokumente akzeptiert, die die Identität der betreffenden Person mit einem Foto belegen (z.B. Führerausweis). Das Covid-Zertifikat ist zwar fälschungssicher, mit der Überprüfung der Personalien wird aber erst sichergestellt, dass das vorgezeigte Zertifikat auch auf den Vorweisenden ausgestellt wurde.","iconAndroid":null,"iconIos":null,"linkTitle":null,"linkUrl":null},{"title":"Welche Daten sehe ich beim Prüfvorgang?","text":"Beim Prüfvorgang sehen Sie nur den Namen und das Geburtsdatum der Zertifikatsinhaberin oder des Zertifikatsinhabers und ob das Covid-Zertifikat gültig ist.","iconAndroid":null,"iconIos":null,"linkTitle":null,"linkUrl":null},{"title":"Werden beim Prüfvorgang in der COVID Certificate Check App oder in einem zentralen System Daten gespeichert?","text":"Nein, beim Prüfvorgang werden keine Daten gespeichert - weder in der COVID Certificate Check App noch in einem zentralen System. Es ist somit nicht möglich nachzuvollziehen, welches Covid-Zertifikat von wem, wann und wo überprüft wurde.","iconAndroid":null,"iconIos":null,"linkTitle":null,"linkUrl":null}]},"en":{"faqTitle":"How COVID certificates are checked","faqSubTitle":"The COVID Certificate Check app can be used to scan the QR codes on COVID certificates and check the certificates for authenticity and validity.","faqIconIos":"ic-faq-image","faqIconAndroid":"ic_faq_image","faqEntries":[{"title":"How can COVID certificates be checked?","text":"To check a COVID certificate, use the dedicated COVID Certificate Check app to scan the QR code on the paper certificate or in the COVID Certificate app presented.","iconAndroid":null,"iconIos":null,"linkTitle":null,"linkUrl":null},{"title":"What exactly is checked?","text":"Three aspects are checked when scanning:\n– Does the certificate contain a valid electronic signature?\n– Is the certificate non-revoked?\n– Does the certificate meet Switzerland's validity criteria?\n\nIf the answer to all three questions is affirmative, the COVID certificate is shown as valid.","iconAndroid":null,"iconIos":null,"linkTitle":null,"linkUrl":null},{"title":"Which identification documents are valid? Why do personal details have to be checked?","text":"Aside from passports or ID cards, other photo identification documents that prove the identity of the person in question (e.g. driving licence) are also accepted. Although the COVID-19 certificate is forgery-proof, the only way to ensure that the certificate shown was issued to the person presenting it is to check the personal details.","iconAndroid":null,"iconIos":null,"linkTitle":null,"linkUrl":null},{"title":"What data do I see during the verification process?","text":"During the verification process, you see only the certificate holder's name and date of birth, and whether the COVID certificate is valid.","iconAndroid":null,"iconIos":null,"linkTitle":null,"linkUrl":null},{"title":"Is any data stored in the COVID Certificate Check app or in a central system during the verification process?","text":"No, no data is stored during the verification process, be it in the COVID Certificate Check app or in a central system. Therefore, it is not possible to trace which COVID certificate was checked by whom, when and where.","iconAndroid":null,"iconIos":null,"linkTitle":null,"linkUrl":null}]},"fr":{"faqTitle":"Contrôle de certificats COVID","faqSubTitle":"L'app de contrôle permet de scanner le code QR figurant sur un certificat COVID et de vérifier l'authenticité et la validité de ce dernier.","faqIconIos":"ic-faq-image","faqIconAndroid":"ic_faq_image","faqEntries":[{"title":"Comment contrôler un certificat COVID?","text":"Pour contrôler un certificat COVID, il vous suffit de scanner le code QR figurant sur le document papier ou dans l'app «COVID Certificate» au moyen de l'app de contrôle prévue à cet effet.","iconAndroid":null,"iconIos":null,"linkTitle":null,"linkUrl":null},{"title":"Sur quoi porte le contrôle au juste?","text":"Le scan du code QR permet de répondre aux trois questions suivantes:\n– Le certificat contient-il une signature électronique valable?\n– Le certificat a-t-il été révoqué?\n– Le certificat remplit-il les critères de validité fixés par la Suisse?\n\nSi vous pouvez répondre oui à la 1re et à la 3e question et non à la 2e, la validité du certificat COVID est attestée.","iconAndroid":null,"iconIos":null,"linkTitle":null,"linkUrl":null},{"title":"Quelles pièces d'identité sont valables? Pourquoi faut-il vérifier les données personnelles?","text":"Outre le passeport et la carte d'identité, les pièces d'identité réputées valables sont celles qui attestent l'identité de la personne concernée au moyen d'une photo (par ex. permis de conduire). Le certificat COVID est certes infalsifiable, mais le contrôle des données personnelles est le seul moyen de vérifier que le certificat a été établi au nom de la personne qui le présente.","iconAndroid":null,"iconIos":null,"linkTitle":null,"linkUrl":null},{"title":"À quelles données ai-je accès lors du contrôle?","text":"Lors du contrôle, vous n'avez accès qu'au nom et à la date de naissance du détenteur du certificat et voyez seulement si le certificat COVID est valable.","iconAndroid":null,"iconIos":null,"linkTitle":null,"linkUrl":null},{"title":"Quid du stockage des données lors du contrôle?","text":"Aucune des données auxquelles vous avez accès lors du contrôle n'est stockée dans l'app ou dans un système central. Il est par conséquent impossible de savoir quel certificat COVID a été vérifié par qui, quand et où.","iconAndroid":null,"iconIos":null,"linkTitle":null,"linkUrl":null}]},"it":{"faqTitle":"Come avviene la verifica dei certificati COVID?","faqSubTitle":"Con l'app COVID Certificate Check è possibile scansionare i relativi codici QR e verificare l'autenticità e la validità dei certificati COVID.","faqIconIos":"ic-faq-image","faqIconAndroid":"ic_faq_image","faqEntries":[{"title":"Come posso verificare i certificati COVID?","text":"Per verificare un certificato COVID, può scansionare il codice QR che trova sulla copia cartacea del certificato oppure, tramite la pertinente app COVID Certificate Check, sull’app che le viene mostrata.","iconAndroid":null,"iconIos":null,"linkTitle":null,"linkUrl":null},{"title":"Cosa viene verificato esattamente?","text":"Scansionando il codice QR vengono verificati i seguenti tre aspetti.\n– Il certificato contiene una firma elettronica valida?\n– Il certificato è ancora valido?\n– Il certificato rispetta i criteri di validità previsti dalla normativa svizzera?\n\nSe tutti i tre aspetti sono valutati positivamente, il certificato COVID è considerato valido.\n","iconAndroid":null,"iconIos":null,"linkTitle":null,"linkUrl":null},{"title":"Quali documenti di legittimazione sono accettati o validi? Perché devono essere verificati i dati personali?","text":"Oltre al passaporto o alla carta d'identità sono accettati altri documenti che provano l'identità della persona in questione tramite una foto (ad es. licenza di condurre). Il certificato COVID non è falsificabile, tuttavia solo verificando i dati personali si garantisce che il certificato sia stato effettivamente rilasciato alla persona che lo sta mostrando.","iconAndroid":null,"iconIos":null,"linkTitle":null,"linkUrl":null},{"title":"Quali dati posso visualizzare durante il processo di verifica?","text":"Durante il processo di verifica visualizzerà solo nome e cognome nonché la data di nascita del titolare del certificato e l'indicazione della validità del certificato.","iconAndroid":null,"iconIos":null,"linkTitle":null,"linkUrl":null},{"title":"Durante il processo di verifica vengono salvati dati nell'app COVID Certificate Check o in un sistema centrale?","text":"No, durante il processo di verifica non vengono salvati dati nell'app COVID Certificate Check né in un sistema centrale. In questo modo, non è possibile risalire a quali certificati sono stati verificati, da chi, quando e dove.","iconAndroid":null,"iconIos":null,"linkTitle":null,"linkUrl":null}]}}}
+{
+  "forceUpdate": false,
+  "infoBox": null,
+  "questions": {
+    "de": {
+      "faqTitle": "Wo kann ich mich über die EU-konformen Zertifikate informieren?",
+      "faqSubTitle": "Alle Informationen zu den EU-konformen Zertifikaten des Grünen Passes erhalten Sie unter https://gruenerpass.gv.at/.",
+      "faqIconIos": "ic-faq-image",
+      "faqIconAndroid": "ic_faq_image",
+      "faqEntries": [{
+        "title": "Wo kann ich mich über die EU-konformen Zertifikate informieren?",
+        "text": "Alle Informationen zu den EU-konformen Zertifikaten des Grünen Passes erhalten Sie unter https://gruenerpass.gv.at/.",
+        "iconAndroid": null,
+        "iconIos": null,
+        "linkTitle": "Weitere Informationen",
+        "linkUrl": "https://gruenerpass.gv.at/"
+      },
+        {
+          "title": "Wie kann ich meine EU-konformen Zertifikate vorweisen?",
+          "text": "Alle EU-konformen Zertifikate des Grünen Passes können entweder ausgedruckt (analog) oder digital vorgewiesen werden. Für den digitalen Vorweis steht Ihnen die Grüner Pass App zur Verfügung. In dieser App können Sie Ihre EU-konformen Zertifikate abspeichern und direkt aus der App vorweisen. \n\nBeachten Sie, dass Sie auf Verlangen der überprüfenden Stelle auch einen amtlichen Lichtbildausweis vorweisen müssen.",
+          "iconAndroid": null,
+          "iconIos": null,
+          "linkTitle": null,
+          "linkUrl": null
+        },
+        {
+          "title": "Wo sind meine Daten gespeichert?",
+          "text": "Ihre Daten in der Grüner Pass App werden nicht in einem zentralen System gespeichert, sondern nur lokal auf Ihrem Mobilgerät, beziehungsweise im EU-konformen QR-Code auf dem ausgedruckten Zertifikat.",
+          "iconAndroid": null,
+          "iconIos": null,
+          "linkTitle": null,
+          "linkUrl": null
+        }
+      ]
+    }
+  },
+  "works": {
+    "de": {
+      "faqTitle": "Wie funktioniert \ndie App?",
+      "faqSubTitle": "Mit der Grüner Pass App können Sie Ihre EU-konformen Zertifikate einfach und sicher auf Ihrem Smartphone abspeichern und vorweisen.",
+      "faqIconIos": "ic-faq-image",
+      "faqIconAndroid": "ic_faq_image",
+      "faqEntries": [{
+        "title": "Wie kann ich meine EU-konformen Zertifikate zur App hinzufügen?",
+        "text": "Um ein Zertifikat zur App hinzufügen zu können, benötigen Sie das Originalzertifikat auf Papier oder als PDF. Den darauf abgebildeten EU-konformen QR-Code können Sie mit der Grüner Pass App scannen und hinzufügen. Anschließend erscheint Ihr Zertifikat direkt in der App.\n\nAlle Informationen zu den EU-konformen Zertifikaten des Grünen Passes erhalten Sie unter https://gruenerpass.gv.at/.",
+        "iconAndroid": null,
+        "iconIos": null,
+        "linkTitle": "Weitere Informationen",
+        "linkUrl": "https://gruenerpass.gv.at/"
+      },
+        {
+          "title": "Können auch mehrere EU-konforme Zertifikate hinzugefügt werden?",
+          "text": "Ja, das ist möglich. So können Sie z. B. alle EU-konformen Zertifikate von Familienangehörigen in Ihrer App speichern. Auch in diesem Fall gilt: Das EU-konforme Zertifikat ist nur in Kombination mit einem amtlichen Lichtbildausweis des Zertifikatsinhabers / der Zertifikatsinhaberin gültig.",
+          "iconAndroid": null,
+          "iconIos": null,
+          "linkTitle": null,
+          "linkUrl": null
+        },
+        {
+          "title": "Sehe ich, ob mein EU-konformes Zertifikate gültig ist?",
+          "text": "In der aktuellen Version der Grüner Pass App erfolgt keine Prüfung der Gültigkeit. Diese ist unter qr.gv.at oder greencheck.gv.at prüfbar.",
+          "iconAndroid": null,
+          "iconIos": null,
+          "linkTitle": null,
+          "linkUrl": null
+        },
+        {
+          "title": "Wie sind meine Daten geschützt?",
+          "text": "Ihre persönlichen Daten in der Grüner Pass App werden in keinem zentralen System gespeichert, sondern befinden sich ausschließlich bei Ihnen lokal auf dem Smartphone.",
+          "iconAndroid": null,
+          "iconIos": null,
+          "linkTitle": null,
+          "linkUrl": null
+        },
+        {
+          "title": "Welche Daten sind im QR-Code enthalten?",
+          "text": "Der QR-Code enthält alle Informationen, die Sie auf Ihrem EU-konformen Zertifikat in Papierform im Klartext finden. Weiters befindet sich im QR-Code eine elektronische Signatur, mit der sich die Echtheit des EU-konformen Zertifikates überprüfen lässt. Dadurch wird das EU-konforme Zertifikat fälschungssicher.\n\nAlle Informationen zu den EU-konformen Zertifikaten des Grünen Passes erhalten Sie unter https://gruenerpass.gv.at/.",
+          "iconAndroid": null,
+          "iconIos": null,
+          "linkTitle": "Weitere Informationen",
+          "linkUrl": "https://gruenerpass.gv.at/"
+        },
+        {
+          "title": "Was muss ich tun, wenn ich das EU-konforme Zertifikat oder die App lösche?",
+          "text": "Sie können Ihr EU-konformes Zertifikat einfach wieder auf Ihrem Smartphone speichern. Laden Sie dazu die App erneut herunter und scannen Sie anschließend den EU-konformen QR-Code auf Ihrem Zertifikat auf Papier oder als PDF.",
+          "iconAndroid": null,
+          "iconIos": null,
+          "linkTitle": null,
+          "linkUrl": null
+        }
+
+      ]
+    }
+  }
+}

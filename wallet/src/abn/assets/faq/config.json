@@ -42,11 +42,11 @@
       "faqIconAndroid": "ic_faq_image",
       "faqEntries": [{
         "title": "Wie kann ich meine EU-konformen Zertifikate zur App hinzufügen?",
-        "text": "Um ein Zertifikat zur App hinzufügen zu können, benötigen Sie das Originalzertifikat auf Papier oder als PDF. Den darauf abgebildeten EU-konformen QR-Code können Sie mit der Grüner Pass App scannen und hinzufügen. Anschließend erscheint Ihr Zertifikat direkt in der App.",
+        "text": "Um ein Zertifikat zur App hinzufügen zu können, benötigen Sie das Originalzertifikat auf Papier oder als PDF. Den darauf abgebildeten EU-konformen QR-Code können Sie mit der Grüner Pass App scannen und hinzufügen. Anschließend erscheint Ihr Zertifikat direkt in der App.\n\nAlle Informationen zu den EU-konformen Zertifikaten des Grünen Passes erhalten Sie unter https://gruenerpass.gv.at/.",
         "iconAndroid": null,
         "iconIos": null,
-        "linkTitle": null,
-        "linkUrl": null
+        "linkTitle": "Weitere Informationen",
+        "linkUrl": "https://gruenerpass.gv.at/"
       },
         {
           "title": "Können auch mehrere EU-konforme Zertifikate hinzugefügt werden?",
@@ -74,11 +74,11 @@
         },
         {
           "title": "Welche Daten sind im QR-Code enthalten?",
-          "text": "Der QR-Code enthält alle Informationen, die Sie auf Ihrem EU-konformen Zertifikat in Papierform im Klartext finden. Weiter befindet sich im QR-Code eine elektronische Signatur, mit der sich die Echtheit des EU-konformen Zertifikates überprüfen lässt. Dadurch wird das EU-konforme Zertifikat fälschungssicher.",
+          "text": "Der QR-Code enthält alle Informationen, die Sie auf Ihrem EU-konformen Zertifikat in Papierform im Klartext finden. Weiters befindet sich im QR-Code eine elektronische Signatur, mit der sich die Echtheit des EU-konformen Zertifikates überprüfen lässt. Dadurch wird das EU-konforme Zertifikat fälschungssicher.\n\nAlle Informationen zu den EU-konformen Zertifikaten des Grünen Passes erhalten Sie unter https://gruenerpass.gv.at/.",
           "iconAndroid": null,
           "iconIos": null,
-          "linkTitle": null,
-          "linkUrl": null
+          "linkTitle": "Weitere Informationen",
+          "linkUrl": "https://gruenerpass.gv.at/"
         },
         {
           "title": "Was muss ich tun, wenn ich das EU-konforme Zertifikat oder die App lösche?",
