@@ -73,4 +73,7 @@
 
 	<dimen name="onboarding_intro_spacing_huge">20dp</dimen>
 	<dimen name="onboarding_intro_illustration_spacing_large">0dp</dimen>
+
+	<dimen name="certificate_pager_spacing_huger">15dp</dimen>
+	<dimen name="certificate_pager_bottom_spacing_medium_top">0dp</dimen>
 </resources>
