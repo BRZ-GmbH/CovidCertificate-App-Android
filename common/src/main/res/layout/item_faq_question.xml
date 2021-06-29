@@ -15,13 +15,15 @@
 	android:layout_marginHorizontal="@dimen/spacing_medium_large"
 	android:layout_marginBottom="@dimen/spacing_medium_large"
 	android:background="@drawable/bg_rect_rounded_small_blue_ripple"
-	android:backgroundTint="@color/greenish"
+	android:backgroundTint="@color/green_dark"
 	android:orientation="vertical"
-	android:paddingVertical="@dimen/spacing_medium_small">
+	android:paddingTop="@dimen/spacing_medium_small"
+	>
 
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:paddingBottom="@dimen/spacing_medium_small"
 		android:layout_marginHorizontal="@dimen/spacing_medium_large">
 
 		<TextView
@@ -41,42 +43,51 @@
 
 	</LinearLayout>
 
-	<TextView
-		android:id="@+id/item_faq_question_answer"
-		style="@style/CovidCertificate.Text"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_marginHorizontal="@dimen/spacing_medium_large"
-		android:layout_marginTop="@dimen/spacing_small"
-		tools:text="@string/wallet_faq_questions_answer_1" />
-
 	<LinearLayout
-		android:id="@+id/item_faq_question_link"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_marginHorizontal="@dimen/spacing_medium_small"
-		android:layout_marginTop="@dimen/spacing_medium_large"
-		android:background="@drawable/ripple_rounded_rect"
-		android:orientation="horizontal"
-		android:paddingVertical="@dimen/spacing_very_small"
-		android:paddingStart="@dimen/spacing_very_small"
-		android:paddingEnd="@dimen/spacing_medium_small">
-
-		<ImageView
-			android:layout_width="@dimen/icon_size_small"
-			android:layout_height="@dimen/icon_size_small"
-			android:layout_marginTop="@dimen/spacing_tiny_small"
-			android:src="@drawable/ic_link_external" />
+		android:id="@+id/item_faq_question_answer_container"
+		android:background="@drawable/bg_rect_bottom_rounded_small"
+		android:backgroundTint="@color/background_light"
+		android:orientation="vertical"
+		android:paddingVertical="@dimen/spacing_medium_small"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
 
 		<TextView
-			android:id="@+id/item_faq_question_link_label"
-			style="@style/CovidCertificate.Text.Bold.Blue.LinkExternal"
+			android:id="@+id/item_faq_question_answer"
+			style="@style/CovidCertificate.Text"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginHorizontal="@dimen/spacing_medium_large"
+			android:layout_marginTop="@dimen/spacing_small"
+			tools:text="@string/wallet_faq_questions_answer_1" />
+
+		<LinearLayout
+			android:id="@+id/item_faq_question_link"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_gravity="center_vertical"
-			android:layout_marginStart="@dimen/spacing_very_small"
-			android:text="@string/wallet_scanner_howitworks_external_link_title" />
+			android:layout_marginHorizontal="@dimen/spacing_medium_small"
+			android:layout_marginTop="@dimen/spacing_medium_large"
+			android:background="@drawable/ripple_rounded_rect"
+			android:orientation="horizontal"
+			android:paddingVertical="@dimen/spacing_very_small"
+			android:paddingStart="@dimen/spacing_very_small"
+			android:paddingEnd="@dimen/spacing_medium_small">
 
+			<ImageView
+				android:layout_width="@dimen/icon_size_small"
+				android:layout_height="@dimen/icon_size_small"
+				android:layout_marginTop="@dimen/spacing_tiny_small"
+				android:src="@drawable/ic_link_external" />
+
+			<TextView
+				android:id="@+id/item_faq_question_link_label"
+				style="@style/CovidCertificate.Text.Bold.Blue.LinkExternal"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_vertical"
+				android:layout_marginStart="@dimen/spacing_very_small"
+				android:text="@string/wallet_scanner_howitworks_external_link_title" />
+
+		</LinearLayout>
 	</LinearLayout>
-
 </LinearLayout>

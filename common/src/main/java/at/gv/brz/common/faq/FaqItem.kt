@@ -59,6 +59,7 @@ data class QuestionItem(
 			view.doOnPreDraw { onItemClickListener?.invoke() }
 		}
 		view.findViewById<TextView>(R.id.item_faq_question_title).text = question.question
+		view.findViewById<TextView>(R.id.item_faq_question_answer_container).isVisible = question.isSelected
 		view.findViewById<TextView>(R.id.item_faq_question_answer).apply {
 			text = question.answer
 			isVisible = question.isSelected
