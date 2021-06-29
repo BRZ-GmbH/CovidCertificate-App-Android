@@ -47,7 +47,7 @@
 				<ImageView
 					android:layout_width="match_parent"
 					android:layout_height="@dimen/onboarding_illustration_height"
-					android:layout_marginBottom="@dimen/spacing_large"
+					android:layout_marginBottom="@dimen/onboarding_intro_illustration_spacing_large"
 					android:scaleType="fitCenter"
 					android:src="@drawable/illu_onboarding_hero" />
 
@@ -55,8 +55,8 @@
 					style="@style/CovidCertificate.Text.Bold.Title"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:layout_marginTop="@dimen/spacing_huge"
-					android:layout_marginBottom="@dimen/spacing_huge"
+					android:layout_marginTop="@dimen/onboarding_intro_spacing_huge"
+					android:layout_marginBottom="@dimen/onboarding_intro_spacing_huge"
 					android:gravity="center_horizontal"
 					android:text="@string/wallet_onboarding_app_title" />
 

@@ -57,7 +57,7 @@
 					android:id="@+id/homescreen_content_empty_scroll_view"
 					android:layout_width="match_parent"
 					android:layout_height="match_parent"
-					android:layout_marginTop="100dp"
+					android:layout_marginTop="@dimen/homescreen_empty_margin_top"
 					android:overScrollMode="never"
 					android:visibility="gone"
 					tools:visibility="visible">
@@ -80,15 +80,15 @@
 
 						<ImageView
 							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:layout_marginTop="@dimen/spacing_larger"
+							android:layout_height="@dimen/homescreen_illustration_height"
+							android:layout_marginTop="@dimen/homescreen_empty_spacing_larger"
 							android:src="@drawable/illu_home_empty_state" />
 
 						<TextView
 							style="@style/CovidCertificate.Text.White"
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
-							android:layout_marginTop="@dimen/spacing_huge"
+							android:layout_marginTop="@dimen/homescreen_empty_spacing_huge"
 							android:gravity="center_horizontal"
 							android:text="@string/wallet_homescreen_explanation" />
 
@@ -145,8 +145,8 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center_horizontal"
-				android:layout_marginTop="@dimen/spacing_large"
-				android:layout_marginBottom="@dimen/spacing_large"
+				android:layout_marginTop="@dimen/homescreen_empty_spacing_large"
+				android:layout_marginBottom="@dimen/homescreen_empty_spacing_large"
 				android:text="@string/wallet_add_certificate" />
 
 			<FrameLayout

@@ -1,0 +1,13 @@
+<resources>
+    <dimen name="onboarding_illustration_height">250dp</dimen>
+
+    <dimen name="homescreen_empty_spacing_large">20dp</dimen>
+    <dimen name="homescreen_empty_spacing_larger">25dp</dimen>
+    <dimen name="homescreen_empty_spacing_huge">40dp</dimen>
+
+    <dimen name="homescreen_empty_margin_top">100dp</dimen>
+    <dimen name="homescreen_illustration_height">200dp</dimen>
+
+    <dimen name="onboarding_intro_spacing_huge">40dp</dimen>
+    <dimen name="onboarding_intro_illustration_spacing_large">20dp</dimen>
+</resources>
