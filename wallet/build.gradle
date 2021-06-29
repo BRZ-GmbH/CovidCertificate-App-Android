@@ -37,7 +37,7 @@ android {
 	buildToolsVersion "30.0.1"
 
 	defaultConfig {
-		applicationId "at.gv.oe.covid.wallet"
+		applicationId "at.gv.brz.wallet"
 		minSdkVersion 24
 		targetSdkVersion 30
 		versionCode 7
