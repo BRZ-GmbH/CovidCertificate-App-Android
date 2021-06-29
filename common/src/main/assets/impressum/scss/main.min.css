@@ -1,18 +1,18 @@
 @font-face {
-    font-family: Inter;
-    src: local(Inter-Bold), url(../fonts/Inter-Bold.woff2)format("woff2"), url(../fonts/Inter-Bold.woff)format("woff"), url(../fonts/Inter-Bold.otf)format("opentype");
+    font-family: 'Source Sans Pro';
+    src: local(SourceSansPro-Bold), url(../fonts/SourceSansPro-Bold.woff2)format("woff2"), url(../fonts/SourceSansPro-Bold.woff)format("woff"), url(../fonts/SourceSansPro-Bold.otf)format("opentype");
     font-weight: 700;
     font-style: normal;
     font-stretch: normal
 }
 
 @font-face {
-    font-family: Inter;
-    src: local(Inter-Light), url(../fonts/Inter-Light.woff2)format("woff2"), url(../fonts/Inter-Light.woff)format("woff"), url(../fonts/Inter-Light.otf)format("opentype")
+    font-family: 'Source Sans Pro';
+    src: local(SourceSansPro-Regular), url(../fonts/SourceSansPro-Regular.woff2)format("woff2"), url(../fonts/SourceSansPro-Regular.woff)format("woff"), url(../fonts/SourceSansPro-Regular.otf)format("opentype")
 }
 
 h1 {
-    font-family: Inter;
+    font-family: 'Source Sans Pro';
     font-size: 22px;
     font-weight: 700;
     font-stretch: normal;
@@ -24,7 +24,7 @@ h1 {
 }
 
 h2 {
-    font-family: Inter;
+    font-family: 'Source Sans Pro';
     font-size: 16px;
     font-weight: 700;
     font-stretch: normal;
@@ -36,7 +36,7 @@ h2 {
 }
 
 p {
-    font-family: Inter;
+    font-family: 'Source Sans Pro';
     font-size: 16px;
     line-height: 1.5;
     color: #000;
@@ -48,7 +48,7 @@ p strong {
 }
 
 ul li {
-    font-family: Inter;
+    font-family: 'Source Sans Pro';
     font-size: 16px;
     line-height: 1.5;
     color: #000
@@ -59,7 +59,7 @@ ul li strong {
 }
 
 a {
-    font-family: Inter;
+    font-family: 'Source Sans Pro';
     font-size: 16px;
     font-weight: 700;
     font-stretch: normal;
@@ -83,7 +83,7 @@ body header {
 }
 
 body header div {
-    font-family: Inter;
+    font-family: 'Source Sans Pro';
     font-size: 16px;
     line-height: 1.5;
     color: #000;
@@ -111,7 +111,7 @@ body footer p {
 }
 
 body footer div.build {
-    font-family: Inter;
+    font-family: 'Source Sans Pro';
     font-size: 16px;
     line-height: 1.5;
     color: #000;
