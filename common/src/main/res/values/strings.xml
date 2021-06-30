@@ -325,7 +325,7 @@ ungültiger Signatur"</string>
     <string name="wallet_certificate_test_land">"Land des Tests"</string>
     <string name="covid_certificate_test_title">"Test"</string>
     <string name="wallet_certificate_test_result_title">"Ergebnis"</string>
-    <string name="wallet_certificate_test_result_negativ">""Nicht nachgewiesen (Negativ)"</string>
+    <string name="wallet_certificate_test_result_negativ">"Nicht nachgewiesen"</string>
     <string name="wallet_certificate_test_result_positiv">"Positiv"</string>
     <string name="wallet_certificate_test_type">"Typ"</string>
     <string name="wallet_certificate_test_name">"Name"</string>
