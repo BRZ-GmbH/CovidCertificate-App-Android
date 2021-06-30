@@ -107,7 +107,7 @@
 				android:layout_height="wrap_content"
 				android:gravity="center_horizontal|bottom"
 				android:minLines="1"
-				android:maxLines="2"
+				android:maxLines="4"
 				app:autoSizeMaxTextSize="@dimen/text_size_large"
 				app:autoSizeMinTextSize="@dimen/text_size_small"
 				app:autoSizeTextType="uniform"
