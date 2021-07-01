@@ -290,6 +290,7 @@ abstract class QrScanFragment : Fragment() {
 		val drawableId = if (isTorchOn) torchOnDrawable else torchOffDrawable
 		flashButton.isSelected = isTorchOn
 		flashButton.setImageResource(drawableId)
+		flashButton.contentDescription = if (isTorchOn) getString(R.string.accessibility_lamp_off_button) else getString(R.string.accessibility_lamp_on_button)
 	}
 
 	private fun handleInvalidQRCodeExceptions(qrCodeData: String?, error: Error?) {
