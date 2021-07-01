@@ -44,6 +44,7 @@
 			android:background="@null"
 			app:layout_constraintTop_toTopOf="parent"
 			app:navigationIcon="@drawable/ic_close_red"
+			app:navigationContentDescription="@string/accessibility_close_button"
 			app:title="@string/wallet_add_certificate_button"
 			app:titleTextAppearance="@style/CovidCertificate.ToolbarTitle"
 			app:titleTextColor="@color/grey" />

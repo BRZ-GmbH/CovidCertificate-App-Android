@@ -28,6 +28,7 @@
 			android:layout_height="wrap_content"
 			android:background="@color/white"
 			app:navigationIcon="@drawable/ic_close_red"
+			app:navigationContentDescription="@string/accessibility_close_button"
 			app:title="@string/wallet_scanner_howitworks_header"
 			android:elevation="@dimen/toolbar_elevation"
 			app:titleTextAppearance="@style/CovidCertificate.ToolbarTitle"
