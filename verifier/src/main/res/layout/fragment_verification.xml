@@ -9,7 +9,7 @@
   ~ SPDX-License-Identifier: MPL-2.0
   -->
 
-<ch.admin.bag.covidcertificate.common.views.WindowInsetsLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<at.gv.brz.common.views.WindowInsetsLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:id="@+id/verification_base_group"
@@ -204,4 +204,4 @@
 
 	</androidx.constraintlayout.widget.ConstraintLayout>
 
-</ch.admin.bag.covidcertificate.common.views.WindowInsetsLayout>
+</at.gv.brz.common.views.WindowInsetsLayout>

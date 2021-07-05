@@ -1,3 +1,4 @@
 [submodule "sdk"]
 	path = sdk
-	url = git@github.com:admin-ch/CovidCertificate-SDK-Android.git
+	url = git@github.com:martinreichart/CovidCertificate-SDK-Android.git
+	branch = feature/austria

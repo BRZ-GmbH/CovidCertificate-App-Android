@@ -9,7 +9,7 @@
   ~ SPDX-License-Identifier: MPL-2.0
   -->
 
-<ch.admin.bag.covidcertificate.common.views.WindowInsetsLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<at.gv.brz.common.views.WindowInsetsLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
@@ -27,6 +27,7 @@
 			android:background="@color/white"
 			app:layout_constraintTop_toTopOf="parent"
 			app:navigationIcon="@drawable/ic_close_red"
+			app:navigationContentDescription="@string/accessibility_close_button"
 			android:elevation="@dimen/toolbar_elevation"
 			app:titleTextAppearance="@style/CovidCertificate.ToolbarTitle"
 			app:titleTextColor="@color/grey"
@@ -50,4 +51,4 @@
 
 	</androidx.constraintlayout.widget.ConstraintLayout>
 
-</ch.admin.bag.covidcertificate.common.views.WindowInsetsLayout>
+</at.gv.brz.common.views.WindowInsetsLayout>

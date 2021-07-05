@@ -1,20 +1,3 @@
-<!--
-  ~ Copyright (c) 2021 Ubique Innovation AG <https://www.ubique.ch>
-  ~
-  ~ This Source Code Form is subject to the terms of the Mozilla Public
-  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
-  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
-  ~
-  ~ SPDX-License-Identifier: MPL-2.0
-  -->
-
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="24dp"
-    android:height="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
-  <path
-      android:pathData="M12.5,4c0.276,0 0.5,0.224 0.5,0.5v1c0,0.276 -0.224,0.5 -0.5,0.5H7c-0.513,0 -0.936,0.386 -0.993,0.883L6,7v10c0,0.513 0.386,0.936 0.883,0.993L7,18h10c0.513,0 0.936,-0.386 0.993,-0.883L18,17v-5.5c0,-0.276 0.224,-0.5 0.5,-0.5h1c0.276,0 0.5,0.224 0.5,0.5V17c0,1.598 -1.249,2.904 -2.824,2.995L17,20H7c-1.598,0 -2.904,-1.249 -2.995,-2.824L4,17V7c0,-1.598 1.249,-2.904 2.824,-2.995L7,4h5.5zM21,2c0.513,0 0.936,0.386 0.993,0.883L22,3v5.25c0,0.414 -0.336,0.75 -0.75,0.75h-0.5c-0.414,0 -0.75,-0.336 -0.75,-0.75V5.414l-6.763,6.763c-0.292,0.293 -0.767,0.293 -1.06,0l-0.354,-0.354c-0.293,-0.293 -0.293,-0.768 0,-1.06L18.584,4H15.75c-0.414,0 -0.75,-0.336 -0.75,-0.75v-0.5c0,-0.414 0.336,-0.75 0.75,-0.75H21z"
-      android:fillColor="#243784"
-      android:fillType="nonZero"/>
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="19dp" android:height="18dp" android:viewportWidth="19" android:viewportHeight="18">
+    <path android:pathData="M9.382 2c0.276 0 0.5 0.224 0.5 0.5v1c0 0.276-0.224 0.5-0.5 0.5h-5.5C3.367 4 2.944 4.386 2.888 4.883L2.883 5v10c0 0.513 0.385 0.936 0.882 0.993L3.882 16h10c0.513 0 0.936-0.386 0.992-0.883L14.882 15V9.5c0-0.276 0.223-0.5 0.5-0.5h1c0.275 0 0.5 0.224 0.5 0.5V15c0 1.598-1.25 2.904-2.825 2.995L13.882 18h-10c-1.599 0-2.905-1.249-2.996-2.824L0.881 15V5c0-1.598 1.25-2.904 2.824-2.995L3.881 2h5.5zm8.5-2c0.512 0 0.935 0.386 0.992 0.883L18.883 1v5.25c0 0.414-0.337 0.75-0.75 0.75h-0.5c-0.415 0-0.75-0.336-0.75-0.75V3.414l-6.764 6.763c-0.292 0.293-0.767 0.293-1.06 0L8.705 9.823c-0.293-0.293-0.293-0.768 0-1.06L15.465 2h-2.833c-0.415 0-0.75-0.336-0.75-0.75v-0.5c0-0.414 0.335-0.75 0.75-0.75h5.25z" android:strokeWidth="1" android:fillColor="#4D9553"/>
 </vector>

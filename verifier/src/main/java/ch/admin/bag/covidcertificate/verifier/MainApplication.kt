@@ -2,9 +2,9 @@ package ch.admin.bag.covidcertificate.verifier
 
 import android.app.Application
 import android.os.Build
-import ch.admin.bag.covidcertificate.eval.data.Config
-import ch.admin.bag.covidcertificate.eval.net.UserAgentInterceptor
-import ch.admin.bag.covidcertificate.eval.CovidCertificateSdk
+import at.gv.brz.eval.data.Config
+import at.gv.brz.eval.net.UserAgentInterceptor
+import at.gv.brz.eval.CovidCertificateSdk
 
 class MainApplication : Application() {
 

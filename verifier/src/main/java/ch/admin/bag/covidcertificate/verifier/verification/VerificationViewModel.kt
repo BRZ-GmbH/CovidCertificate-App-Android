@@ -17,10 +17,10 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import ch.admin.bag.covidcertificate.eval.CovidCertificateSdk
-import ch.admin.bag.covidcertificate.eval.data.state.VerificationState
-import ch.admin.bag.covidcertificate.eval.models.DccHolder
-import ch.admin.bag.covidcertificate.eval.verification.CertificateVerificationTask
+import at.gv.brz.eval.CovidCertificateSdk
+import at.gv.brz.eval.data.state.VerificationState
+import at.gv.brz.eval.models.DccHolder
+import at.gv.brz.eval.verification.CertificateVerificationTask
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.isActive

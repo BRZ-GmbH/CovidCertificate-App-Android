@@ -8,7 +8,7 @@
   ~ SPDX-License-Identifier: MPL-2.0
   -->
 
-<ch.admin.bag.covidcertificate.common.views.WindowInsetsLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<at.gv.brz.common.views.WindowInsetsLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
@@ -68,7 +68,7 @@
 						android:layout_height="@dimen/icon_size_small"
 						android:layout_marginRight="@dimen/spacing_medium_large"
 						android:src="@drawable/ic_data_protection"
-						app:tint="@color/blue" />
+						app:tint="@color/green_dark" />
 
 					<LinearLayout
 						android:layout_width="match_parent"
@@ -135,4 +135,4 @@
 
 	</LinearLayout>
 
-</ch.admin.bag.covidcertificate.common.views.WindowInsetsLayout>
+</at.gv.brz.common.views.WindowInsetsLayout>

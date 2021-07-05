@@ -58,10 +58,22 @@
 	<dimen name="header_height_max">130dp</dimen>
 	<dimen name="header_shadow_height">5dp</dimen>
 
-	<dimen name="certificates_elevation">8dp</dimen>
+	<dimen name="certificates_elevation">5dp</dimen>
 	<dimen name="certificates_padding">30dp</dimen>
 
-	<dimen name="onboarding_illustration_height">250dp</dimen>
+	<dimen name="onboarding_illustration_height">200dp</dimen>
 
 	<dimen name="info_buble_icon_padding">3dp</dimen>
+
+	<dimen name="homescreen_illustration_height">120dp</dimen>
+	<dimen name="homescreen_empty_margin_top">75dp</dimen>
+	<dimen name="homescreen_empty_spacing_large">10dp</dimen>
+	<dimen name="homescreen_empty_spacing_larger">15dp</dimen>
+	<dimen name="homescreen_empty_spacing_huge">20dp</dimen>
+
+	<dimen name="onboarding_intro_spacing_huge">20dp</dimen>
+	<dimen name="onboarding_intro_illustration_spacing_large">0dp</dimen>
+
+	<dimen name="certificate_pager_spacing_huger">15dp</dimen>
+	<dimen name="certificate_pager_bottom_spacing_medium_top">0dp</dimen>
 </resources>

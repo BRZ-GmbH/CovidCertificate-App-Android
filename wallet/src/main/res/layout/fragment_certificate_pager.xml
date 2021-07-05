@@ -34,7 +34,7 @@
 			android:layout_weight="1"
 			android:background="@drawable/bg_certificate_top"
 			android:elevation="@dimen/certificates_elevation"
-			android:paddingHorizontal="@dimen/spacing_huger"
+			android:paddingHorizontal="@dimen/certificate_pager_spacing_huger"
 			android:paddingTop="@dimen/spacing_larger">
 
 			<TextView
@@ -59,6 +59,7 @@
 		</androidx.constraintlayout.widget.ConstraintLayout>
 
 		<LinearLayout
+			android:visibility="gone"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:elevation="@dimen/certificates_elevation"
@@ -94,7 +95,10 @@
 			android:elevation="@dimen/certificates_elevation"
 			android:gravity="center_horizontal"
 			android:orientation="vertical"
-			android:padding="@dimen/spacing_medium">
+			android:paddingStart="@dimen/spacing_medium"
+			android:paddingEnd="@dimen/spacing_medium"
+			android:paddingBottom="@dimen/spacing_medium"
+			android:paddingTop="@dimen/certificate_pager_bottom_spacing_medium_top">
 
 			<TextView
 				android:id="@+id/certificate_page_name"
@@ -102,8 +106,8 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:gravity="center_horizontal|bottom"
-				android:minLines="2"
-				android:maxLines="2"
+				android:minLines="1"
+				android:maxLines="4"
 				app:autoSizeMaxTextSize="@dimen/text_size_large"
 				app:autoSizeMinTextSize="@dimen/text_size_small"
 				app:autoSizeTextType="uniform"
@@ -125,9 +129,9 @@
 				style="@style/CovidCertificate.Text"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginTop="@dimen/spacing_huge"
+				android:layout_marginTop="@dimen/homescreen_empty_spacing_huge"
 				android:background="@drawable/bg_certificate_bubble"
-				android:backgroundTint="@color/blueish"
+				android:backgroundTint="@color/greenish"
 				android:breakStrategy="high_quality"
 				android:gravity="center"
 				android:hyphenationFrequency="full"

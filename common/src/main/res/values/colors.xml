@@ -10,31 +10,40 @@
   -->
 
 <resources>
-	<color name="bundesrot">#ff0000</color>
+	<color name="bundesrot">#e6320f</color>
 
 	<color name="black">#000000</color>
 	<color name="black_60">#99000000</color>
 	<color name="black_50">#80000000</color>
 	<color name="black_10">#1A000000</color>
-	<color name="grey">#757575</color>
-	<color name="grey_light">#DBDBDB</color>
+	<color name="grey">#2B2A29</color>
+	<color name="grey_light">#E9E4DF</color>
 	<color name="white">#FFFFFFFF</color>
 	<color name="white_50">#80FFFFFF</color>
 
-	<color name="red_error">#e20008</color>
+	<color name="red_error">#a72702</color>
 	<color name="red_error_qr_verifier">#ff448d</color>
-	<color name="red_error_qr_wallet">#ff0000</color>
+	<color name="red_error_qr_wallet">#a72702</color>
 
-	<color name="blue">#243784</color>
-	<color name="green">#009e89</color>
-	<color name="orange">#ed6100</color>
-	<color name="red">#d81f5b</color>
+	<color name="blue">#143E7F</color>
+	<color name="green">#91C88D</color>
+	<color name="green_dark">#4D9553</color>
+	<color name="orange">#C9872C</color>
+	<color name="red">#a72702</color>
 
-	<color name="greyish">#ececec</color>
-	<color name="blueish">#eff5f9</color>
-	<color name="greenish">#def3f0</color>
-	<color name="orangeish">#fdebde</color>
-	<color name="redish">#fae2ea</color>
+	<color name="recovery">#892252</color>
+	<color name="vaccination">#143E7F</color>
+	<color name="test">#C9872C</color>
 
-	<color name="background_light">#f4f5f9</color>
+	<color name="recovery_contrast">#FFFFFF</color>
+	<color name="vaccination_contrast">#FFFFFF</color>
+	<color name="test_contrast">#FFFFFF</color>
+
+	<color name="greyish">#E9E4DF</color>
+	<color name="blueish">#BFCFE0</color>
+	<color name="greenish">#dfedda</color>
+	<color name="orangeish">#FCE6BF</color>
+	<color name="redish">#f2cac6</color>
+
+	<color name="background_light">#F6F4F0</color>
 </resources>

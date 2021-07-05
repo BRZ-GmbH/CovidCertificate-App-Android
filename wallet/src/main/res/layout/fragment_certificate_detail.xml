@@ -8,7 +8,7 @@
   ~ SPDX-License-Identifier: MPL-2.0
   -->
 
-<ch.admin.bag.covidcertificate.common.views.WindowInsetsLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<at.gv.brz.common.views.WindowInsetsLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
@@ -29,6 +29,7 @@
 			android:elevation="@dimen/toolbar_elevation"
 			app:layout_constraintTop_toTopOf="parent"
 			app:navigationIcon="@drawable/ic_close_red"
+			app:navigationContentDescription="@string/accessibility_close_button"
 			app:title="@string/wallet_certificate"
 			app:titleTextAppearance="@style/CovidCertificate.ToolbarTitle"
 			app:titleTextColor="@color/grey" />
@@ -131,7 +132,7 @@
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
 							android:background="@drawable/bg_certificate_bubble"
-							android:backgroundTint="@color/blueish"
+							android:backgroundTint="@color/greenish"
 							android:gravity="center"
 							android:minLines="2"
 							android:padding="@dimen/spacing_medium_large"
@@ -144,7 +145,7 @@
 							android:layout_width="match_parent"
 							android:layout_height="0dp"
 							android:background="@drawable/bg_certificate_bubble"
-							android:backgroundTint="@color/blueish"
+							android:backgroundTint="@color/greenish"
 							android:gravity="center"
 							android:minLines="2"
 							android:padding="@dimen/spacing_medium_large"
@@ -186,7 +187,7 @@
 						android:layout_height="wrap_content"
 						android:layout_marginTop="@dimen/spacing_very_small"
 						android:background="@drawable/bg_certificate_bubble"
-						android:backgroundTint="@color/blueish"
+						android:backgroundTint="@color/greenish"
 						android:orientation="horizontal"
 						android:paddingHorizontal="@dimen/spacing_medium_large"
 						android:paddingVertical="@dimen/spacing_medium_small">
@@ -208,7 +209,7 @@
 						android:layout_height="wrap_content"
 						android:layout_marginTop="@dimen/spacing_very_small"
 						android:background="@drawable/bg_certificate_bubble"
-						android:backgroundTint="@color/blueish"
+						android:backgroundTint="@color/greenish"
 						android:orientation="horizontal"
 						android:paddingHorizontal="@dimen/spacing_medium_large"
 						android:paddingVertical="@dimen/spacing_medium_small">
@@ -232,7 +233,7 @@
 								style="@style/CovidCertificate.Text"
 								android:layout_width="match_parent"
 								android:layout_height="wrap_content"
-								android:backgroundTint="@color/blueish"
+								android:backgroundTint="@color/greenish"
 								android:gravity="end"
 								android:text="@string/wallet_certificate_valid_until" />
 
@@ -241,7 +242,7 @@
 								style="@style/CovidCertificate.Text.Bold"
 								android:layout_width="match_parent"
 								android:layout_height="wrap_content"
-								android:backgroundTint="@color/blueish"
+								android:backgroundTint="@color/greenish"
 								android:gravity="end"
 								tools:text="01.01.2022" />
 
@@ -309,4 +310,4 @@
 
 	</LinearLayout>
 
-</ch.admin.bag.covidcertificate.common.views.WindowInsetsLayout>
+</at.gv.brz.common.views.WindowInsetsLayout>

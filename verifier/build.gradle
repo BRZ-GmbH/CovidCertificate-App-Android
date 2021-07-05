@@ -37,7 +37,7 @@ android {
 	buildToolsVersion "30.0.1"
 
 	defaultConfig {
-		applicationId "ch.admin.bag.covidcertificate.verifier"
+		applicationId "at.gv.oe.covid.verifier"
 		minSdkVersion 24
 		targetSdkVersion 30
 		versionCode 1200

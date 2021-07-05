@@ -37,11 +37,11 @@ android {
 	buildToolsVersion "30.0.1"
 
 	defaultConfig {
-		applicationId "ch.admin.bag.covidcertificate.wallet"
+		applicationId "at.gv.brz.wallet"
 		minSdkVersion 24
 		targetSdkVersion 30
-		versionCode 1200
-		versionName "1.2.0"
+		versionCode 9
+		versionName "1.0.0"
 
 		buildConfigField "long", "BUILD_TIME", readPropertyWithDefault('buildTimestamp', System.currentTimeMillis()) + 'L'
 
@@ -52,18 +52,18 @@ android {
 		// These app tokens are reserved for the official COVID Certificate app.
 		// If you intend to integrate the CovidCertificate-SDK into your app, please get in touch with BIT/BAG to get a token assigned.
 		dev {
-			buildConfigField "String", "BASE_URL", '"https://www.cc-d.bit.admin.ch/app/wallet/v1/"'
-			buildConfigField "String", "SDK_APP_TOKEN", '"c838a4c4-39e5-4bbb-8e75-e4382df2edfe"'
+			buildConfigField "String", "BASE_URL", '""'
+			buildConfigField "String", "SDK_APP_TOKEN", '""'
 			applicationIdSuffix '.dev'
 		}
 		abn {
-			buildConfigField "String", "BASE_URL", '"https://www.cc-a.bit.admin.ch/app/wallet/v1/"'
-			buildConfigField "String", "SDK_APP_TOKEN", '"e9802c49-4f2b-49cc-a645-24c206366455"'
+			buildConfigField "String", "BASE_URL", '""'
+			buildConfigField "String", "SDK_APP_TOKEN", '""'
 			applicationIdSuffix '.abn'
 		}
 		prod {
-			buildConfigField "String", "BASE_URL", '"https://www.cc.bit.admin.ch/app/wallet/v1/"'
-			buildConfigField "String", "SDK_APP_TOKEN", '"0795dc8b-d8d0-4313-abf2-510b12d50939"'
+			buildConfigField "String", "BASE_URL", '""'
+			buildConfigField "String", "SDK_APP_TOKEN", '""'
 		}
 	}
 
@@ -103,7 +103,7 @@ sonarqube {
 	properties {
 		property "sonar.projectName", "COVID Certificate App Android"
 		property "sonar.projectKey", "covidcertificate-android"
-		property "sonar.organization", "admin-ch"
+		property "sonar.organization", "BRZ"
 		property "sonar.host.url", "https://sonarcloud.io"
 	}
 }
