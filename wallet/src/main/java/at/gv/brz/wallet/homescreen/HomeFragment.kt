@@ -10,11 +10,17 @@
 
 package at.gv.brz.wallet.homescreen
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
 import androidx.fragment.app.Fragment
@@ -29,6 +35,9 @@ import at.gv.brz.common.html.HtmlFragment
 import at.gv.brz.common.util.AssetUtil
 import at.gv.brz.common.util.HorizontalMarginItemDecoration
 import at.gv.brz.common.util.setSecureFlagToBlockScreenshots
+import at.gv.brz.common.views.hideAnimated
+import at.gv.brz.common.views.rotate
+import at.gv.brz.common.views.showAnimated
 import at.gv.brz.eval.data.state.DecodeState
 import at.gv.brz.eval.models.DccHolder
 import at.gv.brz.wallet.BuildConfig
@@ -41,6 +50,7 @@ import at.gv.brz.wallet.detail.CertificateDetailFragment
 import at.gv.brz.wallet.faq.WalletFaqFragment
 import at.gv.brz.wallet.homescreen.pager.CertificatesPagerAdapter
 import at.gv.brz.wallet.list.CertificatesListFragment
+import at.gv.brz.wallet.pdf.PdfImportState
 import at.gv.brz.wallet.pdf.PdfViewModel
 import at.gv.brz.wallet.qr.WalletQrScanFragment
 import com.google.android.material.tabs.TabLayoutMediator
@@ -63,6 +73,17 @@ class HomeFragment : Fragment() {
 
 	private lateinit var certificatesAdapter: CertificatesPagerAdapter
 
+	private var isAddOptionsShowing = false
+
+	private val filePickerLauncher =
+		registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult: ActivityResult ->
+			if (activityResult.resultCode == AppCompatActivity.RESULT_OK) {
+				activityResult.data?.data?.let { uri ->
+					pdfViewModel.importPdf(uri)
+				}
+			}
+		}
+
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 		_binding = FragmentHomeBinding.inflate(inflater, container, false)
 		return binding.root
@@ -72,6 +93,7 @@ class HomeFragment : Fragment() {
 		setupButtons()
 		setupPager()
 		setupInfoBox()
+		setupImportObservers()
 	}
 
 	override fun onResume() {
@@ -85,20 +107,8 @@ class HomeFragment : Fragment() {
 	}
 
 	private fun setupButtons() {
-		binding.homescreenScanButtonBig.setOnClickListener {
-			parentFragmentManager.beginTransaction()
-				.setCustomAnimations(R.anim.slide_enter, R.anim.slide_exit, R.anim.slide_pop_enter, R.anim.slide_pop_exit)
-				.replace(R.id.fragment_container, WalletQrScanFragment.newInstance())
-				.addToBackStack(WalletQrScanFragment::class.java.canonicalName)
-				.commit()
-		}
-		binding.homescreenScanButtonSmall.setOnClickListener {
-			parentFragmentManager.beginTransaction()
-				.setCustomAnimations(R.anim.slide_enter, R.anim.slide_exit, R.anim.slide_pop_enter, R.anim.slide_pop_exit)
-				.replace(R.id.fragment_container, WalletQrScanFragment.newInstance())
-				.addToBackStack(WalletQrScanFragment::class.java.canonicalName)
-				.commit()
-		}
+		setupAddCertificateOptions()
+
 		binding.homescreenSupportButton.setOnClickListener {
 			parentFragmentManager.beginTransaction()
 				.setCustomAnimations(R.anim.slide_enter, R.anim.slide_exit, R.anim.slide_pop_enter, R.anim.slide_pop_exit)
@@ -179,7 +189,7 @@ class HomeFragment : Fragment() {
 
 		certificatesViewModel.dccHolderCollectionLiveData.observe(viewLifecycleOwner) {
 			it ?: return@observe
-			binding.homescreenLoadingGroup.isVisible = false
+			binding.homescreenLoadingIndicator.isVisible = false
 			updateHomescreen(it)
 		}
 
@@ -190,28 +200,84 @@ class HomeFragment : Fragment() {
 				.addToBackStack(CertificateDetailFragment::class.java.canonicalName)
 				.commit()
 		}
+	}
 
-		pdfViewModel.pdfImportLiveData.observe(viewLifecycleOwner) { decodeState ->
-			when (decodeState) {
-				is DecodeState.SUCCESS -> {
-					showCertificationAddFragment(decodeState.dccHolder)
-					pdfViewModel.clearPdf()
+	private fun setupImportObservers() {
+		pdfViewModel.pdfImportLiveData.observe(viewLifecycleOwner) { importState ->
+			when (importState) {
+				is PdfImportState.LOADING -> {
+					binding.loadingSpinner.showAnimated()
 				}
-				is DecodeState.ERROR -> {
-					AlertDialog.Builder(requireContext(), R.style.CovidCertificate_AlertDialogStyle)
-						.setTitle(R.string.error_title)
-						.setMessage(R.string.verifier_error_invalid_format)
-						.setPositiveButton(R.string.ok_button) { dialog, _ ->
-							dialog.dismiss()
+				is PdfImportState.DONE -> {
+					binding.loadingSpinner.hideAnimated()
+					when (importState.decodeState) {
+						is DecodeState.SUCCESS -> {
+							isAddOptionsShowing = false
+							showCertificationAddFragment(importState.decodeState.dccHolder)
 						}
-						.setCancelable(true)
-						.create()
-						.apply { window?.setSecureFlagToBlockScreenshots(BuildConfig.FLAVOR) }
-						.show()
+						is DecodeState.ERROR -> {
+							showImportError(importState.decodeState.error.code)
+						}
+					}
+					pdfViewModel.clearPdf()
 				}
 			}
 		}
+	}
 
+	private fun setupAddCertificateOptions() {
+		binding.homescreenScanButtonSmall.setOnClickListener {
+			showAddCertificateOptionsOverlay(!isAddOptionsShowing)
+		}
+
+		binding.backgroundDimmed.setOnClickListener {
+			showAddCertificateOptionsOverlay(!isAddOptionsShowing)
+		}
+
+		binding.homescreenAddCertificateOptionsEmpty.optionScanCertificate.setOnClickListener { showQrScanFragment() }
+		binding.homescreenAddCertificateOptionsNotEmpty.optionScanCertificate.setOnClickListener {
+			isAddOptionsShowing = false
+			showQrScanFragment()
+		}
+
+		binding.homescreenAddCertificateOptionsEmpty.optionImportPdf.setOnClickListener { launchPdfFilePicker() }
+		binding.homescreenAddCertificateOptionsNotEmpty.optionImportPdf.setOnClickListener {
+			isAddOptionsShowing = false
+			launchPdfFilePicker()
+		}
+	}
+
+	private fun showQrScanFragment() {
+		parentFragmentManager.beginTransaction()
+			.setCustomAnimations(R.anim.slide_enter, R.anim.slide_exit, R.anim.slide_pop_enter, R.anim.slide_pop_exit)
+			.replace(R.id.fragment_container, WalletQrScanFragment.newInstance())
+			.addToBackStack(WalletQrScanFragment::class.java.canonicalName)
+			.commit()
+	}
+
+	private fun launchPdfFilePicker() {
+		val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+			type = "application/pdf"
+		}
+		try {
+			filePickerLauncher.launch(intent)
+		} catch (e: ActivityNotFoundException) {
+			Toast.makeText(context, "No file picker found", Toast.LENGTH_LONG).show()
+		}
+	}
+
+	private fun showAddCertificateOptionsOverlay(show: Boolean) {
+		if (show) {
+			binding.homescreenScanButtonSmall.rotate(45f)
+			binding.backgroundDimmed.showAnimated()
+			binding.homescreenOptionsOverlay.showAnimated()
+		} else {
+			binding.homescreenScanButtonSmall.rotate(0f)
+			binding.backgroundDimmed.hideAnimated()
+			binding.homescreenOptionsOverlay.hideAnimated()
+		}
+
+		isAddOptionsShowing = show
 	}
 
 	private fun showCertificationAddFragment(dccHolder: DccHolder) {
@@ -222,16 +288,29 @@ class HomeFragment : Fragment() {
 			.commit()
 	}
 
+	private fun showImportError(errorCode: String) {
+		val message = getString(R.string.verifier_error_invalid_format) + " ($errorCode)"
+		AlertDialog.Builder(requireContext(), R.style.CovidCertificate_AlertDialogStyle)
+			.setTitle(R.string.error_title)
+			.setMessage(message)
+			.setPositiveButton(R.string.ok_button) { dialog, _ ->
+				dialog.dismiss()
+			}
+			.setCancelable(true)
+			.create()
+			.apply { window?.setSecureFlagToBlockScreenshots(BuildConfig.FLAVOR) }
+			.show()
+	}
+
 	private fun reloadCertificates() {
-		binding.homescreenLoadingGroup.isVisible = true
+		binding.homescreenLoadingIndicator.isVisible = true
 		certificatesViewModel.loadCertificates()
 	}
 
 	private fun updateHomescreen(dccHolders: List<DccHolder>) {
 		val hasCertificates = dccHolders.isNotEmpty()
 
-		binding.homescreenContentEmptyScrollView.isVisible = !hasCertificates
-		binding.homescreenScanButtonBig.isVisible = !hasCertificates
+		binding.homescreenEmptyContent.isVisible = !hasCertificates
 		binding.homescreenScanButtonSmall.isVisible = hasCertificates
 		binding.homescreenListButton.isVisible = hasCertificates
 		binding.homescreenCertificatesViewPager.isVisible = hasCertificates
