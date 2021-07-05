@@ -296,6 +296,7 @@
 			</androidx.core.widget.NestedScrollView>
 
 			<ImageButton
+				android:visibility="gone"
 				android:id="@+id/certificate_detail_button_reverify"
 				style="@style/CovidCertificate.FloatingImageButton"
 				android:layout_width="@dimen/floating_button_height"

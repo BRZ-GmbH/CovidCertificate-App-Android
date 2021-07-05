@@ -153,7 +153,7 @@ class CertificateDetailFragment : Fragment() {
 	private fun setupStatusInfo() {
 		certificatesViewModel.verifiedCertificates.observe(viewLifecycleOwner) { certificates ->
 			certificates.find { it.dccHolder == dccHolder }?.let {
-				binding.certificateDetailButtonReverify.showAnimated()
+				//binding.certificateDetailButtonReverify.showAnimated()
 				updateStatusInfo(it.state)
 			}
 		}
@@ -444,7 +444,7 @@ class CertificateDetailFragment : Fragment() {
 
 			binding.certificateDetailStatusIcon.setImageResource(statusIconId)
 
-			binding.certificateDetailButtonReverify.showAnimated()
+			//binding.certificateDetailButtonReverify.showAnimated()
 			isForceValidate = false
 		}
 	}
