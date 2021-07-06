@@ -42,7 +42,7 @@
       "faqIconAndroid": "ic_faq_image",
       "faqEntries": [{
         "title": "Wie kann ich meine EU-konformen Zertifikate zur App hinzufügen?",
-        "text": "Um ein Zertifikat zur App hinzuzufügen, benötigen Sie das Originalzertifikat als PDF-Datei oder auf Papier. Sie können das PDF des Zertifikats direkt in die App laden oder das ausgedruckte Zertifikat mit der Grünen Pass App scannen und hinzufügen. Anschließend erscheint Ihr Zertifikat direkt in der App.\n\nAAlle Informationen zu den EU-konformen Zertifikaten des Grünen Passes erhalten Sie unter https://gruenerpass.gv.at/.",
+        "text": "Um ein Zertifikat zur App hinzuzufügen, benötigen Sie das Originalzertifikat als PDF-Datei oder auf Papier. Sie können das PDF des Zertifikats direkt in die App laden oder das ausgedruckte Zertifikat mit der Grünen Pass App scannen und hinzufügen. Anschließend erscheint Ihr Zertifikat direkt in der App.\n\nAlle Informationen zu den EU-konformen Zertifikaten des Grünen Passes erhalten Sie unter https://gruenerpass.gv.at/.",
         "iconAndroid": null,
         "iconIos": null,
         "linkTitle": "Weitere Informationen",
