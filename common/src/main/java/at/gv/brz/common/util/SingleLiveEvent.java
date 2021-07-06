@@ -16,7 +16,6 @@
 
 package at.gv.brz.common.util;
 
-import android.util.Log;
 import androidx.annotation.MainThread;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
@@ -43,11 +42,6 @@ public class SingleLiveEvent<T> extends MutableLiveData<T> {
 
 	@MainThread
 	public void observe(LifecycleOwner owner, final Observer<? super T> observer) {
-
-		if (hasActiveObservers()) {
-			Log.w(TAG, "Multiple observers registered but only one will be notified of changes.");
-		}
-
 		// Observe the internal MutableLiveData
 		super.observe(owner, new Observer<T>() {
 			@Override
