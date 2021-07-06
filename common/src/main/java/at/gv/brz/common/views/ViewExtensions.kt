@@ -15,6 +15,7 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.content.res.ColorStateList
 import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
@@ -59,6 +60,24 @@ fun View.hideAnimated(
 		.setListener(object : AnimatorListenerAdapter() {
 			override fun onAnimationEnd(animation: Animator?) {
 				visibility = View.GONE
+			}
+		})
+}
+
+fun View.rotate(
+	toDegrees: Float,
+	duration: Long = resources.getInteger(android.R.integer.config_shortAnimTime).toLong(),
+	resetToDegrees: Float? = null
+) {
+	animation?.cancel()
+
+	animate()
+		.setDuration(duration)
+		.rotation(toDegrees)
+		.setInterpolator(AccelerateDecelerateInterpolator())
+		.setListener(object : AnimatorListenerAdapter() {
+			override fun onAnimationEnd(animation: Animator?) {
+				resetToDegrees?.let { rotation = it }
 			}
 		})
 }

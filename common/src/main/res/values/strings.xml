@@ -436,4 +436,10 @@ ungültig"</string>
 
     <!-- Label der externen URL im "So funktionierts" Screen beim Scannen -->
     <string name="wallet_scanner_howitworks_external_link_title">"Weitere Informationen"</string>
+
+    <!-- Button zum QR Code Scannen öffnen -->
+    <string name="wallet_homescreen_qr_code_scannen">"QR-Code scannen"</string>
+
+    <!-- Button zum PDF importieren -->
+    <string name="wallet_homescreen_pdf_import">"PDF importieren"</string>
 </resources>
