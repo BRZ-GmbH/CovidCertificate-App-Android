@@ -91,6 +91,12 @@ class CertificateDetailFragment : Fragment() {
 		setupCertificateDetails()
 		setupStatusInfo()
 
+		when (dccHolder.certType) {
+			CertType.TEST -> binding.certificateDetailType.text = SpannableString(context?.getString(R.string.covid_certificate_test_title))
+			CertType.VACCINATION -> binding.certificateDetailType.text = SpannableString(context?.getString(R.string.covid_certificate_vaccination_title))
+			CertType.RECOVERY -> binding.certificateDetailType.text = SpannableString(context?.getString(R.string.covid_certificate_recovery_title))
+		}
+
 		binding.certificateDetailToolbar.setNavigationOnClickListener { v: View? ->
 			parentFragmentManager.popBackStack()
 		}
