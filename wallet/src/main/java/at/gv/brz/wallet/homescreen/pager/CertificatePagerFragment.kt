@@ -155,6 +155,8 @@ class CertificatePagerFragment : Fragment() {
 			}
 		}
 
+		binding.certificatePageMainGroup.alpha = 0.25f
+
 		setInfoBubbleBackground(infoBubbleColorId)
 		binding.certificatePageStatusIcon.setImageResource(statusIconId)
 		binding.certificatePageInfo.text = state.getValidationStatusString(context)
