@@ -26,6 +26,7 @@ import androidx.fragment.app.activityViewModels
 import at.gv.brz.common.util.makeBold
 import at.gv.brz.eval.data.state.CheckNationalRulesState
 import at.gv.brz.eval.data.state.VerificationState
+import at.gv.brz.eval.models.CertType
 import at.gv.brz.eval.models.DccHolder
 import at.gv.brz.eval.utils.DEFAULT_DISPLAY_DATE_FORMATTER
 import at.gv.brz.eval.utils.prettyPrintIsoDateTime
@@ -67,6 +68,12 @@ class CertificatePagerFragment : Fragment() {
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		when (dccHolder.certType) {
+			CertType.TEST -> binding.certificatePageType.text = SpannableString(context?.getString(R.string.covid_certificate_test_title))
+			CertType.VACCINATION -> binding.certificatePageType.text = SpannableString(context?.getString(R.string.covid_certificate_vaccination_title))
+			CertType.RECOVERY -> binding.certificatePageType.text = SpannableString(context?.getString(R.string.covid_certificate_recovery_title))
+		}
+
 		val qrCodeBitmap = QrCode.renderToBitmap(dccHolder.qrCodeData)
 		val qrCodeDrawable = BitmapDrawable(resources, qrCodeBitmap).apply { isFilterBitmap = false }
 		binding.certificatePageQrCode.setImageDrawable(qrCodeDrawable)
@@ -147,6 +154,8 @@ class CertificatePagerFragment : Fragment() {
 				statusIconId = R.drawable.ic_error_grey
 			}
 		}
+
+		binding.certificatePageMainGroup.alpha = 0.25f
 
 		setInfoBubbleBackground(infoBubbleColorId)
 		binding.certificatePageStatusIcon.setImageResource(statusIconId)
