@@ -1,20 +1,18 @@
-<!--
-  ~ Copyright (c) 2021 Ubique Innovation AG <https://www.ubique.ch>
-  ~
-  ~ This Source Code Form is subject to the terms of the Mozilla Public
-  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
-  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
-  ~
-  ~ SPDX-License-Identifier: MPL-2.0
-  -->
-
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="40dp"
     android:height="40dp"
     android:viewportWidth="40"
     android:viewportHeight="40">
   <path
-      android:pathData="M20,0c11.046,0 20,8.954 20,20s-8.954,20 -20,20S0,31.046 0,20 8.954,0 20,0zM20,11c-1.105,0 -2,0.895 -2,2v5h-5c-1.105,0 -2,0.895 -2,2s0.895,2 2,2h5v5c0,1.105 0.895,2 2,2s2,-0.895 2,-2v-5h5c1.105,0 2,-0.895 2,-2s-0.895,-2 -2,-2h-5v-5c0,-1.105 -0.895,-2 -2,-2z"
-      android:fillColor="#FFF"
-      android:fillType="evenOdd"/>
+      android:pathData="M20,0C31.046,0 40,8.954 40,20C40,31.046 31.046,40 20,40C8.954,40 0,31.046 0,20C0,8.954 8.954,0 20,0Z"
+      android:strokeWidth="1"
+      android:fillColor="#FFFFFF"
+      android:fillType="nonZero"
+      android:strokeColor="#00000000"/>
+  <path
+      android:pathData="M20,11C18.895,11 18,11.895 18,13L18,18L13,18C11.895,18 11,18.895 11,20C11,21.105 11.895,22 13,22L18,22L18,27C18,28.105 18.895,29 20,29C21.105,29 22,28.105 22,27L22,22L27,22C28.105,22 29,21.105 29,20C29,18.895 28.105,18 27,18L22,18L22,13C22,11.895 21.105,11 20,11Z"
+      android:strokeWidth="1"
+      android:fillColor="#4D9553"
+      android:fillType="nonZero"
+      android:strokeColor="#00000000"/>
 </vector>

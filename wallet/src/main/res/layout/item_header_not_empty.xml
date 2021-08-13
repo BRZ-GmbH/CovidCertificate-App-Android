@@ -14,22 +14,6 @@
 	android:layout_height="wrap_content"
 	xmlns:tools="http://schemas.android.com/tools">
 
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="vertical">
-
-		<View
-			android:layout_width="match_parent"
-			android:layout_height="256dp"
-			android:background="@color/white" />
-
-		<ImageView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:scaleType="fitXY"
-			android:src="@drawable/ic_header_slim" />
-	</LinearLayout>
 
 	<FrameLayout
 		android:layout_width="match_parent"
@@ -41,7 +25,8 @@
 			android:id="@+id/schwiizerchruez"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_gravity="center"
+			android:layout_gravity="start|center_vertical"
+			android:paddingStart="16dp"
 			android:src="@drawable/ic_bundwappen_big" />
 
 		<ImageView

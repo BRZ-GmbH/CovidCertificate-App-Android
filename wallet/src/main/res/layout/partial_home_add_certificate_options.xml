@@ -13,6 +13,8 @@
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:orientation="vertical"
+	android:background="@drawable/bg_add_certificate_option"
+	android:elevation="@dimen/default_elevation"
 	android:paddingHorizontal="@dimen/spacing_small">
 
 	<LinearLayout

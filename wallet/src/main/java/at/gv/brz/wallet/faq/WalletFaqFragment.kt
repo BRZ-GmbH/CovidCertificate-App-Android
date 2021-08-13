@@ -12,6 +12,7 @@ package at.gv.brz.wallet.faq
 
 import androidx.fragment.app.activityViewModels
 import at.gv.brz.common.faq.FaqFragment
+import at.gv.brz.common.util.AssetUtil
 import at.gv.brz.wallet.CertificatesViewModel
 import at.gv.brz.wallet.R
 
@@ -26,10 +27,10 @@ class WalletFaqFragment : FaqFragment() {
 
 	override fun setupFaqProvider() {
 		toolbar.setTitle(R.string.wallet_faq_header)
-		certificatesViewModel.configLiveData.observe(viewLifecycleOwner, { config ->
-			val languageKey = getString(R.string.language_key)
-			setupFaqList(config.generateFaqItems(languageKey))
-		})
+		val languageKey = getString(R.string.language_key)
+		AssetUtil.loadDefaultConfig(requireContext())?.let {
+			setupFaqList(it.generateFaqItems(languageKey))
+		}
 		certificatesViewModel.loadConfig()
 	}
 

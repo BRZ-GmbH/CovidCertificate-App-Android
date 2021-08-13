@@ -28,6 +28,7 @@ import at.gv.brz.wallet.databinding.ActivityMainBinding
 import at.gv.brz.wallet.homescreen.HomeFragment
 import at.gv.brz.wallet.onboarding.OnboardingActivity
 import at.gv.brz.wallet.pdf.PdfViewModel
+import java.lang.Integer.max
 
 class MainActivity : AppCompatActivity() {
 
@@ -121,7 +122,7 @@ class MainActivity : AppCompatActivity() {
 	override fun onStart() {
 		super.onStart()
 		certificateViewModel.loadConfig()
-		CovidCertificateSdk.getCertificateVerificationController().refreshTrustList(lifecycleScope)
+		CovidCertificateSdk.getCertificateVerificationController().refreshTrustList(lifecycleScope, false)
 	}
 
 	override fun onDestroy() {
@@ -136,7 +137,7 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	private fun handleConfig(config: ConfigModel) {
-		if (config.forceUpdate && forceUpdateDialog == null) {
+		if (config.android != null && Version(config.android!!).compareTo(Version(BuildConfig.VERSION_NAME)) == 1 && forceUpdateDialog == null) {
 			val forceUpdateDialog = AlertDialog.Builder(this, R.style.CovidCertificate_AlertDialogStyle)
 				.setTitle(R.string.force_update_title)
 				.setMessage(R.string.force_update_text)
@@ -148,7 +149,7 @@ class MainActivity : AppCompatActivity() {
 				forceUpdateDialog.getButton(DialogInterface.BUTTON_POSITIVE)
 					.setOnClickListener {
 						val packageName = packageName
-						UrlUtil.openUrl(this@MainActivity, "market://details?id=$packageName")
+						UrlUtil.openStoreUrl(this@MainActivity, "market://details?id=$packageName", "appmarket://details?id=$packageName")
 					}
 			}
 			this.forceUpdateDialog = forceUpdateDialog
@@ -156,3 +157,31 @@ class MainActivity : AppCompatActivity() {
 		}
 	}
 }
+
+/**
+ * Represents a version string (= version name on Android) that can be logically compared to other versions.
+ */
+class Version(inputVersion: String) : Comparable<Version> {
+
+	var version: String
+		private set
+
+	override fun compareTo(other: Version) =
+		(split() to other.split()).let {(thisParts, thatParts)->
+			val length = max(thisParts.size, thatParts.size)
+			for (i in 0 until length) {
+				val thisPart = if (i < thisParts.size) thisParts[i].toInt() else 0
+				val thatPart = if (i < thatParts.size) thatParts[i].toInt() else 0
+				if (thisPart < thatPart) return -1
+				if (thisPart > thatPart) return 1
+			}
+			0
+		}
+
+	init {
+		require(inputVersion.matches("[0-9]+(\\.[0-9]+)*".toRegex())) { "Invalid version format" }
+		version = inputVersion
+	}
+}
+
+fun Version.split() = version.split(".").toTypedArray()

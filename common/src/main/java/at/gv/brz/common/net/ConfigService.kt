@@ -18,12 +18,7 @@ import retrofit2.http.Query
 
 interface ConfigService {
 
-	@Headers("Accept: application/json+jws")
-	@GET("config")
-	suspend fun getConfig(
-		@Query("appversion") appVersion: String,
-		@Query("osversion") osVersion: String,
-		@Query("buildnr") buildNumber: String
-	): Response<ConfigModel>
+	@GET("wallet-app/config")
+	suspend fun getConfig(): Response<ConfigModel>
 
 }

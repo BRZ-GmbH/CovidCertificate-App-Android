@@ -19,8 +19,7 @@ import at.gv.brz.eval.utils.*
 import at.gv.brz.wallet.R
 
 class CertificateDetailItemListBuilder(val context: Context, val dccHolder: DccHolder, val showEnglishVersion: Boolean = true) {
-	// TODO: AT - Hide english labels for now since we do not have english localization
-	private val showEnglishVersionForLabels = false//showEnglishVersion && LocaleUtil.isSystemLangNotEnglish(context)
+	private val showEnglishVersionForLabels = showEnglishVersion && LocaleUtil.isSystemLangNotEnglish(context)
 
 	fun buildAll(): List<CertificateDetailItem> {
 		val detailItems = ArrayList<CertificateDetailItem>()

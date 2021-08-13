@@ -20,7 +20,7 @@
 		android:id="@+id/homescreen_constraint_layout"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:background="@color/green_dark">
+		android:background="@drawable/angled_background">
 
 		<include
 			android:id="@+id/homescreen_header_empty"
@@ -103,18 +103,18 @@
 
 				<TextView
 					android:id="@+id/homescreen_app_title"
-					style="@style/CovidCertificate.Text.Bold.Lead.White"
+					style="@style/CovidCertificate.Text.Bold.Lead"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_gravity="center"
 					android:layout_marginHorizontal="@dimen/spacing_larger"
-					android:layout_marginTop="@dimen/spacing_huger"
+					android:layout_marginTop="@dimen/spacing_medium"
 					android:text="@string/wallet_certificate"
 					android:textAllCaps="true" />
 
 				<TextView
 					android:id="@+id/homescreen_add_certificate_options_title"
-					style="@style/CovidCertificate.Text.Bold.Title.White"
+					style="@style/CovidCertificate.Text.Bold.Title"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_gravity="center"
@@ -212,8 +212,10 @@
 			android:layout_gravity="bottom|end"
 			android:layout_marginEnd="@dimen/spacing_medium"
 			android:layout_marginBottom="@dimen/spacing_larger"
+			android:background="@drawable/rounded_white"
 			android:foreground="@drawable/ripple_rounded"
 			android:padding="@dimen/spacing_medium"
+			android:elevation="@dimen/default_elevation"
 			android:src="@drawable/ic_add_certificate"
 			app:layout_constraintBottom_toBottomOf="parent"
 			app:layout_constraintEnd_toEndOf="parent" />

@@ -316,6 +316,10 @@ abstract class QrScanFragment : Fragment() {
 			}
 		}
 
+		if (context == null) {
+			return
+		}
+
 		setIndicatorColor(viewFinderTopLeftIndicator, color)
 		setIndicatorColor(viewFinderTopRightIndicator, color)
 		setIndicatorColor(viewFinderBottomLeftIndicator, color)

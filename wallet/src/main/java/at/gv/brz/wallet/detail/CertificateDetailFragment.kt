@@ -32,14 +32,13 @@ import at.gv.brz.common.util.setSecureFlagToBlockScreenshots
 import at.gv.brz.common.views.animateBackgroundTintColor
 import at.gv.brz.common.views.hideAnimated
 import at.gv.brz.common.views.showAnimated
-import at.gv.brz.eval.data.state.CheckNationalRulesState
-import at.gv.brz.eval.data.state.CheckRevocationState
-import at.gv.brz.eval.data.state.CheckSignatureState
-import at.gv.brz.eval.data.state.VerificationState
 import at.gv.brz.eval.models.CertType
 import at.gv.brz.eval.models.DccHolder
 import at.gv.brz.eval.utils.*
 import at.gv.brz.common.util.getInvalidErrorCode
+import at.gv.brz.common.util.makeSubStringBold
+import at.gv.brz.eval.data.EvalErrorCodes
+import at.gv.brz.eval.data.state.*
 import at.gv.brz.wallet.BuildConfig
 import at.gv.brz.wallet.CertificatesViewModel
 import at.gv.brz.wallet.R
@@ -161,17 +160,19 @@ class CertificateDetailFragment : Fragment() {
 		certificatesViewModel.startVerification(dccHolder)
 	}
 
-	private fun updateStatusInfo(verificationState: VerificationState?) {
+	private fun updateStatusInfo(verificationState: VerificationResultStatus?) {
 		val state = verificationState ?: return
 
 		changeAlpha(state.getQrAlpha())
 		setCertificateDetailTextColor(state.getNameDobColor())
 
 		when (state) {
-			is VerificationState.LOADING -> displayLoadingState()
-			is VerificationState.SUCCESS -> displaySuccessState(state)
-			is VerificationState.INVALID -> displayInvalidState(state)
-			is VerificationState.ERROR -> displayErrorState(state)
+			is VerificationResultStatus.LOADING -> displayLoadingState()
+			is VerificationResultStatus.SUCCESS -> displaySuccessState(state)
+			is VerificationResultStatus.SIGNATURE_INVALID -> displayInvalidState(state)
+			is VerificationResultStatus.ERROR -> displayErrorState(state)
+			is VerificationResultStatus.TIMEMISSING -> displayTimeMissingState()
+			is VerificationResultStatus.DATAEXPIRED -> displayDataExpiredState()
 		}
 	}
 
@@ -183,6 +184,12 @@ class CertificateDetailFragment : Fragment() {
 		binding.certificateDetailErrorCode.isVisible = false
 		setInfoBubbleBackgrounds(R.color.greyish, R.color.greyish)
 
+		binding.certificateDetailStatusIcon.visibility = View.VISIBLE
+		binding.certificateDetailInfo.visibility = View.VISIBLE
+		binding.certificateDetailInfoCircle.visibility = View.VISIBLE
+		binding.certificateDetailRegionValidityContainer.visibility = View.INVISIBLE
+		binding.certificateDetailValidityHintEt.visibility = View.GONE
+
 		val info = SpannableString(context.getString(R.string.wallet_certificate_verifying))
 		if (isForceValidate) {
 			showStatusInfoAndDescription(null, info, 0)
@@ -192,123 +199,111 @@ class CertificateDetailFragment : Fragment() {
 		}
 	}
 
-	private fun displaySuccessState(state: VerificationState.SUCCESS) {
-		val context = context ?: return
+	private fun displaySuccessState(state: VerificationResultStatus.SUCCESS) {
 		showLoadingIndicator(false)
 		binding.certificateDetailInfoDescriptionGroup.isVisible = false
 		// TODO: AT - Hide validity info
 		binding.certificateDetailInfoValidityGroup.isVisible = false
 		binding.certificateDetailErrorCode.isVisible = false
-		showValidityDate(state.validityRange.validUntil, dccHolder.certType)
-		setInfoBubbleBackgrounds(R.color.greenish, R.color.greenish)
+		setInfoBubbleBackgrounds(R.color.green_light, R.color.green_light)
 
-		val info = SpannableString(context.getString(R.string.verifier_verify_success_info))
-		val forceValidationInfo = context.getString(R.string.wallet_certificate_verify_success).makeBold()
-		if (isForceValidate) {
-			showStatusInfoAndDescription(null, forceValidationInfo, R.drawable.ic_check_green)
-			showForceValidation(R.color.green, R.drawable.ic_check_green, R.drawable.ic_check_large, forceValidationInfo)
-			readjustStatusDelayed(R.color.greenish, R.drawable.ic_info_blue, info)
-		} else {
-			showStatusInfoAndDescription(null, info, R.drawable.ic_info_blue)
-		}
+		binding.certificateDetailStatusIcon.visibility = View.INVISIBLE
+		binding.certificateDetailInfo.visibility = View.INVISIBLE
+		binding.certificateDetailInfoCircle.visibility = View.INVISIBLE
+		binding.certificateDetailRegionValidityContainer.visibility = View.VISIBLE
+		binding.certificateDetailRegionValidityContainer.clipToOutline = true
+		binding.certificateDetailValidityHintEt.visibility = View.VISIBLE
+
+		binding.certificateDetailInfoEt.setBackgroundResource(if (state.results.first { it.region == "ET" }.valid) { R.color.green_light} else { R.color.red})
+		binding.certificateDetailInfoNg.setBackgroundResource(if (state.results.first { it.region == "NG" }.valid) { R.color.green_light} else { R.color.red})
 	}
 
-	private fun displayInvalidState(state: VerificationState.INVALID) {
+	private fun displayInvalidState(state: VerificationResultStatus.SIGNATURE_INVALID) {
 		val context = context ?: return
 		showLoadingIndicator(false)
 		// TODO: AT - Hide validity info
 		binding.certificateDetailInfoDescriptionGroup.isVisible = false
 		binding.certificateDetailInfoValidityGroup.isVisible = false
-		showValidityDate(state.validityRange?.validUntil, dccHolder.certType)
 
-		val info = state.getValidationStatusString(context)
-		val infoBubbleColorId = when {
-			state.signatureState is CheckSignatureState.INVALID -> R.color.greyish
-			state.revocationState is CheckRevocationState.INVALID -> R.color.greyish
-			state.nationalRulesState is CheckNationalRulesState.NOT_VALID_ANYMORE -> R.color.blueish
-			state.nationalRulesState is CheckNationalRulesState.NOT_YET_VALID -> R.color.blueish
-			state.nationalRulesState is CheckNationalRulesState.INVALID -> R.color.greyish
-			else -> R.color.greyish
-		}
+		showStatusInfoAndDescription(null, context.getString(R.string.wallet_error_invalid_signature)
+			.makeSubStringBold(context.getString(R.string.wallet_error_invalid_signature_bold)),R.drawable.ic_error)
 
-		setInfoBubbleBackgrounds(infoBubbleColorId, R.color.redish)
+		val infoBubbleColorId: Int = R.color.red
 
-		val icon: Int
-		val forceValidationIcon: Int
-		when (state.nationalRulesState) {
-			is CheckNationalRulesState.NOT_VALID_ANYMORE -> {
-				icon = R.drawable.ic_invalid_grey
-				forceValidationIcon = R.drawable.ic_invalid_red
-			}
-			is CheckNationalRulesState.NOT_YET_VALID -> {
-				icon = R.drawable.ic_timelapse
-				forceValidationIcon = R.drawable.ic_timelapse_red
-			}
-			else -> {
-				icon = R.drawable.ic_error_grey
-				forceValidationIcon = R.drawable.ic_error
-			}
-		}
+		setInfoBubbleBackgrounds(infoBubbleColorId, infoBubbleColorId)
 
-		if (isForceValidate) {
-			showStatusInfoAndDescription(null, info, forceValidationIcon)
-			showForceValidation(R.color.red, forceValidationIcon, R.drawable.ic_error_large, info)
-			readjustStatusDelayed(infoBubbleColorId, icon, info)
-		} else {
-			showStatusInfoAndDescription(null, info, icon)
-		}
+		binding.certificateDetailStatusIcon.visibility = View.VISIBLE
+		binding.certificateDetailInfo.visibility = View.VISIBLE
+		binding.certificateDetailInfoCircle.visibility = View.VISIBLE
+		binding.certificateDetailRegionValidityContainer.visibility = View.INVISIBLE
+		binding.certificateDetailValidityHintEt.visibility = View.GONE
 
 		binding.certificateDetailErrorCode.apply {
-			val errorCode = state.getInvalidErrorCode(showNationalErrors = true)
-			if (errorCode.isNotEmpty()) {
-				isVisible = true
-				text = errorCode
-			} else {
-				isVisible = false
-			}
+			isVisible = false
 		}
 	}
 
-	private fun displayErrorState(state: VerificationState.ERROR) {
+	private fun displayErrorState(state: VerificationResultStatus.ERROR) {
 		val context = context ?: return
 		showLoadingIndicator(false)
-		binding.certificateDetailInfoDescriptionGroup.isVisible = true
+		binding.certificateDetailInfoDescriptionGroup.isVisible = false
 		binding.certificateDetailInfoValidityGroup.isVisible = false
-		setInfoBubbleBackgrounds(R.color.greyish, R.color.orangeish)
+		setInfoBubbleBackgrounds(R.color.red, R.color.red)
 
-		val info: SpannableString
-		val forceValidationInfo: SpannableString
-		val description: SpannableString
-		val icon: Int
-		val forceValidationIcon: Int
-		val forceValidationIconLarge: Int
-		if (state.isOfflineMode()) {
-			info = context.getString(R.string.wallet_homescreen_offline).makeBold()
-			forceValidationInfo = context.getString(R.string.wallet_detail_offline_retry_title).makeBold()
-			description = SpannableString(context.getString(R.string.wallet_offline_description))
-			icon = R.drawable.ic_offline
-			forceValidationIcon = R.drawable.ic_offline_orange
-			forceValidationIconLarge = R.drawable.ic_offline_large
-		} else {
-			info = SpannableString(context.getString(R.string.wallet_homescreen_network_error))
-			forceValidationInfo = context.getString(R.string.wallet_detail_network_error_title).makeBold()
-			description = SpannableString(context.getString(R.string.wallet_detail_network_error_text))
-			icon = R.drawable.ic_process_error_grey
-			forceValidationIcon = R.drawable.ic_process_error
-			forceValidationIconLarge = R.drawable.ic_process_error_large
-		}
+		binding.certificateDetailInfo.text = context.getString(R.string.wallet_error_invalid_format)
+			.makeSubStringBold(context.getString(R.string.wallet_error_invalid_format_bold))
+		binding.certificateDetailStatusIcon.setImageResource(R.drawable.ic_error)
 
-		if (isForceValidate) {
-			showStatusInfoAndDescription(description, forceValidationInfo, icon)
-			showForceValidation(R.color.orange, forceValidationIcon, forceValidationIconLarge, forceValidationInfo)
-			readjustStatusDelayed(R.color.greyish, icon, info)
-		} else {
-			showStatusInfoAndDescription(description, info, icon)
-		}
+		binding.certificateDetailStatusIcon.visibility = View.VISIBLE
+		binding.certificateDetailInfo.visibility = View.VISIBLE
+		binding.certificateDetailInfoCircle.visibility = View.VISIBLE
+		binding.certificateDetailRegionValidityContainer.visibility = View.INVISIBLE
+		binding.certificateDetailValidityHintEt.visibility = View.GONE
 
 		binding.certificateDetailErrorCode.apply {
-			isVisible = true
-			text = state.error.code
+			isVisible = false
+		}
+	}
+
+	private fun displayTimeMissingState() {
+		val context = context ?: return
+		showLoadingIndicator(false)
+		binding.certificateDetailInfoDescriptionGroup.isVisible = false
+		binding.certificateDetailInfoValidityGroup.isVisible = false
+		setInfoBubbleBackgrounds(R.color.orange, R.color.orange)
+
+		binding.certificateDetailInfo.text = context.getString(R.string.wallet_time_missing)
+		binding.certificateDetailStatusIcon.setImageResource(R.drawable.ic_info_orange)
+
+		binding.certificateDetailStatusIcon.visibility = View.VISIBLE
+		binding.certificateDetailInfo.visibility = View.VISIBLE
+		binding.certificateDetailInfoCircle.visibility = View.VISIBLE
+		binding.certificateDetailRegionValidityContainer.visibility = View.INVISIBLE
+		binding.certificateDetailValidityHintEt.visibility = View.GONE
+
+		binding.certificateDetailErrorCode.apply {
+			isVisible = false
+		}
+	}
+
+	private fun displayDataExpiredState() {
+		val context = context ?: return
+		showLoadingIndicator(false)
+		binding.certificateDetailInfoDescriptionGroup.isVisible = false
+		binding.certificateDetailInfoValidityGroup.isVisible = false
+		setInfoBubbleBackgrounds(R.color.orange, R.color.orange)
+
+		binding.certificateDetailInfo.text = context.getString(R.string.wallet_validation_data_expired)
+		binding.certificateDetailStatusIcon.setImageResource(R.drawable.ic_no_connection)
+
+		binding.certificateDetailStatusIcon.visibility = View.VISIBLE
+		binding.certificateDetailInfo.visibility = View.VISIBLE
+		binding.certificateDetailInfoCircle.visibility = View.VISIBLE
+		binding.certificateDetailRegionValidityContainer.visibility = View.INVISIBLE
+		binding.certificateDetailValidityHintEt.visibility = View.GONE
+
+		binding.certificateDetailErrorCode.apply {
+			isVisible = false
 		}
 	}
 
