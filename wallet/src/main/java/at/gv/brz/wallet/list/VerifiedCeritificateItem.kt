@@ -14,15 +14,13 @@ import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import at.gv.brz.eval.data.state.CheckNationalRulesState
-import at.gv.brz.eval.data.state.VerificationState
+import at.gv.brz.eval.data.state.VerificationResultStatus
 import at.gv.brz.eval.models.CertType
 import at.gv.brz.eval.models.DccHolder
 import at.gv.brz.wallet.CertificatesViewModel
 import at.gv.brz.wallet.R
 import at.gv.brz.wallet.databinding.ItemCertificateListBinding
 import at.gv.brz.wallet.util.getQrAlpha
-import at.gv.brz.wallet.util.isOfflineMode
 
 data class VerifiedCeritificateItem(val verifiedCertificate: CertificatesViewModel.VerifiedCertificate) {
 
@@ -37,43 +35,49 @@ data class VerifiedCeritificateItem(val verifiedCertificate: CertificatesViewMod
 		binding.itemCertificateListName.text = name
 		binding.itemCertificateListName.alpha = qrAlpha
 		binding.itemCertificateListIconQr.alpha = qrAlpha
+		binding.itemCertificateListIconStatus.alpha = qrAlpha
 
 		setCertificateType(binding.itemCertificateListType, state, certificate.certType)
 		binding.itemCertificateListType.isVisible = certType != null
 
 		when (state) {
-			is VerificationState.LOADING -> {
+			is VerificationResultStatus.LOADING -> {
 				binding.itemCertificateListIconLoadingView.isVisible = true
 				binding.itemCertificateListIconStatusGroup.isVisible = true
 				binding.itemCertificateListIconStatus.isVisible = false
 				binding.itemCertificateListIconStatus.setImageResource(0)
 			}
-			is VerificationState.SUCCESS -> {
+			is VerificationResultStatus.SUCCESS -> {
 				binding.itemCertificateListIconLoadingView.isVisible = false
 				binding.itemCertificateListIconStatusGroup.isVisible = false
 				binding.itemCertificateListIconStatus.isVisible = true
 				binding.itemCertificateListIconStatus.setImageResource(R.drawable.ic_info_blue)
-
 			}
-			is VerificationState.INVALID -> {
+			is VerificationResultStatus.SIGNATURE_INVALID -> {
 				binding.itemCertificateListIconLoadingView.isVisible = false
 				binding.itemCertificateListIconStatusGroup.isVisible = true
 				binding.itemCertificateListIconStatus.isVisible = true
 
-				val statusIconId = when (state.nationalRulesState) {
-					is CheckNationalRulesState.NOT_VALID_ANYMORE -> R.drawable.ic_invalid_grey
-					is CheckNationalRulesState.NOT_YET_VALID -> R.drawable.ic_timelapse
-					else -> R.drawable.ic_error_grey
-				}
-				binding.itemCertificateListIconStatus.setImageResource(statusIconId)
+				binding.itemCertificateListIconStatus.setImageResource(R.drawable.ic_error_grey)
 			}
-			is VerificationState.ERROR -> {
+			is VerificationResultStatus.ERROR -> {
 				binding.itemCertificateListIconLoadingView.isVisible = false
 				binding.itemCertificateListIconStatusGroup.isVisible = true
 				binding.itemCertificateListIconStatus.isVisible = true
 
-				val statusIconId = if (state.isOfflineMode()) R.drawable.ic_offline else R.drawable.ic_process_error_grey
-				binding.itemCertificateListIconStatus.setImageResource(statusIconId)
+				binding.itemCertificateListIconStatus.setImageResource(R.drawable.ic_process_error_grey)
+			}
+			is VerificationResultStatus.TIMEMISSING -> {
+				binding.itemCertificateListIconLoadingView.isVisible = false
+				binding.itemCertificateListIconStatusGroup.isVisible = false
+				binding.itemCertificateListIconStatus.isVisible = true
+				binding.itemCertificateListIconStatus.setImageResource(R.drawable.ic_info_blue)
+			}
+			is VerificationResultStatus.DATAEXPIRED -> {
+				binding.itemCertificateListIconLoadingView.isVisible = false
+				binding.itemCertificateListIconStatusGroup.isVisible = false
+				binding.itemCertificateListIconStatus.isVisible = true
+				binding.itemCertificateListIconStatus.setImageResource(R.drawable.ic_no_connection)
 			}
 		}
 
@@ -87,13 +91,13 @@ data class VerifiedCeritificateItem(val verifiedCertificate: CertificatesViewMod
 	 */
 	private fun setCertificateType(
 		view: TextView,
-		state: VerificationState,
+		state: VerificationResultStatus,
 		certType: CertType?
 	) {
 		val backgroundColorId: Int
 		val textColorId: Int
 		when {
-			state is VerificationState.INVALID -> {
+			state.isInvalid() -> {
 				backgroundColorId = R.color.greyish
 				textColorId = R.color.grey
 			}

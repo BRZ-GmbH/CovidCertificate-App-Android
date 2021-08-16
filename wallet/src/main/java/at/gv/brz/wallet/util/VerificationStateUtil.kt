@@ -16,10 +16,7 @@ import androidx.annotation.ColorRes
 import at.gv.brz.common.util.addBoldDate
 import at.gv.brz.common.util.makeSubStringBold
 import at.gv.brz.eval.data.EvalErrorCodes
-import at.gv.brz.eval.data.state.CheckNationalRulesState
-import at.gv.brz.eval.data.state.CheckRevocationState
-import at.gv.brz.eval.data.state.CheckSignatureState
-import at.gv.brz.eval.data.state.VerificationState
+import at.gv.brz.eval.data.state.*
 import at.gv.brz.wallet.R
 
 const val DATE_REPLACEMENT_STRING = "{DATE}"
@@ -35,6 +32,11 @@ fun VerificationState.INVALID.getValidationStatusString(context: Context) = when
 		if (invalidSignatureState.signatureErrorCode == EvalErrorCodes.SIGNATURE_TYPE_INVALID) {
 			context.getString(R.string.wallet_error_invalid_format)
 				.makeSubStringBold(context.getString(R.string.wallet_error_invalid_format_bold))
+		} else if (invalidSignatureState.signatureErrorCode == EvalErrorCodes.SIGNATURE_TIMESTAMP_EXPIRED) {
+			context.getString(R.string.wallet_error_expired)
+				.makeSubStringBold(context.getString(R.string.wallet_error_expired_bold))
+		} else if (invalidSignatureState.signatureErrorCode == EvalErrorCodes.SIGNATURE_TIMESTAMP_NOT_YET_VALID) {
+			SpannableString(context.getString(R.string.wallet_error_national_rules))
 		} else {
 			context.getString(R.string.wallet_error_invalid_signature)
 				.makeSubStringBold(context.getString(R.string.wallet_error_invalid_signature_bold))
@@ -61,16 +63,10 @@ fun VerificationState.INVALID.getValidationStatusString(context: Context) = when
 }
 
 @ColorRes
-fun VerificationState.getNameDobColor(): Int {
-	return when (this) {
-		is VerificationState.INVALID -> R.color.grey
-		else -> R.color.black
-	}
+fun VerificationResultStatus.getNameDobColor(): Int {
+	return if (this.isInvalid()) { R.color.grey } else R.color.black
 }
 
-fun VerificationState.getQrAlpha(): Float {
-	return when (this) {
-		is VerificationState.INVALID -> 0.55f
-		else -> 1f
-	}
+fun VerificationResultStatus.getQrAlpha(): Float {
+	return if (this.isInvalid()) { 0.55f } else 1f
 }

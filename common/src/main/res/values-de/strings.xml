@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2021 Ubique Innovation AG <https://www.ubique.ch>
+  ~
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  ~
+  ~ SPDX-License-Identifier: MPL-2.0
+  -->
+<resources>
+
+    <!-- Android App Name -->
+    <string name="verifier_app_name">"Grüner Pass"</string>
+
+    <!-- Title for the qr scanning screen -->
+    <string name="verifier_title_qr_scan">"QR-Code scannen"</string>
+
+    <!-- Titel über dem Haupttitel -->
+    <string name="verifier_homescreen_header_title">"Grüner Pass"</string>
+
+    <!-- Homescreen App Name -->
+    <string name="verifier_homescreen_title">"Grüner Pass"</string>
+
+    <!-- Beschreibung für Pager Bild 1 -->
+    <string name="verifier_homescreen_pager_description_1">"EU-konformen QR-Code scannen"</string>
+
+
+    <!-- Homescreen Button für Scanning -->
+    <string name="verifier_homescreen_scan_button">"QR-Code scannen"</string>
+
+    <!-- Homescreen Button für Support -->
+    <string name="verifier_homescreen_support_button">"So funktioniert's"</string>
+    <string name="error_network_title">"Netzwerkfehler"</string>
+    <string name="error_network_text">"Überprüfen Sie Ihre Internet Verbindung."</string>
+    <string name="error_action_retry">"Erneut versuchen"</string>
+    <string name="error_camera_permission_title">"Kein Zugriff auf Kamera"</string>
+    <string name="error_camera_permission_text">"Die App benötigt Zugriff auf die Kamera, um den QR-Code scannen zu können."</string>
+    <string name="error_action_change_settings">"Einstellungen ändern"</string>
+    <string name="error_title">"Fehler"</string>
+    <string name="qr_scanner_error">"Kein gültiger Code"</string>
+    <string name="ok_button">"OK"</string>
+    <string name="camera_permission_dialog_text">"Die App benötigt Zugriff auf die Kamera, um den QR-Code scannen zu können."</string>
+    <string name="camera_permission_dialog_action">"Zugriff auf Kamera erlauben"</string>
+    <string name="verifier_qr_scanner_scan_qr_text">"QR-Code scannen"</string>
+
+    <!-- Titel auf dem Verifikations-Screen -->
+    <string name="covid_certificate_title">"EU-konformes Zertifikat"</string>
+
+    <!-- Name des/der Zertifikatsinhabers/Zertifikatsinhaberin -->
+    <string name="verifier_covid_certificate_name">"Nachname"</string>
+
+    <!-- Geburtsdatum des/der Zertifikatsinhabers/Zertifikatsinhaberin -->
+    <string name="verifier_covid_certificate_birthdate">"Geburtsdatum"</string>
+
+    <!-- Wallet: Zertifikat hinzufügen -->
+    <string name="wallet_add_certificate">"Hinzufügen"</string>
+
+    <!-- Wallet: Homescreen Covid-Zertifikat -->
+    <string name="wallet_certificate">"EU-konformes Zertifikat"</string>
+
+    <!-- Wallet: Homescreen Erklärung -->
+    <string name="wallet_homescreen_explanation">"Scannen Sie den EU-konformen QR-Code auf dem Zertifikat, um es zur App hinzuzufügen."</string>
+
+    <!-- Wallet: Scanner Titel -->
+    <string name="wallet_scanner_title">"Hinzufügen"</string>
+
+    <!-- Titel bei erfolgreicher Prüfung -->
+    <string name="verifier_verify_success_title">"Prüfung erfolgreich"</string>
+
+    <!-- Info Text bei erfolgreicher Prüfung -->
+    <string name="verifier_verify_success_info">"Nur mit einem amtlichen Lichtbildausweis gültig"</string>
+
+    <!-- Prüfung loading text -->
+    <string name="verifier_verify_loading_text">"Zertifikat wird geprüft"</string>
+
+    <!-- Fehler Title bei Prüfung -->
+    <string name="verifier_verify_error_title">"Covid-Zertifikat ungültig"</string>
+
+    <!-- Fehler Infotext bei Prüfung (Nationale Regeln) -->
+    <string name="verifier_verify_error_info_for_national_rules">"Das Zertifikat entspricht nicht den gesetzlichen Erfordernissen."</string>
+
+    <!-- Fehler Infotext bei Prüfung (Zertifikat Fehler) -->
+    <string name="verifier_verify_error_info_for_certificate_invalid">"Das Zertifikat hat keine gültige Signatur"</string>
+
+    <!-- Fehler Infotext bei Prüfung (Blacklist) -->
+    <string name="verifier_verify_error_info_for_blacklist">"Das Zertifikat wurde widerrufen"</string>
+
+    <!-- Fehler bei der geladen Liste -->
+    <string name="verifier_verify_error_list_title">"Prüfung fehlgeschlagen"</string>
+
+    <!-- Fehler Info bei laden der Liste -->
+    <string name="verifier_verify_error_list_info_text">"Ein unerwarteter Fehler ist aufgetreten."</string>
+
+    <!-- Wallet: Scanner Text unten -->
+    <string name="wallet_scanner_explanation">"Scannen Sie den EU-konformen QR-Code auf dem Zertifikat."</string>
+
+    <!-- Wallet: Scanner Info Button unten -->
+    <string name="wallet_scanner_info_button">"So funktioniert's"</string>
+
+    <!-- Wallet: Erneut scannen Button -->
+    <string name="wallet_scan_again">"Erneut scannen"</string>
+
+    <!-- Wallet: Hinzufügen von Zertifikat Button -->
+    <string name="wallet_add_certificate_button">"Hinzufügen"</string>
+
+    <!-- Wallet: Titel der Liste Zertifikate -->
+    <string name="wallet_certificate_list_title">"EU-konforme Zertifikate"</string>
+
+    <!-- Wallet: Löschen Button Titel -->
+    <string name="delete_button">"Löschen"</string>
+
+    <!-- Android App Name für die Wallet -->
+    <string name="wallet_app_name">"Grüner Pass"</string>
+
+    <!-- Header im Onboarding-Screen "Die App" -->
+    <string name="wallet_onboarding_app_header">"Grüner Pass"</string>
+
+    <!-- Titel im Onboardingscreen "Die App" -->
+    <string name="wallet_onboarding_app_title">"Grüner Pass"</string>
+
+    <!-- Text im Onboardingscreen "Die App" -->
+    <string name="wallet_onboarding_app_text">"Mit dieser App können Sie die EU-konformen Zertifikate des Grünen Passes sicher auf dem Smartphone aufbewahren und einfach vorweisen."</string>
+
+    <!-- Weiter-Button Titel -->
+    <string name="continue_button">"Weiter"</string>
+
+    <!-- Header im Onboarding-Screen "Datenschutz" -->
+    <string name="wallet_onboarding_privacy_header">"Datenschutz"</string>
+
+    <!-- Titel im Onboardingscreen "Datenschutz" -->
+    <string name="wallet_onboarding_privacy_title">"Ihre Daten bleiben
+in der App"</string>
+
+    <!-- Text im Onboardingscreen "Datenschutz" -->
+    <string name="wallet_onboarding_privacy_text">"Die Zertifikate sind nur lokal auf Ihrem Smartphone hinterlegt. Die Daten werden nicht in einem zentralen System gespeichert."</string>
+
+    <!-- Titel im Onboardingscreen "Vorteile, Vorweisen" -->
+    <string name="wallet_onboarding_show_title">"Zertifikate einfach vorweisen"</string>
+
+    <!-- Text 1 im Onboardingscreen "Vorteile, Vorweisen" -->
+    <string name="wallet_onboarding_show_text1">"Die auf dem Zertifikat dargestellten Daten sind auch im EU-konformen QR-Code enthalten."</string>
+
+    <!-- Text 2 im Onboardingscreen "Vorteile, Vorweisen" -->
+    <string name="wallet_onboarding_show_text2">"Beim Vorweisen wird der EU-konforme QR-Code mit einer Prüfanwendung gescannt. Die enthaltenen Daten werden dabei automatisch auf Echtheit und Gültigkeit überprüft."</string>
+
+    <!-- Titel des Datenschutzerklärungs-Elements im Onboardingscreen "Datenschutz" -->
+    <string name="wallet_onboarding_privacy_privacypolicy_title">"Datenschutzerklärung"</string>
+
+    <!-- Titel des Nutzungsbedingungen-Elements im Onboardingscreen "Datenschutz" -->
+    <string name="wallet_onboarding_privacy_conditionsofuse_title">"Nutzungsbedingungen"</string>
+
+    <!-- Button zum Abschliessen des Onboardings -->
+    <string name="wallet_onboarding_accept_button">"Akzeptieren"</string>
+    <string name="language_key">"de"</string>
+
+    <!-- Header im "So funktionierts" Screen beim Scannen -->
+    <string name="wallet_scanner_howitworks_header">"So funktioniert's"</string>
+
+    <!-- Titel im "So funktionierts" Screen beim Scannen -->
+    <string name="wallet_scanner_howitworks_title">"Zertifikate
+hinzufügen"</string>
+
+    <!-- Textblock 1 im "So funktionierts" Screen beim Scannen -->
+    <string name="wallet_scanner_howitworks_text1">"Um ein Zertifikat zur App hinzufügen zu können, benötigen Sie das Originalzertifikat auf Papier oder als PDF."</string>
+
+    <!-- Textblock 2 im "So funktionierts" Screen beim Scannen -->
+    <string name="wallet_scanner_howitworks_text2">"Tippen Sie in der App auf «Hinzufügen», um ein neues Zertifikat zur App hinzuzufügen."</string>
+
+    <!-- Textblock 3 im "So funktionierts" Screen beim Scannen -->
+    <string name="wallet_scanner_howitworks_text3">"Halten Sie nun die Kamera des Smartphones über den EU-konformen QR-Code auf dem Zertifikat, um diesen zu scannen."</string>
+
+    <!-- Textblock 4 im "So funktionierts" Screen beim Scannen -->
+    <string name="wallet_scanner_howitworks_text4">"Es erscheint eine Vorschau des Zertifikats. Tippen Sie auf «Hinzufügen» um das Zertifikat sicher in der App zu speichern."</string>
+
+    <!-- Frage 1 im "So funktionierts" Screen beim Scannen -->
+    <string name="wallet_scanner_howitworks_question1">"Wie und wo erhalte ich ein EU-konformes Zertifikat?"</string>
+
+    <!-- Header im FAQ-Screen der Wallet App -->
+    <string name="wallet_faq_header">"Häufig gestellte Fragen"</string>
+
+    <!-- Antwort 1 im "So funktionierts" Screen beim Scannen -->
+    <string name="wallet_scanner_howitworks_answer1">"Alle EU-konformen Zertifikate des Grünen Passes können mittels Handy-Signatur oder Bürgerkarte über gesundheit.gv.at abgerufen werden."</string>
+
+    <!-- Verifier: Detail Check Vorname -->
+    <string name="verifier_covid_certificate_prename">"Vorname"</string>
+
+    <!-- Config: Titel wenn App muss geupdatet werden -->
+    <string name="force_update_title">"Update benötigt"</string>
+
+    <!-- Config: Text der angezeigt wird falls App muss geupdatet werden -->
+    <string name="force_update_text">"Laden Sie die neue Version der App."</string>
+
+    <!-- Config: Update Button Aktualisieren -->
+    <string name="force_update_button">"Aktualisieren"</string>
+
+    <!-- Wallet: Zertifikat gültig ab: {DATE} -->
+    <string name="wallet_certificate_valid_from">"In Österreich gültig ab:
+{DATE}"</string>
+
+    <!-- Wallet: Zertifikat Detail Geimpft -->
+    <string name="certificate_reason_vaccinated">"Impfung"</string>
+
+    <!-- Wallet: Zertifikat Detail Genesen -->
+    <string name="certificate_reason_recovered">"Genesen"</string>
+
+    <!-- Wallet: Zertifikat Detail Getestet -->
+    <string name="certificate_reason_tested">"Test"</string>
+
+    <!-- Header im Onboardingscreen "Vorteile, Aufbewahren" -->
+    <string name="wallet_onboarding_store_header">"Vorteile"</string>
+
+    <!-- Titel im Onboardingscreen "Vorteile, Aufbewahren" -->
+    <string name="wallet_onboarding_store_title">"EU-konforme Zertifikate digital aufbewahren"</string>
+
+    <!-- Text1 im Onboardingscreen "Vorteile, Aufbewahren" -->
+    <string name="wallet_onboarding_store_text1">"Die EU-konformen Zertifikate des Grünen Passes können einfach zur App hinzugefügt und digital aufbewahrt werden."</string>
+
+
+    <!-- Header im Onboarding-Screen "Vorteile, Vorweisen" -->
+    <string name="wallet_onboarding_show_header">"Vorteile"</string>
+
+    <!-- Accessibility: Information -->
+    <string name="accessibility_info_button">"Impressum"</string>
+
+    <!-- Accessibility: FAQ Button Titel -->
+    <string name="accessibility_faq_button">"Häufige Fragen"</string>
+
+    <!-- Accessibility: Button zur Liste der Zertifikate -->
+    <string name="accessibility_list_button">"Liste Ihrer Zertifikate"</string>
+
+    <!-- Accessibility: Zertifikate hinzufügen -->
+    <string name="accessibility_add_button">"Zertifikat hinzufügen"</string>
+
+    <!-- Accessibility: Schliessen Button -->
+    <string name="accessibility_close_button">"Schliessen"</string>
+
+    <!-- Accessibility: Taschenlampe anschalten Button -->
+    <string name="accessibility_lamp_on_button">"Taschenlampe einschalten"</string>
+
+    <!-- Accessibility: Lampe abschalten -->
+    <string name="accessibility_lamp_off_button">"Taschenlampe ausschalten"</string>
+
+    <!-- Titel des Impressum-Screens -->
+    <string name="impressum_title">"Impressum"</string>
+
+    <!-- Unbekannter Fehler -->
+    <string name="unknown_error">"Ein unbekannter Fehler ist aufgetreten."</string>
+
+    <!-- Verifier: Die Gültigkeit des Zertifikat ist abgelaufen -->
+    <string name="verifier_verifiy_error_expired">"Entspricht nicht den Gültigkeitskriterien Österreichs: Die Gültigkeit des Zertifikat ist abgelaufen."</string>
+
+    <!-- Verifier: Zertifikat ist erst gültig ab {DATE} -->
+    <string name="verifier_verifiy_error_notyetvalid">"Entspricht nicht den Gültigkeitskriterien Österreichs: Das Zertifikat ist noch nicht gültig."</string>
+
+    <!-- Verifier: Ein Netzwerkfehler ist aufgetreten. -->
+    <string name="verifier_retry_network_error">"Ein Netzwerkfehler ist aufgetreten."</string>
+
+    <!-- Verifier: Das Gerät befindet sich im Flugmodus. -->
+    <string name="verifier_retry_flightmode_error">"Das Gerät befindet sich im Flugmodus."</string>
+
+    <!-- Wallet: Zertifikat gültig ab: {DATE} -->
+    <string name="wallet_error_valid_from">"In Österreich gültig ab:
+{DATE}"</string>
+
+    <!-- Wallet: Fehler wenn Zertifikat nicht den CH-Gültigkeitskriterien entspricht -->
+    <string name="wallet_error_national_rules">"Das Zertifikat entspricht nicht den gesetzlichen Erfordernissen."</string>
+
+    <!-- Wallet: Gültigkeit des Zertifikats abgelaufen -->
+    <string name="wallet_error_expired">"Gültigkeit des Zertifikats
+abgelaufen"</string>
+
+    <!-- Wallet: Zertifikat wurde widerrufen -->
+    <string name="wallet_error_revocation">"Zertifikat wurde
+widerrufen"</string>
+
+    <!-- Wallet: Zertifikat mit ungültiger Signatur -->
+    <string name="wallet_error_invalid_signature">"Zertifikat mit
+ungültiger Signatur"</string>
+
+    <!-- Wallet: ungültiger Signatur (gleiche Worte wie wallet_error_invalid_signature) -->
+    <string name="wallet_error_invalid_signature_bold">"ungültiger Signatur"</string>
+
+    <!-- Wallet: widerrufen (gleiches Wort wie bei wallet_error_revocation) -->
+    <string name="wallet_error_revocation_bold">"widerrufen"</string>
+
+    <!-- Wallet: abgelaufen (gleiches Wort wie bei wallet_error_expired verwenden) -->
+    <string name="wallet_error_expired_bold">"abgelaufen"</string>
+
+    <!-- Meldung wenn erneute ein Zertifikat gescannt wurde, welches bereits in der App ist -->
+    <string name="wallet_certificate_already_exists">"Dieses EU-konforme Zertifikat ist bereits in der App gespeichert"</string>
+
+    <!-- Titel Gültigkeit im Zertifikatsdetail -->
+    <string name="wallet_certificate_validity">"Gültigkeit in
+Österreich"</string>
+
+    <!-- "Bis" Label im Zertifikats-Detail -->
+    <string name="wallet_certificate_valid_until">"bis"</string>
+
+    <!-- Message im Zertifikatsdetail während Überprüfung -->
+    <string name="wallet_certificate_verifying">"Das Zertifikat wird geprüft"</string>
+
+    <!-- Message nach erfolgreicher Prüfung im Zertifikatdetail -->
+    <string name="wallet_certificate_verify_success">"Prüfung erfolgreich"</string>
+
+    <!-- Accessibility: Info Box Butto -->
+    <string name="accessibility_info_box">"Information"</string>
+
+    <!-- Button Schliessen -->
+    <string name="close_button">"Schliessen"</string>
+    <string name="wallet_certificate_impfdosis_title">"Impfdosis"</string>
+    <string name="target_disease_name">"Covid-19"</string>
+    <string name="wallet_certificate_target_disease_title">"Krankheit oder Erreger"</string>
+    <string name="wallet_certificate_impfstoff_product_name_title">"Produkt"</string>
+    <string name="wallet_certificate_impfstoff_holder">"Hersteller"</string>
+    <string name="wallet_certificate_vaccination_date_title">"Impfdatum"</string>
+    <string name="wallet_certificate_vaccination_country_title">"Land der Impfung"</string>
+
+    <!-- Prüfen mit PDF Translation -->
+    <string name="wallet_certificate_vaccination_issuer_title">"Herausgeber"</string>
+    <string name="covid_certificate_recovery_title">"Genesung"</string>
+    <string name="wallet_certificate_recovery_first_positiv_result">"Datum des ersten positiven Resultats"</string>
+    <string name="wallet_certificate_recovery_from">"Gültig ab"</string>
+    <string name="wallet_certificate_recovery_until">"Gültig bis"</string>
+    <string name="wallet_certificate_test_land">"Land des Tests"</string>
+    <string name="covid_certificate_test_title">"Test"</string>
+    <string name="wallet_certificate_test_result_title">"Ergebnis"</string>
+    <string name="wallet_certificate_test_result_negativ">"Nicht nachgewiesen"</string>
+    <string name="wallet_certificate_test_result_positiv">"Positiv"</string>
+    <string name="wallet_certificate_test_type">"Typ"</string>
+    <string name="wallet_certificate_test_name">"Name"</string>
+    <string name="wallet_certificate_test_holder">"Hersteller"</string>
+    <string name="wallet_certificate_test_sample_date_title">"Datum der Probenentnahme"</string>
+    <string name="wallet_certificate_test_result_date_title">"Datum Resultat"</string>
+
+    <!-- Header im "So funktionierts" Screen der Verifier-App -->
+    <string name="verifier_support_header">"So funktioniert's"</string>
+
+    <!-- Text im Bestätigungs-Dialog beim Zertifikat löschen -->
+    <string name="wallet_certificate_delete_confirm_text">"Wollen Sie das Zertifikat wirklich löschen?"</string>
+
+    <!-- Titel eines Abbrechen-Buttons -->
+    <string name="cancel_button">"Abbrechen"</string>
+
+    <!-- Wallet: Titel bei Impfungen -->
+    <string name="covid_certificate_vaccination_title">"Impfung"</string>
+
+    <!-- Wallet: Apple App Store URL -->
+    <string name="wallet_apple_app_store_url">"http://itunes.apple.com/app/id1565917320"</string>
+
+    <!-- Verifier: Apple App Store URL -->
+    <string name="verifier_apple_app_store_url">"http://itunes.apple.com/app/id1565917510"</string>
+
+    <!-- Wallet: Abkürzung "UVCI" (Unique Vaccination Certificate Identifier) -->
+    <string name="wallet_certificate_identifier">"UVCI"</string>
+
+    <!-- Wallet: Zertifikat erstellt am {DATE} -->
+    <string name="wallet_certificate_date">"Zertifikat erstellt am
+{DATE}"</string>
+
+    <!-- Wallet: Detail Art des Impfstoffs -->
+    <string name="wallet_certificate_vaccine_prophylaxis">"Art des Impfstoffs"</string>
+
+    <!-- Wallet: Test Detail Test durchgeführt durch -->
+    <string name="wallet_certificate_test_done_by">"Testcenter"</string>
+
+    <!-- iOS: Erklärung bei Kamera  -->
+    <string name="NSCameraUsageDescription">"Die App benötigt Zugriff auf die Kamera, um den QR-Code scannen zu können."</string>
+
+    <!-- iOS Button zum Einstellungen öffnen -->
+    <string name="ios_settings_open">"Einstellungen"</string>
+
+    <!-- Wallet: Onboarding externer Link zu Datenschutz -->
+    <string name="wallet_onboarding_external_privacy_button">"Datenschutzerklärung &amp;
+Nutzungsbedingungen"</string>
+
+    <!-- Wallet: Hinweis im Zertifikat Detail -->
+    <string name="wallet_certificate_detail_note">"Dieses Zertifikat ist kein Reisedokument. \n\nDie wissenschaftlichen Erkenntnisse über Covid-19-Impfungen und -Tests sowie über die Genesung von einer Covid-19-Infektion entwickeln sich ständig weiter, auch im Hinblick auf neue besorgniserregende Virusvarianten. \n\nBitte informieren Sie sich vor der Reise über die am Zielort geltenden Gesundheitsmassnahmen und damit verbundenen Beschränkungen."</string>
+    <string name="wallet_terms_privacy_link">"https://gruenerpass.gv.at/app/datenschutz"</string>
+    <string name="verifier_terms_privacy_link">"https://gruenerpass.gv.at/app/datenschutz"</string>
+
+    <!-- Verifier: Titel in der App (z.B. Impressum) -->
+    <string name="verifier_app_title">"COVID Certificate Check"</string>
+
+    <!-- Wallet: Homescreen Was wollen sie machen? -->
+    <string name="wallet_homescreen_what_to_do">"Nächsten Schritt wählen"</string>
+
+    <!-- Wallet: Homescreen Titel Zertifikat hinzufügen -->
+    <string name="wallet_homescreen_add_title">"Zertifikat hinzufügen"</string>
+
+    <!-- Wallet: Homescreen Zertifikat Description Text -->
+    <string name="wallet_homescreen_add_certificate_description">"Sie haben ein EU-konformes Zertifikat auf Papier oder als PDF und möchten es zur App hinzufügen."</string>
+
+    <!-- Wallet: Fehler Format des Zertifikat ungültig -->
+    <string name="wallet_error_invalid_format">"Format des Zertifikat
+ungültig"</string>
+
+    <!-- Wallet: Fehler Format des Zertifikat ungültig Fett -->
+    <string name="wallet_error_invalid_format_bold">"ungültig"</string>
+
+    <!-- Verifier: Error Ungültiges Format -->
+    <string name="verifier_error_invalid_format">"Das Format des EU-konformen Zertifikats ist ungültig."</string>
+
+    <!-- Homescreen Zertifikat: Offline Modus Text -->
+    <string name="wallet_homescreen_offline">"Offline Modus"</string>
+
+    <!-- Wallet: Detail Offline Text -->
+    <string name="wallet_offline_description">"Um die aktuelle Gültigkeit anzeigen zu können, muss die App regelmässig online sein."</string>
+
+    <!-- Wallet: Retry Titel Offline -->
+    <string name="wallet_detail_offline_retry_title">"Prüfung offline nicht möglich"</string>
+
+    <!-- Wallet: Detail Netzwerkfehler Titel -->
+    <string name="wallet_detail_network_error_title">"Prüfung zur Zeit nicht möglich"</string>
+
+    <!-- Wallet: Detail Netzwerkfehler Text -->
+    <string name="wallet_detail_network_error_text">"Versuchen Sie es später erneut."</string>
+
+    <!-- Verifier: Titel Fehler wenn kein Internet -->
+    <string name="verifier_offline_error_title">"Offline-Prüfung nicht möglich"</string>
+
+    <!-- Verifier: Fehlertext wenn Offline bei Verifikation -->
+    <string name="verifier_offline_error_text">"Eine Internetverbindung wird benötigt, um die Prüflisten zu aktualisieren"</string>
+
+    <!-- Verifier: Fehler Titel bei Netzwerkfehler -->
+    <string name="verifier_network_error_title">"Prüfung fehlgeschlagen"</string>
+
+    <!-- Verifier: Fehler Text bei Netzwerkfehler -->
+    <string name="verifier_network_error_text">"Ein unerwarteter Fehler ist aufgetreten"</string>
+
+    <!-- Wallet: Text auf Zertifikat auf Homescreen bei Netzwerkfehler -->
+    <string name="wallet_homescreen_network_error">"Gültigkeit konnte nicht ermittelt werden"</string>
+
+
+    <!-- Externe URL im "So funktionierts" Screen beim Scannen -->
+    <string name="wallet_scanner_howitworks_external_link">"https://gruenerpass.gv.at/"</string>
+
+    <!-- Label der externen URL im "So funktionierts" Screen beim Scannen -->
+    <string name="wallet_scanner_howitworks_external_link_title">"Weitere Informationen"</string>
+
+    <!-- Button zum QR Code Scannen öffnen -->
+    <string name="wallet_homescreen_qr_code_scannen">"QR-Code scannen"</string>
+
+    <!-- Button zum PDF importieren -->
+    <string name="wallet_homescreen_pdf_import">"PDF importieren"</string>
+
+    <string name="region_type_ET">"Eintritt"</string>
+    <string name="region_type_NG">"Nachtgastronomie"</string>
+
+    <!-- Warnung bei fehlender aktueller Zeit durch Timeserver -->
+    <string name="wallet_time_missing">"3-G Status nicht verfügbar, bitte aktivieren Sie die Internetverbindung"</string>
+    <string name="wallet_validation_data_expired">"3-G Status nicht verfügbar, bitte aktivieren Sie die Internetverbindung"</string>
+    <string name="wallet_3g_status_disclaimer">"3-G Voransicht: Nur gültig mit GreenCheck und Ausweis"</string>
+</resources>

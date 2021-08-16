@@ -28,4 +28,25 @@ public class UrlUtil {
 		}
 	}
 
+	/**
+	 * Attempts to open the provided store URLs, first trying the playUrl and as a fallback huaweiUrl
+	 *
+	 * @param context the application context
+	 * @param playUrl the Google Play Store URL (market://details?id=packageName) to open
+	 * @param huaweiUrl the Huawei App Gallery URL (appmarket://details?id=packageName) to open
+	 */
+	public static void openStoreUrl(Context context, String playUrl, String huaweiUrl) {
+		Intent intent = new Intent(Intent.ACTION_VIEW);
+		intent.setData(Uri.parse(playUrl));
+		try {
+			context.startActivity(intent);
+		} catch (ActivityNotFoundException e) {
+			intent.setData(Uri.parse(huaweiUrl));
+			try {
+				context.startActivity(intent);
+			} catch (ActivityNotFoundException e2) {
+				Toast.makeText(context, "No browser installed", Toast.LENGTH_LONG).show();
+			}
+		}
+	}
 }

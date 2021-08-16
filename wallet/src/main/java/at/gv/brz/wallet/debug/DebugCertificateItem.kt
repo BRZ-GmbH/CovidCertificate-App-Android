@@ -46,8 +46,7 @@ data class DebugCertificateItem(val verifiedCertificate: CertificatesViewModel.V
 			}
 		}
 
-		val isInvalid = state is VerificationState.INVALID
-		if (isInvalid) {
+		if (state.isInvalid()) {
 			typeBackgroundColor = R.color.greyish
 			typeTextColor = R.color.grey
 		}

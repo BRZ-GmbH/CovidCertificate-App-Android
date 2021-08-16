@@ -34,25 +34,15 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 class ConfigRepository private constructor(private val configSpec: ConfigSpec) {
 
 	companion object : SingletonHolder<ConfigRepository, ConfigSpec>(::ConfigRepository) {
-		private const val APP_VERSION_PREFIX_ANDROID = "android-"
-		private const val OS_VERSION_PREFIX_ANDROID = "android"
-
-		private const val MIN_LOAD_WAIT_TIME = 60 * 60 * 1000L // 1h
+		private const val MIN_LOAD_WAIT_TIME = 8 * 60 * 60 * 1000L // 1h
 		private const val MAX_AGE_STATUS_VALID_CACHED_CONFIG = 48 * 60 * 60 * 1000L // 48h
 	}
 
-	// TODO: AT - Disable backend integration for configuration
-	//private val configService: ConfigService
+	private val configService: ConfigService
 	private val storage = ConfigSecureStorage.getInstance(configSpec.context)
 
 	init {
-		// TODO: AT - Disable backend integration for configuration
-		/*val rootCa = CovidCertificateSdk.getRootCa(configSpec.context)
-		val expectedCommonName = CovidCertificateSdk.getExpectedCommonName()
 		val okHttpBuilder = OkHttpClient.Builder()
-			.certificatePinner(CertificatePinning.pinner)
-			.addInterceptor(JwsInterceptor(rootCa, expectedCommonName))
-			.addInterceptor(UserAgentInterceptor(Config.userAgent))
 
 		val cacheSize = 5 * 1024 * 1024 // 5 MB
 		val cache = Cache(configSpec.context.cacheDir, cacheSize.toLong())
@@ -68,36 +58,30 @@ class ConfigRepository private constructor(private val configSpec: ConfigSpec) {
 			.client(okHttpBuilder.build())
 			.addConverterFactory(MoshiConverterFactory.create())
 			.build()
-			.create(ConfigService::class.java)*/
+			.create(ConfigService::class.java)
+	}
+
+	fun loadDefaultConfig(context: Context): ConfigModel? {
+		return AssetUtil.loadDefaultConfig(context)
 	}
 
 	suspend fun loadConfig(context: Context): ConfigModel? {
-		// TODO: AT - Disable backend integration for configuration
-		/*val requestTimeStamp = System.currentTimeMillis()
-		val appVersion = APP_VERSION_PREFIX_ANDROID + configSpec.versionName
-		val osVersion = OS_VERSION_PREFIX_ANDROID + Build.VERSION.SDK_INT
-		val buildNumber = configSpec.buildTime
-		val versionString = "appversion=$appVersion&osversion=$osVersion&buildnr=$buildNumber"
+		return null
 		var config =
-			if (storage.getConfigLastSuccessTimestamp() + MIN_LOAD_WAIT_TIME <= System.currentTimeMillis() || versionString != storage.getConfigLastSuccessAppAndOSVersion()) {
+			if (storage.getConfigLastSuccessTimestamp() + MIN_LOAD_WAIT_TIME <= System.currentTimeMillis()) {
 				try {
-					val response = withContext(Dispatchers.IO) { configService.getConfig(appVersion, osVersion, buildNumber) }
+					val response = withContext(Dispatchers.IO) { configService.getConfig() }
 					if (!response.isSuccessful) throw HttpException(response)
-					response.body()?.let { storage.updateConfigData(it, requestTimeStamp, versionString) }
+					//response.body()?.let { storage.updateConfigData(it, requestTimeStamp, versionString) }
 					response.body()
 				} catch (e: Exception) {
-					e.printStackTrace()
 					null
 				}
-			} else null*/
-
-		var config: ConfigModel? = null
-
-		if (config == null) config = storage.getConfig()
-		if (config == null) config = AssetUtil.loadDefaultConfig(context)
+			} else null
 
 		return config
 	}
+
 
 }
 

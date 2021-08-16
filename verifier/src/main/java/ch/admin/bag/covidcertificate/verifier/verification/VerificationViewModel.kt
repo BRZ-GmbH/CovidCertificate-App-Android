@@ -38,7 +38,8 @@ class VerificationViewModel(application: Application) : AndroidViewModel(applica
 	val verificationLiveData = verificationStateMutableLiveData as LiveData<VerificationState>
 
 	fun startVerification(dccHolder: DccHolder) {
-		val task = CertificateVerificationTask(dccHolder, connectivityManager)
+		val context: Context = getApplication()
+		val task = CertificateVerificationTask(dccHolder, connectivityManager, context.assets.open("JSON_SCHEMA.json"), "AT")
 
 		viewModelScope.launch {
 			task.verificationStateFlow.collect {

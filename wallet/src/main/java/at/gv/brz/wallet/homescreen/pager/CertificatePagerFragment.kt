@@ -23,8 +23,13 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import at.gv.brz.common.util.getStatusInformationString
 import at.gv.brz.common.util.makeBold
+import at.gv.brz.common.util.makeSubStringBold
+import at.gv.brz.eval.data.EvalErrorCodes
 import at.gv.brz.eval.data.state.CheckNationalRulesState
+import at.gv.brz.eval.data.state.CheckSignatureState
+import at.gv.brz.eval.data.state.VerificationResultStatus
 import at.gv.brz.eval.data.state.VerificationState
 import at.gv.brz.eval.models.CertType
 import at.gv.brz.eval.models.DccHolder
@@ -103,14 +108,16 @@ class CertificatePagerFragment : Fragment() {
 		certificatesViewModel.startVerification(dccHolder)
 	}
 
-	private fun updateStatusInfo(verificationState: VerificationState?) {
+	private fun updateStatusInfo(verificationState: VerificationResultStatus?) {
 		val state = verificationState ?: return
 
 		when (state) {
-			is VerificationState.LOADING -> displayLoadingState()
-			is VerificationState.SUCCESS -> displaySuccessState()
-			is VerificationState.INVALID -> displayInvalidState(state)
-			is VerificationState.ERROR -> displayErrorState(state)
+			is VerificationResultStatus.LOADING -> displayLoadingState()
+			is VerificationResultStatus.SUCCESS -> displaySuccessState(state)
+			is VerificationResultStatus.ERROR -> displayErrorState(state)
+			is VerificationResultStatus.SIGNATURE_INVALID -> displayInvalidState(state)
+			is VerificationResultStatus.TIMEMISSING -> displayTimeMissingState()
+			is VerificationResultStatus.DATAEXPIRED -> displayDataExpiredState()
 		}
 
 		setCertificateDetailTextColor(state.getNameDobColor())
@@ -123,18 +130,30 @@ class CertificatePagerFragment : Fragment() {
 		setInfoBubbleBackground(R.color.greyish)
 		binding.certificatePageStatusIcon.setImageResource(0)
 		binding.certificatePageInfo.text = SpannableString(context.getString(R.string.wallet_certificate_verifying))
+
+		binding.certificatePageStatusIcon.visibility = View.VISIBLE
+		binding.certificatePageInfo.visibility = View.VISIBLE
+		binding.certificatePageInfoCircle.visibility = View.VISIBLE
+		binding.certificatePageRegionValidityContainer.visibility = View.INVISIBLE
+		binding.certificatePageValidityHintEt.visibility = View.GONE
 	}
 
-	private fun displaySuccessState() {
-		val context = context ?: return
+	private fun displaySuccessState(state: VerificationResultStatus.SUCCESS) {
 		showLoadingIndicator(false)
-		setInfoBubbleBackground(R.color.greenish)
-		binding.certificatePageStatusIcon.setImageResource(R.drawable.ic_info_blue)
-		binding.certificatePageInfo.text = SpannableString(context.getString(R.string.verifier_verify_success_info))
+		setInfoBubbleBackground(R.color.green_light)
 
+		binding.certificatePageStatusIcon.visibility = View.INVISIBLE
+		binding.certificatePageInfo.visibility = View.INVISIBLE
+		binding.certificatePageInfoCircle.visibility = View.INVISIBLE
+		binding.certificatePageRegionValidityContainer.visibility = View.VISIBLE
+		binding.certificatePageRegionValidityContainer.clipToOutline = true
+		binding.certificatePageValidityHintEt.visibility = View.VISIBLE
+
+		binding.certificatePageInfoEt.setBackgroundResource(if (state.results.first { it.region == "ET" }.valid) { R.color.green_light} else { R.color.red})
+		binding.certificatePageInfoNg.setBackgroundResource(if (state.results.first { it.region == "NG" }.valid) { R.color.green_light} else { R.color.red})
 	}
 
-	private fun displayInvalidState(state: VerificationState.INVALID) {
+	private fun displayInvalidState(state: VerificationResultStatus.SIGNATURE_INVALID) {
 		val context = context ?: return
 		showLoadingIndicator(false)
 
@@ -158,23 +177,62 @@ class CertificatePagerFragment : Fragment() {
 		binding.certificatePageMainGroup.alpha = 0.25f
 
 		setInfoBubbleBackground(infoBubbleColorId)
+
+		binding.certificatePageStatusIcon.visibility = View.VISIBLE
+		binding.certificatePageInfo.visibility = View.VISIBLE
+		binding.certificatePageInfoCircle.visibility = View.VISIBLE
+		binding.certificatePageValidityHintEt.visibility = View.GONE
+		binding.certificatePageRegionValidityContainer.visibility = View.INVISIBLE
+
 		binding.certificatePageStatusIcon.setImageResource(statusIconId)
-		binding.certificatePageInfo.text = state.getValidationStatusString(context)
+		binding.certificatePageInfo.text = context.getString(R.string.wallet_error_invalid_signature)
+			.makeSubStringBold(context.getString(R.string.wallet_error_invalid_signature_bold))
 	}
 
-	private fun displayErrorState(state: VerificationState.ERROR) {
+	private fun displayErrorState(state: VerificationResultStatus.ERROR) {
 		val context = context ?: return
 		showLoadingIndicator(false)
-		setInfoBubbleBackground(R.color.greyish)
+		setInfoBubbleBackground(R.color.red)
 
-		val statusIconId = if (state.isOfflineMode()) R.drawable.ic_offline else R.drawable.ic_process_error_grey
-		binding.certificatePageStatusIcon.setImageResource(statusIconId)
+		binding.certificatePageStatusIcon.visibility = View.VISIBLE
+		binding.certificatePageInfo.visibility = View.VISIBLE
+		binding.certificatePageInfoCircle.visibility = View.VISIBLE
+		binding.certificatePageRegionValidityContainer.visibility = View.INVISIBLE
+		binding.certificatePageValidityHintEt.visibility = View.GONE
 
-		binding.certificatePageInfo.text = if (state.isOfflineMode()) {
-			context.getString(R.string.wallet_homescreen_offline).makeBold()
-		} else {
-			SpannableString(context.getString(R.string.wallet_homescreen_network_error))
-		}
+		binding.certificatePageStatusIcon.setImageResource(R.drawable.ic_error)
+		binding.certificatePageInfo.text = context.getString(R.string.wallet_error_invalid_format)
+			.makeSubStringBold(context.getString(R.string.wallet_error_invalid_format_bold))
+	}
+
+	private fun displayTimeMissingState() {
+		val context = context ?: return
+		showLoadingIndicator(false)
+		setInfoBubbleBackground(R.color.orange)
+
+		binding.certificatePageStatusIcon.visibility = View.VISIBLE
+		binding.certificatePageInfo.visibility = View.VISIBLE
+		binding.certificatePageInfoCircle.visibility = View.VISIBLE
+		binding.certificatePageRegionValidityContainer.visibility = View.INVISIBLE
+		binding.certificatePageValidityHintEt.visibility = View.GONE
+
+		binding.certificatePageStatusIcon.setImageResource(R.drawable.ic_info_orange)
+		binding.certificatePageInfo.text = context.getString(R.string.wallet_time_missing)
+	}
+
+	private fun displayDataExpiredState() {
+		val context = context ?: return
+		showLoadingIndicator(false)
+		setInfoBubbleBackground(R.color.orange)
+
+		binding.certificatePageStatusIcon.visibility = View.VISIBLE
+		binding.certificatePageInfo.visibility = View.VISIBLE
+		binding.certificatePageInfoCircle.visibility = View.VISIBLE
+		binding.certificatePageRegionValidityContainer.visibility = View.INVISIBLE
+		binding.certificatePageValidityHintEt.visibility = View.GONE
+
+		binding.certificatePageStatusIcon.setImageResource(R.drawable.ic_no_connection)
+		binding.certificatePageInfo.text = context.getString(R.string.wallet_validation_data_expired)
 	}
 
 	private fun showLoadingIndicator(isLoading: Boolean) {

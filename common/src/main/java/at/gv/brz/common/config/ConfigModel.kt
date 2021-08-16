@@ -17,7 +17,7 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class ConfigModel(
-	val forceUpdate: Boolean,
+	val android: String?,
 	val infoBox: Map<String, InfoBoxModel>?,
 	val questions: Map<String, FaqModel>?,
 	val works: Map<String, FaqModel>?

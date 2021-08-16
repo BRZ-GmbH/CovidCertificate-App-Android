@@ -1,0 +1,11 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:bottom="@dimen/spacing_medium"
+        android:left="@dimen/spacing_medium"
+        android:right="@dimen/spacing_medium"
+        android:top="@dimen/spacing_medium">
+        <shape android:shape="oval">
+            <solid android:color="@android:color/white" />
+        </shape>
+    </item>
+</layer-list>

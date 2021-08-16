@@ -23,7 +23,7 @@ import at.gv.brz.common.net.ConfigSpec
 import at.gv.brz.common.util.SingleLiveEvent
 import at.gv.brz.eval.CovidCertificateSdk
 import at.gv.brz.eval.data.state.DecodeState
-import at.gv.brz.eval.data.state.VerificationState
+import at.gv.brz.eval.data.state.VerificationResultStatus
 import at.gv.brz.eval.decoder.CertificateDecoder
 import at.gv.brz.eval.models.DccHolder
 import at.gv.brz.eval.verification.CertificateVerificationTask
@@ -34,6 +34,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.apache.commons.io.IOUtils
+import java.nio.charset.Charset
 import kotlin.collections.set
 
 class CertificatesViewModel(application: Application) : AndroidViewModel(application) {
@@ -57,7 +59,7 @@ class CertificatesViewModel(application: Application) : AndroidViewModel(applica
 			// When the stored DccHolders change, map the verified certificates with the existing verification state or LOADING
 			val currentVerifiedCertificates = verifiedCertificates.value ?: emptyList()
 			verifiedCertificatesMutableLiveData.value = certificates.map { certificate ->
-				currentVerifiedCertificates.find { it.dccHolder == certificate } ?: VerifiedCertificate(certificate, VerificationState.LOADING)
+				currentVerifiedCertificates.find { it.dccHolder == certificate } ?: VerifiedCertificate(certificate, VerificationResultStatus.LOADING)
 			}
 
 			// (Re-)Verify all certificates
@@ -75,12 +77,15 @@ class CertificatesViewModel(application: Application) : AndroidViewModel(applica
 
 	fun startVerification(dccHolder: DccHolder, delayInMillis: Long = 0L, isForceVerification: Boolean = false) {
 		if (isForceVerification) {
-			verificationController.refreshTrustList(viewModelScope)
+			verificationController.refreshTrustList(viewModelScope, true)
 		}
 
 		verificationJobs[dccHolder]?.cancel()
 
-		val task = CertificateVerificationTask(dccHolder, connectivityManager)
+		val context: Context = getApplication()
+		val schemaJson = IOUtils.toString(context.assets.open("JSON_SCHEMA.json"), Charset.defaultCharset())
+
+		val task = CertificateVerificationTask(dccHolder, connectivityManager, schemaJson, "AT", listOf("ET", "NG"), false)
 		val job = viewModelScope.launch {
 			task.verificationStateFlow.collect { state ->
 				// Replace the verified certificate in the live data
@@ -98,7 +103,7 @@ class CertificatesViewModel(application: Application) : AndroidViewModel(applica
 				}
 
 				// Once the verification state is not loading anymore, cancel the flow collection job (otherwise the flow stays active without emitting anything)
-				if (state !is VerificationState.LOADING) {
+				if (state !is VerificationResultStatus.LOADING) {
 					verificationJobs[dccHolder]?.cancel()
 					verificationJobs.remove(dccHolder)
 				}
@@ -146,5 +151,5 @@ class CertificatesViewModel(application: Application) : AndroidViewModel(applica
 		}
 	}
 
-	data class VerifiedCertificate(val dccHolder: DccHolder, val state: VerificationState)
+	data class VerifiedCertificate(val dccHolder: DccHolder, val state: VerificationResultStatus)
 }
