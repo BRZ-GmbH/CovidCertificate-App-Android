@@ -1,5 +1,8 @@
 # Grüner Pass - Release Notes
 
+## v.2.0.1 (08.2021)
+- Korrektur eines Absturzes beim Einlesen der "JSON_SCHEMA.json" unter Android 7
+
 ## v.2.0.0 (08.2021)
 
 - Integration der Validierung der nationalen Regeln für Eintritt und Nachgastronomie, sowie Prüfung von Alter der Daten (EPIEMSCO-1122)

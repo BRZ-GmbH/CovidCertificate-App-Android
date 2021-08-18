@@ -447,8 +447,8 @@ invalid"</string>
     <string name="region_type_NG">"Night Club"</string>
 
     <!-- Warnung bei fehlender aktueller Zeit durch Timeserver -->
-    <string name="wallet_time_missing">"3-G Status not available, please active internet connection"</string>
-    <string name="wallet_validation_data_expired">"3-G Status not available, please active internet connection"</string>
+    <string name="wallet_time_missing">"3-G Status not available, please activate internet connection"</string>
+    <string name="wallet_validation_data_expired">"3-G Status not available, please activate internet connection"</string>
     <string name="wallet_3g_status_disclaimer">"3-G Preview: Only valid with GreenCheck scan and ID"</string>
 
 </resources>

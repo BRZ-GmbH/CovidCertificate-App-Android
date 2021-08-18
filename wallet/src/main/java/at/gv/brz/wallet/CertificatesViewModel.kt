@@ -34,8 +34,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.apache.commons.io.IOUtils
-import java.nio.charset.Charset
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.lang.StringBuilder
 import kotlin.collections.set
 
 class CertificatesViewModel(application: Application) : AndroidViewModel(application) {
@@ -75,6 +76,19 @@ class CertificatesViewModel(application: Application) : AndroidViewModel(applica
 		}
 	}
 
+	fun readSchema(): String {
+		val context: Context = getApplication()
+		val inputStream = context.assets.open("JSON_SCHEMA.json")
+		val reader = BufferedReader(InputStreamReader(inputStream))
+		val out = StringBuilder()
+		var line: String?
+		while (reader.readLine().also { line = it } != null) {
+			out.append(line)
+		}
+		reader.close()
+		return out.toString()
+	}
+
 	fun startVerification(dccHolder: DccHolder, delayInMillis: Long = 0L, isForceVerification: Boolean = false) {
 		if (isForceVerification) {
 			verificationController.refreshTrustList(viewModelScope, true)
@@ -83,7 +97,7 @@ class CertificatesViewModel(application: Application) : AndroidViewModel(applica
 		verificationJobs[dccHolder]?.cancel()
 
 		val context: Context = getApplication()
-		val schemaJson = IOUtils.toString(context.assets.open("JSON_SCHEMA.json"), Charset.defaultCharset())
+		val schemaJson = readSchema()
 
 		val task = CertificateVerificationTask(dccHolder, connectivityManager, schemaJson, "AT", listOf("ET", "NG"), false)
 		val job = viewModelScope.launch {
