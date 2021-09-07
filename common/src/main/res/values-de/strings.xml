@@ -450,4 +450,21 @@ ungültig"</string>
     <string name="wallet_time_missing">"3-G Status nicht verfügbar, bitte aktivieren Sie die Internetverbindung"</string>
     <string name="wallet_validation_data_expired">"3-G Status nicht verfügbar, bitte aktivieren Sie die Internetverbindung"</string>
     <string name="wallet_3g_status_disclaimer">"3-G Voransicht: Nur gültig mit GreenCheck und Ausweis"</string>
+
+    <string name="wallet_region_selection_title">"Bundeslandauswahl"</string>
+
+    <string name="wallet_region_selection_header_title">"Bundesland wählen"</string>
+    <string name="wallet_region_selection_header_message">"Je nach Bundesland können andere Zutrittsregeln gelten. Sie können das Bundesland jederzeit ändern."</string>
+
+    <string name="region_nationwide">"Bundesweit"</string>
+    <string name="region_burgenland">"Burgenland"</string>
+    <string name="region_wien">"Wien"</string>
+    <string name="region_kaernten">"Kärnten"</string>
+    <string name="region_niederoesterreich">"Niederösterreich"</string>
+    <string name="region_oberoesterreich">"Oberösterreich"</string>
+    <string name="region_salzburg">"Salzburg"</string>
+    <string name="region_steiermark">"Steiermark"</string>
+    <string name="region_tirol">"Tirol"</string>
+    <string name="region_vorarlberg">"Vorarlberg"</string>
+
 </resources>

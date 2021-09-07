@@ -44,6 +44,7 @@ import at.gv.brz.wallet.BuildConfig
 import at.gv.brz.wallet.CertificatesViewModel
 import at.gv.brz.wallet.R
 import at.gv.brz.wallet.add.CertificateAddFragment
+import at.gv.brz.wallet.data.Region
 import at.gv.brz.wallet.databinding.FragmentHomeBinding
 import at.gv.brz.wallet.debug.DebugFragment
 import at.gv.brz.wallet.detail.CertificateDetailFragment
@@ -53,6 +54,7 @@ import at.gv.brz.wallet.list.CertificatesListFragment
 import at.gv.brz.wallet.pdf.PdfImportState
 import at.gv.brz.wallet.pdf.PdfViewModel
 import at.gv.brz.wallet.qr.WalletQrScanFragment
+import at.gv.brz.wallet.regionlist.RegionListFragment
 import com.google.android.material.tabs.TabLayoutMediator
 import java.util.concurrent.atomic.AtomicLong
 
@@ -123,6 +125,7 @@ class HomeFragment : Fragment() {
 				.addToBackStack(CertificatesListFragment::class.java.canonicalName)
 				.commit()
 		}
+
 		val impressumClickListener = View.OnClickListener {
 			val buildInfo =
 				BuildInfo(
@@ -146,6 +149,16 @@ class HomeFragment : Fragment() {
 				.addToBackStack(HtmlFragment::class.java.canonicalName)
 				.commit()
 		}
+
+		val regionSelectionClickListener = View.OnClickListener {
+			parentFragmentManager.beginTransaction()
+				.setCustomAnimations(R.anim.slide_enter, R.anim.slide_exit, R.anim.slide_pop_enter, R.anim.slide_pop_exit)
+				.replace(R.id.fragment_container, RegionListFragment.newInstance())
+				.addToBackStack(RegionListFragment::class.java.canonicalName)
+				.commit()
+		}
+		binding.homescreenHeaderEmpty.headerRegion.setOnClickListener(regionSelectionClickListener)
+		binding.homescreenHeaderNotEmpty.headerRegion.setOnClickListener(regionSelectionClickListener)
 		binding.homescreenHeaderEmpty.headerImpressum.setOnClickListener(impressumClickListener)
 		binding.homescreenHeaderNotEmpty.headerImpressum.setOnClickListener(impressumClickListener)
 
@@ -326,6 +339,11 @@ class HomeFragment : Fragment() {
 				}
 			}
 		}
+		val selectedRegion = Region.values().first { it.identifier == certificatesViewModel.secureStorage.getSelectedValidationRegion() }
+		binding.homescreenHeaderEmpty.headerRegionFlag.setImageResource(selectedRegion.getFlag())
+		binding.homescreenHeaderNotEmpty.headerRegionFlag.setImageResource(selectedRegion.getFlag())
+		binding.homescreenHeaderEmpty.headerRegionText.setText(selectedRegion.getName())
+		binding.homescreenHeaderNotEmpty.headerRegionText.setText(selectedRegion.getName())
 	}
 
 	private fun setupInfoBox() {

@@ -214,8 +214,8 @@ class CertificateDetailFragment : Fragment() {
 		binding.certificateDetailRegionValidityContainer.clipToOutline = true
 		binding.certificateDetailValidityHintEt.visibility = View.VISIBLE
 
-		binding.certificateDetailInfoEt.setBackgroundResource(if (state.results.first { it.region == "ET" }.valid) { R.color.green_light} else { R.color.red})
-		binding.certificateDetailInfoNg.setBackgroundResource(if (state.results.first { it.region == "NG" }.valid) { R.color.green_light} else { R.color.red})
+		binding.certificateDetailInfoEt.setBackgroundResource(if (state.results.first { it.region?.startsWith("ET") == true }.valid) { R.color.green_light} else { R.color.red})
+		binding.certificateDetailInfoNg.setBackgroundResource(if (state.results.first { it.region?.startsWith("NG") == true }.valid) { R.color.green_light} else { R.color.red})
 	}
 
 	private fun displayInvalidState(state: VerificationResultStatus.SIGNATURE_INVALID) {

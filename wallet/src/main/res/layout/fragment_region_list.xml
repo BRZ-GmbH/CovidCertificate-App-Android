@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2021 Ubique Innovation AG <https://www.ubique.ch>
+  ~
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  ~
+  ~ SPDX-License-Identifier: MPL-2.0
+  -->
+
+<at.gv.brz.common.views.WindowInsetsLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    app:applyWindowInsets="all">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/region_list_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:elevation="@dimen/toolbar_elevation"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationContentDescription="@string/accessibility_close_button"
+            app:navigationIcon="@drawable/ic_close_red"
+            app:title="@string/wallet_region_selection_title"
+            app:titleTextAppearance="@style/CovidCertificate.ToolbarTitle"
+            app:titleTextColor="@color/grey" />
+
+        <LinearLayout
+            android:id="@+id/region_list_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/spacing_medium_large"
+            android:paddingTop="@dimen/spacing_medium_large"
+            android:paddingBottom="@dimen/spacing_medium_large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/region_list_toolbar">
+
+            <TextView
+                android:id="@+id/region_list__header_title"
+                style="@style/CovidCertificate.Text.Bold.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/wallet_region_selection_header_title" />
+
+            <TextView
+                android:id="@+id/region_list_header_text"
+                style="@style/CovidCertificate.Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_medium_large"
+                android:text="@string/wallet_region_selection_header_message" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/region_list_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/background_light"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/region_list_header"
+            tools:listitem="@layout/item_region" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</at.gv.brz.common.views.WindowInsetsLayout>

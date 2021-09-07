@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2021 Ubique Innovation AG <https://www.ubique.ch>
   ~
   ~ This Source Code Form is subject to the terms of the Mozilla Public
@@ -10,54 +9,111 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
-	android:orientation="vertical" >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-	<FrameLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_gravity="bottom"
-		android:paddingTop="@dimen/spacing_large"
-		android:paddingBottom="@dimen/spacing_very_small"
-		android:paddingHorizontal="@dimen/spacing_medium_small"
-		>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:paddingHorizontal="@dimen/spacing_medium_small"
+        android:paddingTop="@dimen/spacing_large"
+        android:paddingBottom="@dimen/spacing_very_small">
 
-		<ImageView
-			android:id="@+id/schwiizerchruez"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="start|center_vertical"
-			android:paddingStart="16dp"
-			android:src="@drawable/ic_bundwappen_big" />
+        <ImageView
+            android:id="@+id/schwiizerchruez"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:paddingStart="16dp"
+            android:src="@drawable/ic_bundwappen_big"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-		<ImageView
-			android:id="@+id/header_impressum"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="end|center_vertical"
-			android:background="@drawable/ripple_rounded"
-			android:padding="@dimen/spacing_medium_large"
-			android:src="@drawable/ic_info_outline" />
+        <ImageView
+            android:id="@+id/header_impressum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:background="@drawable/ripple_rounded"
+            android:padding="@dimen/spacing_medium_large"
+            android:src="@drawable/ic_info_outline"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-		<ImageView
-			android:id="@+id/header_notification"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="start|center_vertical"
-			android:background="@drawable/ripple_rounded"
-			android:padding="@dimen/spacing_tiny_small"
-			android:src="@drawable/ic_notification"
-			android:visibility="gone"
-			tools:visibility="visible" />
-	</FrameLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/header_region"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/button_height"
+            android:background="@drawable/ripple_rounded_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/header_impressum"
+            app:layout_constraintTop_toTopOf="parent">
 
-	<ImageView
-		android:visibility="gone"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:scaleType="fitXY"
-		android:src="@drawable/ic_header_slim" />
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/header_region_flag"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="@dimen/spacing_medium_large"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+                app:srcCompat="@drawable/ic_flag_at"
+                app:strokeColor="@color/grey_light"
+                app:strokeWidth="1dp" />
+
+            <TextView
+                android:id="@+id/header_region_text"
+                style="@style/CovidCertificate.Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_small"
+                android:text="@string/region_nationwide"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/header_region_flag"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/header_region_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_region_arrow_down"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/header_region_text"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/header_notification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_gravity="start|center_vertical"
+            android:background="@drawable/ripple_rounded"
+            android:padding="@dimen/spacing_tiny_small"
+            android:src="@drawable/ic_notification"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_header_slim"
+        android:visibility="gone" />
 
 </LinearLayout>

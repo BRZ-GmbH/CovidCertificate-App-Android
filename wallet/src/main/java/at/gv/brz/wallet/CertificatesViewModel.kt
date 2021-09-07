@@ -28,6 +28,8 @@ import at.gv.brz.eval.decoder.CertificateDecoder
 import at.gv.brz.eval.models.DccHolder
 import at.gv.brz.eval.verification.CertificateVerificationTask
 import at.gv.brz.wallet.data.CertificateStorage
+import at.gv.brz.wallet.data.WalletSecureStorage
+import at.gv.brz.wallet.data.regionModifiedProfile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -52,6 +54,7 @@ class CertificatesViewModel(application: Application) : AndroidViewModel(applica
 	private val verificationJobs = mutableMapOf<DccHolder, Job>()
 
 	private val certificateStorage: CertificateStorage by lazy { CertificateStorage.getInstance(getApplication()) }
+	val secureStorage by lazy { WalletSecureStorage.getInstance(getApplication()) }
 
 	val onQrCodeClickedSingleLiveEvent = SingleLiveEvent<DccHolder>()
 
@@ -99,7 +102,7 @@ class CertificatesViewModel(application: Application) : AndroidViewModel(applica
 		val context: Context = getApplication()
 		val schemaJson = readSchema()
 
-		val task = CertificateVerificationTask(dccHolder, connectivityManager, schemaJson, "AT", listOf("ET", "NG"), false)
+		val task = CertificateVerificationTask(dccHolder, connectivityManager, schemaJson, "AT", listOf("ET".regionModifiedProfile(secureStorage.getSelectedValidationRegion()), "NG".regionModifiedProfile(secureStorage.getSelectedValidationRegion())), false)
 		val job = viewModelScope.launch {
 			task.verificationStateFlow.collect { state ->
 				// Replace the verified certificate in the live data

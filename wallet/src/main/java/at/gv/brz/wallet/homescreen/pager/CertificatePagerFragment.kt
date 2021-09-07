@@ -142,8 +142,8 @@ class CertificatePagerFragment : Fragment() {
 		binding.certificatePageRegionValidityContainer.clipToOutline = true
 		binding.certificatePageValidityHintEt.visibility = View.VISIBLE
 
-		binding.certificatePageInfoEt.setBackgroundResource(if (state.results.first { it.region == "ET" }.valid) { R.color.green_light} else { R.color.red})
-		binding.certificatePageInfoNg.setBackgroundResource(if (state.results.first { it.region == "NG" }.valid) { R.color.green_light} else { R.color.red})
+		binding.certificatePageInfoEt.setBackgroundResource(if (state.results.first { it.region?.startsWith("ET") == true }.valid) { R.color.green_light} else { R.color.red})
+		binding.certificatePageInfoNg.setBackgroundResource(if (state.results.first { it.region?.startsWith("NG") == true }.valid) { R.color.green_light} else { R.color.red})
 	}
 
 	private fun displayInvalidState(state: VerificationResultStatus.SIGNATURE_INVALID) {

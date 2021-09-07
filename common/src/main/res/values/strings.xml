@@ -451,4 +451,19 @@ invalid"</string>
     <string name="wallet_validation_data_expired">"3-G Status not available, please activate internet connection"</string>
     <string name="wallet_3g_status_disclaimer">"3-G Preview: Only valid with GreenCheck scan and ID"</string>
 
+    <string name="wallet_region_selection_title">"Federal State Selection"</string>
+
+    <string name="wallet_region_selection_header_title">"Select a federal state"</string>
+    <string name="wallet_region_selection_header_message">"Different regulations may apply depending on the federal state. You can change the federal state at any time."</string>
+
+    <string name="region_nationwide">"Nationwide"</string>
+    <string name="region_burgenland">"Burgenland"</string>
+    <string name="region_wien">"Vienna"</string>
+    <string name="region_kaernten">"Carinthia"</string>
+    <string name="region_niederoesterreich">"Lower Austria"</string>
+    <string name="region_oberoesterreich">"Upper Austria"</string>
+    <string name="region_salzburg">"Salzburg"</string>
+    <string name="region_steiermark">"Styria"</string>
+    <string name="region_tirol">"Tirol"</string>
+    <string name="region_vorarlberg">"Vorarlberg"</string>
 </resources>

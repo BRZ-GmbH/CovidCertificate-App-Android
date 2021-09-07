@@ -1,5 +1,9 @@
 # Grüner Pass - Release Notes
 
+## v.2.0.2 (08.2021)
+- EPIEMSCO-1562: neue Wiener Regeln - Wallet App
+- Fehlerbehebungen
+
 ## v.2.0.1 (08.2021)
 - Korrektur eines Absturzes beim Einlesen der "JSON_SCHEMA.json" unter Android 7
 

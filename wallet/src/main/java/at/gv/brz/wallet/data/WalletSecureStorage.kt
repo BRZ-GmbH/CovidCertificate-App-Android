@@ -24,6 +24,7 @@ class WalletSecureStorage private constructor(context: Context) {
 
 		private const val PREFERENCES = "SecureStorage"
 		private const val KEY_ONBOARDING_COMPLETED = "onboarding_completed"
+		private const val KEY_SELECTED_VALIDATION_REGION = "selected_validation_region"
 	}
 
 	private val prefs: SharedPreferences
@@ -64,5 +65,9 @@ class WalletSecureStorage private constructor(context: Context) {
 	fun getOnboardingCompleted(): Boolean = prefs.getBoolean(KEY_ONBOARDING_COMPLETED, false)
 
 	fun setOnboardingCompleted(completed: Boolean) = prefs.edit().putBoolean(KEY_ONBOARDING_COMPLETED, completed).apply()
+
+	fun getSelectedValidationRegion(): String = prefs.getString(KEY_SELECTED_VALIDATION_REGION, "")!!
+
+	fun setSelectedValidationRegion(region: String) = prefs.edit().putString(KEY_SELECTED_VALIDATION_REGION, region).apply()
 
 }
