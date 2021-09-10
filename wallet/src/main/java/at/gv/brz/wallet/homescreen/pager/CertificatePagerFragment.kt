@@ -31,6 +31,7 @@ import at.gv.brz.eval.data.state.CheckNationalRulesState
 import at.gv.brz.eval.data.state.CheckSignatureState
 import at.gv.brz.eval.data.state.VerificationResultStatus
 import at.gv.brz.eval.data.state.VerificationState
+import at.gv.brz.eval.models.CertType
 import at.gv.brz.eval.models.DccHolder
 import at.gv.brz.eval.utils.DEFAULT_DISPLAY_DATE_FORMATTER
 import at.gv.brz.eval.utils.prettyPrintIsoDateTime
@@ -72,6 +73,12 @@ class CertificatePagerFragment : Fragment() {
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		when (dccHolder.certType) {
+			CertType.TEST -> binding.certificatePageType.text = SpannableString(context?.getString(R.string.covid_certificate_test_title))
+			CertType.VACCINATION -> binding.certificatePageType.text = SpannableString(context?.getString(R.string.covid_certificate_vaccination_title))
+			CertType.RECOVERY -> binding.certificatePageType.text = SpannableString(context?.getString(R.string.covid_certificate_recovery_title))
+		}
+
 		val qrCodeBitmap = QrCode.renderToBitmap(dccHolder.qrCodeData)
 		val qrCodeDrawable = BitmapDrawable(resources, qrCodeBitmap).apply { isFilterBitmap = false }
 		binding.certificatePageQrCode.setImageDrawable(qrCodeDrawable)
@@ -150,8 +157,25 @@ class CertificatePagerFragment : Fragment() {
 		val context = context ?: return
 		showLoadingIndicator(false)
 
-		val infoBubbleColorId: Int = R.color.red
-		val statusIconId: Int = R.drawable.ic_error
+		val infoBubbleColorId: Int
+		val statusIconId: Int
+		when (state.nationalRulesState) {
+			is CheckNationalRulesState.NOT_VALID_ANYMORE -> {
+				infoBubbleColorId = R.color.blueish
+				statusIconId = R.drawable.ic_invalid_grey
+			}
+			is CheckNationalRulesState.NOT_YET_VALID -> {
+				infoBubbleColorId = R.color.blueish
+				statusIconId = R.drawable.ic_timelapse
+			}
+			else -> {
+				infoBubbleColorId = R.color.greyish
+				statusIconId = R.drawable.ic_error_grey
+			}
+		}
+
+		binding.certificatePageMainGroup.alpha = 0.25f
+
 		setInfoBubbleBackground(infoBubbleColorId)
 
 		binding.certificatePageStatusIcon.visibility = View.VISIBLE

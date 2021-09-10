@@ -50,6 +50,16 @@
 					android:orientation="vertical"
 					android:padding="@dimen/spacing_very_large">
 
+					<TextView
+						android:id="@+id/certificate_detail_type"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:gravity="center_horizontal"
+						android:text="Imfung/Test/Genesen"
+						android:textColor="@color/green_dark"
+						android:textSize="20sp"
+						android:textStyle="bold" />
+
 					<FrameLayout
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"

@@ -7,7 +7,7 @@ Es basiert auf auf der OpenSource-App des [Schweizer Bundesamt für Information 
 
 ## Grüner Pass App
 
-Der Grüne Pass ist die offizielle App des Bundesministeriums für Soziales, Gesundheit, Pflege und Konsumentenschutz (BMSGPK) zum Verwahren und Vorzeigen von EU-konformen Covid-19-Zertifikaten aus Österreich. Geladene Zertifikate werden ausschließlich lokal gespeichert.
+Der Grüne Pass ist die offizielle App des Bundesministeriums für Soziales, Gesundheit, Pflege und Konsumentenschutz (BMSGPK) zum Verwahren und Vorzeigen von EU-konformen Covid-19-Zertifikaten in Österreich. Geladene Zertifikate werden ausschließlich lokal gespeichert.
 
 <p>
 <a href='https://play.google.com/store/apps/details?id=at.gv.brz.wallet'>
@@ -51,8 +51,7 @@ Das APK ist anschließend unter `wallet/build/outputs/apk/prod/release/wallet-pr
 
 ## Reproducible builds
 
-To verify that the app distributed on the Play Store was built by the source code published here, please see the instructions
-in [REPRODUCIBLE_BUILDS.md](REPRODUCIBLE_BUILDS.md).
+Um zu verifizieren, dass die App im Play Store aus dem selben Code besteht, siehe bitte die Instruktionen in [REPRODUCIBLE_BUILDS.md](REPRODUCIBLE_BUILDS.md).
 
 ## Lizenz
 

@@ -45,15 +45,26 @@
 				android:text="@string/covid_certificate_title"
 				app:layout_constraintTop_toTopOf="parent" />
 
+			<TextView
+				android:id="@+id/certificate_page_type"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center_horizontal"
+				android:text="Impfung/Test/Genesen"
+				android:textColor="@color/green_dark"
+				android:textSize="20sp"
+				android:textStyle="bold"
+				app:layout_constraintTop_toBottomOf="@+id/certificate_page_title"
+				tools:layout_editor_absoluteX="15dp" />
+
 			<ImageView
 				android:id="@+id/certificate_page_qr_code"
 				android:layout_width="0dp"
 				android:layout_height="0dp"
-				android:layout_marginTop="@dimen/spacing_medium_large"
 				app:layout_constraintBottom_toBottomOf="parent"
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toBottomOf="@id/certificate_page_title"
+				app:layout_constraintTop_toBottomOf="@+id/certificate_page_type"
 				tools:src="@drawable/ic_qrcode" />
 
 		</androidx.constraintlayout.widget.ConstraintLayout>

@@ -61,7 +61,9 @@ object QRCodeReaderHelper {
 			if (pageCount <= 2) {
 				for (i in 0 until pageCount) {
 					val page: PdfRenderer.Page = renderer.openPage(i)
+
 					val width = page.width
+
 					val height = page.height
 					bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
 
@@ -69,7 +71,10 @@ object QRCodeReaderHelper {
 					canvas.drawColor(Color.WHITE)
 					canvas.drawBitmap(bitmap, 0.0f, 0.0f, null)
 
-					val r = Rect(0, 0, width, height)
+
+					//val r = Rect(0, 0, width, height)
+					//page.render(bitmap, r, null, PdfRenderer.Page.RENDER_MODE_FOR_PRINT)
+
 					page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_PRINT)
 					bitmaps.add(bitmap)
 
