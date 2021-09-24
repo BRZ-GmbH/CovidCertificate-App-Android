@@ -37,14 +37,20 @@ public class UrlUtil {
 	 */
 	public static void openStoreUrl(Context context, String playUrl, String huaweiUrl) {
 		Intent intent = new Intent(Intent.ACTION_VIEW);
-		intent.setData(Uri.parse(playUrl));
-		try {
-			context.startActivity(intent);
-		} catch (ActivityNotFoundException e) {
+		PlatformUtil.PlatformType platformType = PlatformUtil.Companion.getPlatformType(context);
+
+		if (platformType == PlatformUtil.PlatformType.HUAWEI) {
 			intent.setData(Uri.parse(huaweiUrl));
 			try {
 				context.startActivity(intent);
 			} catch (ActivityNotFoundException e2) {
+				Toast.makeText(context, "No browser installed", Toast.LENGTH_LONG).show();
+			}
+		} else {
+			intent.setData(Uri.parse(playUrl));
+			try {
+				context.startActivity(intent);
+			} catch (ActivityNotFoundException e) {
 				Toast.makeText(context, "No browser installed", Toast.LENGTH_LONG).show();
 			}
 		}

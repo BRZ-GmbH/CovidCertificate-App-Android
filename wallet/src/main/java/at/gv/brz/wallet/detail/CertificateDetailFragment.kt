@@ -205,17 +205,19 @@ class CertificateDetailFragment : Fragment() {
 		// TODO: AT - Hide validity info
 		binding.certificateDetailInfoValidityGroup.isVisible = false
 		binding.certificateDetailErrorCode.isVisible = false
-		setInfoBubbleBackgrounds(R.color.green_light, R.color.green_light)
+		setInfoBubbleBackgrounds(R.color.green_valid, R.color.green_valid)
 
 		binding.certificateDetailStatusIcon.visibility = View.INVISIBLE
 		binding.certificateDetailInfo.visibility = View.INVISIBLE
 		binding.certificateDetailInfoCircle.visibility = View.INVISIBLE
 		binding.certificateDetailRegionValidityContainer.visibility = View.VISIBLE
-		binding.certificateDetailRegionValidityContainer.clipToOutline = true
 		binding.certificateDetailValidityHintEt.visibility = View.VISIBLE
 
-		binding.certificateDetailInfoEt.setBackgroundResource(if (state.results.first { it.region?.startsWith("ET") == true }.valid) { R.color.green_light} else { R.color.red})
-		binding.certificateDetailInfoNg.setBackgroundResource(if (state.results.first { it.region?.startsWith("NG") == true }.valid) { R.color.green_light} else { R.color.red})
+		binding.certificateDetailRegionEtContainer.setBackgroundResource(if (state.results.first { it.region?.startsWith("ET") == true }.valid) { R.drawable.bg_certificate_bubble_valid} else { R.drawable.bg_certificate_bubble_invalid})
+		binding.certificateDetailRegionNgContainer.setBackgroundResource(if (state.results.first { it.region?.startsWith("NG") == true }.valid) { R.drawable.bg_certificate_bubble_valid} else { R.drawable.bg_certificate_bubble_invalid})
+
+		binding.certificateDetailInfoEtIcon.setImageResource(if (state.results.first { it.region?.startsWith("ET") == true }.valid) { R.drawable.ic_check_circle} else { R.drawable.ic_minus_circle})
+		binding.certificateDetailInfoNgIcon.setImageResource(if (state.results.first { it.region?.startsWith("NG") == true }.valid) { R.drawable.ic_check_circle} else { R.drawable.ic_minus_circle})
 	}
 
 	private fun displayInvalidState(state: VerificationResultStatus.SIGNATURE_INVALID) {
@@ -228,7 +230,7 @@ class CertificateDetailFragment : Fragment() {
 		showStatusInfoAndDescription(null, context.getString(R.string.wallet_error_invalid_signature)
 			.makeSubStringBold(context.getString(R.string.wallet_error_invalid_signature_bold)),R.drawable.ic_error)
 
-		val infoBubbleColorId: Int = R.color.red
+		val infoBubbleColorId: Int = R.color.red_invalid
 
 		setInfoBubbleBackgrounds(infoBubbleColorId, infoBubbleColorId)
 
@@ -248,7 +250,7 @@ class CertificateDetailFragment : Fragment() {
 		showLoadingIndicator(false)
 		binding.certificateDetailInfoDescriptionGroup.isVisible = false
 		binding.certificateDetailInfoValidityGroup.isVisible = false
-		setInfoBubbleBackgrounds(R.color.red, R.color.red)
+		setInfoBubbleBackgrounds(R.color.red_invalid, R.color.red_invalid)
 
 		binding.certificateDetailInfo.text = context.getString(R.string.wallet_error_invalid_format)
 			.makeSubStringBold(context.getString(R.string.wallet_error_invalid_format_bold))

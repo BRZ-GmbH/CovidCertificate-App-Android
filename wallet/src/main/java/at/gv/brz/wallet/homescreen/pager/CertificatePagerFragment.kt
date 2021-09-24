@@ -133,24 +133,26 @@ class CertificatePagerFragment : Fragment() {
 
 	private fun displaySuccessState(state: VerificationResultStatus.SUCCESS) {
 		showLoadingIndicator(false)
-		setInfoBubbleBackground(R.color.green_light)
+		setInfoBubbleBackground(R.color.green_valid)
 
 		binding.certificatePageStatusIcon.visibility = View.INVISIBLE
 		binding.certificatePageInfo.visibility = View.INVISIBLE
 		binding.certificatePageInfoCircle.visibility = View.INVISIBLE
 		binding.certificatePageRegionValidityContainer.visibility = View.VISIBLE
-		binding.certificatePageRegionValidityContainer.clipToOutline = true
 		binding.certificatePageValidityHintEt.visibility = View.VISIBLE
 
-		binding.certificatePageInfoEt.setBackgroundResource(if (state.results.first { it.region?.startsWith("ET") == true }.valid) { R.color.green_light} else { R.color.red})
-		binding.certificatePageInfoNg.setBackgroundResource(if (state.results.first { it.region?.startsWith("NG") == true }.valid) { R.color.green_light} else { R.color.red})
+		binding.certificatePageRegionEtContainer.setBackgroundResource(if (state.results.first { it.region?.startsWith("ET") == true }.valid) { R.drawable.bg_certificate_bubble_valid} else { R.drawable.bg_certificate_bubble_invalid})
+		binding.certificatePageRegionNgContainer.setBackgroundResource(if (state.results.first { it.region?.startsWith("NG") == true }.valid) { R.drawable.bg_certificate_bubble_valid} else { R.drawable.bg_certificate_bubble_invalid})
+
+		binding.certificatePageInfoEtIcon.setImageResource(if (state.results.first { it.region?.startsWith("ET") == true }.valid) { R.drawable.ic_check_circle} else { R.drawable.ic_minus_circle})
+		binding.certificatePageInfoNgIcon.setImageResource(if (state.results.first { it.region?.startsWith("NG") == true }.valid) { R.drawable.ic_check_circle} else { R.drawable.ic_minus_circle})
 	}
 
 	private fun displayInvalidState(state: VerificationResultStatus.SIGNATURE_INVALID) {
 		val context = context ?: return
 		showLoadingIndicator(false)
 
-		val infoBubbleColorId: Int = R.color.red
+		val infoBubbleColorId: Int = R.color.red_invalid
 		val statusIconId: Int = R.drawable.ic_error
 		setInfoBubbleBackground(infoBubbleColorId)
 
@@ -168,7 +170,7 @@ class CertificatePagerFragment : Fragment() {
 	private fun displayErrorState(state: VerificationResultStatus.ERROR) {
 		val context = context ?: return
 		showLoadingIndicator(false)
-		setInfoBubbleBackground(R.color.red)
+		setInfoBubbleBackground(R.color.red_invalid)
 
 		binding.certificatePageStatusIcon.visibility = View.VISIBLE
 		binding.certificatePageInfo.visibility = View.VISIBLE

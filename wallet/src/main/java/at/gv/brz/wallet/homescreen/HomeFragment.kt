@@ -11,6 +11,7 @@
 package at.gv.brz.wallet.homescreen
 
 import android.content.ActivityNotFoundException
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -25,6 +26,7 @@ import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import at.gv.brz.common.config.InfoBoxModel
@@ -55,7 +57,12 @@ import at.gv.brz.wallet.pdf.PdfImportState
 import at.gv.brz.wallet.pdf.PdfViewModel
 import at.gv.brz.wallet.qr.WalletQrScanFragment
 import at.gv.brz.wallet.regionlist.RegionListFragment
+import at.gv.brz.wallet.util.NotificationUtil
+import at.gv.brz.wallet.util.neverAgainNotificationTimestamp
+import at.gv.brz.wallet.util.nextNotificationTimestamp
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicLong
 
 class HomeFragment : Fragment() {
@@ -76,6 +83,9 @@ class HomeFragment : Fragment() {
 	private lateinit var certificatesAdapter: CertificatesPagerAdapter
 
 	private var isAddOptionsShowing = false
+
+	private var certificateBoosterNotificationDialog: AlertDialog? = null
+	private var certificateBoosterNotificationHash: Int = 0
 
 	private val filePickerLauncher =
 		registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult: ActivityResult ->
@@ -101,6 +111,13 @@ class HomeFragment : Fragment() {
 	override fun onResume() {
 		super.onResume()
 		reloadCertificates()
+	}
+
+	override fun onPause() {
+		super.onPause()
+		certificateBoosterNotificationDialog?.dismiss()
+		certificateBoosterNotificationDialog = null
+		certificateBoosterNotificationHash = 0
 	}
 
 	override fun onDestroyView() {
@@ -162,25 +179,36 @@ class HomeFragment : Fragment() {
 		binding.homescreenHeaderEmpty.headerImpressum.setOnClickListener(impressumClickListener)
 		binding.homescreenHeaderNotEmpty.headerImpressum.setOnClickListener(impressumClickListener)
 
-		if (DebugFragment.EXISTS) {
+		/**
+		 * In test builds (for Q as well as P environment) we support a double tap on the country flag to change the device time setting.
+		 * This setting allows the app to either use the real time fetched from a time server (behaviour in the published app) or to use the current device time for validating the business rules.
+		 */
+		if (BuildConfig.FLAVOR == "abn" || BuildConfig.FLAVOR == "prodtest") {
 			val lastClick = AtomicLong(0)
 			val debugButtonClickListener = View.OnClickListener {
 				val now = System.currentTimeMillis()
 				if (lastClick.get() > now - 1000L) {
 					lastClick.set(0)
-					parentFragmentManager.beginTransaction()
-						.setCustomAnimations(R.anim.slide_enter, R.anim.slide_exit, R.anim.slide_pop_enter, R.anim.slide_pop_exit)
-						.replace(
-							R.id.fragment_container, DebugFragment.newInstance()
-						)
-						.addToBackStack(DebugFragment::class.java.canonicalName)
-						.commit()
+					val useDeviceTime = certificatesViewModel.toggleDeviceTimeSetting()
+
+					val title = if (useDeviceTime) "Using Device Time" else "Using Real Time"
+					val message = if (useDeviceTime) "The app now uses the current device time for Business Rule Validation" else "The app now uses the real time (fetched from NTP-Server) for Business Rule Validation"
+					AlertDialog.Builder(requireContext(), R.style.CovidCertificate_AlertDialogStyle)
+						.setTitle(title)
+						.setMessage(message)
+						.setPositiveButton(R.string.ok_button) { dialog, _ ->
+							dialog.dismiss()
+						}
+						.setCancelable(true)
+						.create()
+						.apply { window?.setSecureFlagToBlockScreenshots(BuildConfig.FLAVOR) }
+						.show()
 				} else {
 					lastClick.set(now)
 				}
 			}
-			binding.homescreenHeaderEmpty.schwiizerchruez.setOnClickListener(debugButtonClickListener)
-			binding.homescreenHeaderNotEmpty.schwiizerchruez.setOnClickListener(debugButtonClickListener)
+			binding.homescreenHeaderEmpty.bundLogo.setOnClickListener(debugButtonClickListener)
+			binding.homescreenHeaderNotEmpty.bundLogo.setOnClickListener(debugButtonClickListener)
 		}
 	}
 
@@ -204,6 +232,7 @@ class HomeFragment : Fragment() {
 			it ?: return@observe
 			binding.homescreenLoadingIndicator.isVisible = false
 			updateHomescreen(it)
+			showCertificateNotifications(it)
 		}
 
 		certificatesViewModel.onQrCodeClickedSingleLiveEvent.observe(this) { certificate ->
@@ -344,6 +373,55 @@ class HomeFragment : Fragment() {
 		binding.homescreenHeaderNotEmpty.headerRegionFlag.setImageResource(selectedRegion.getFlag())
 		binding.homescreenHeaderEmpty.headerRegionText.setText(selectedRegion.getName())
 		binding.homescreenHeaderNotEmpty.headerRegionText.setText(selectedRegion.getName())
+	}
+
+	private fun showCertificateNotifications(dccHolders: List<DccHolder>) {
+		/*
+		Disable for release 2.1.0 - EPIEMSCO-1527 will be launched with release 2.2.0
+		certificateBoosterNotificationHash = dccHolders.joinToString("_") { it.qrCodeData }.hashCode()
+		viewLifecycleOwner.lifecycleScope.launch {
+			delay(1000)
+			val notifyableCertificates = NotificationUtil().certificatesForBoosterNotification(
+				dccHolders,
+				certificatesViewModel.notificationStorage
+			)
+
+			showNotificationAlert(notifyableCertificates, certificateBoosterNotificationHash)
+		}*/
+	}
+
+	private fun showNotificationAlert(certificates: List<DccHolder>, certificateHash: Int) {
+		certificateBoosterNotificationDialog?.dismiss()
+		certificateBoosterNotificationDialog = null
+		if (certificateHash == certificateBoosterNotificationHash) {
+			val certificate = certificates.firstOrNull()
+			val certificateIdentifier = certificate?.euDGC?.vaccinations?.firstOrNull()?.certificateIdentifier
+			if (certificate != null && certificateIdentifier != null) {
+				val remainingCertificates = certificates.drop(1)
+
+				val notificationDialog = AlertDialog.Builder(requireContext(), R.style.CovidCertificate_AlertDialogStyle)
+					.setTitle(R.string.vaccination_booster_notification_title)
+					.setMessage(R.string.vaccination_booster_notification_message)
+					.setPositiveButton(R.string.vaccination_booster_notification_later, null)
+					.setNegativeButton(R.string.vaccination_booster_notification_read, null)
+					.setCancelable(false)
+					.create()
+					.apply { window?.setSecureFlagToBlockScreenshots(BuildConfig.FLAVOR) }
+				notificationDialog.setOnShowListener {
+					notificationDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener {
+						certificatesViewModel.notificationStorage.setNotificationTimestampForCertificateIdentifier(certificateIdentifier, certificate.nextNotificationTimestamp())
+						showNotificationAlert(remainingCertificates, certificateHash)
+					}
+					notificationDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener {
+						certificatesViewModel.notificationStorage.setNotificationTimestampForCertificateIdentifier(certificateIdentifier, certificate.neverAgainNotificationTimestamp())
+						showNotificationAlert(remainingCertificates, certificateHash)
+					}
+				}
+
+				this.certificateBoosterNotificationDialog = notificationDialog
+				notificationDialog.show()
+			}
+		}
 	}
 
 	private fun setupInfoBox() {

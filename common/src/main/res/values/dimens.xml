@@ -24,12 +24,14 @@
 	<dimen name="spacing_enormous">100dp</dimen>
 
 	<dimen name="text_size_small">12sp</dimen>
+	<dimen name="text_size_smaller">14sp</dimen>
 	<dimen name="text_size_type_bubble">13sp</dimen>
 	<dimen name="text_size_normal">16sp</dimen>
 	<dimen name="text_size_emphasize">19sp</dimen>
 	<dimen name="text_size_large">26sp</dimen>
 	<dimen name="text_size_very_large">32sp</dimen>
 
+	<dimen name="text_line_height_bubble">18sp</dimen>
 	<dimen name="text_line_height_normal">22sp</dimen>
 	<dimen name="text_line_height_large">28sp</dimen>
 

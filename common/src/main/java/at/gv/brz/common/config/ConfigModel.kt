@@ -13,11 +13,18 @@ package at.gv.brz.common.config
 import at.gv.brz.common.faq.model.Faq
 import at.gv.brz.common.faq.model.Header
 import at.gv.brz.common.faq.model.Question
+import at.gv.brz.common.util.PlatformUtil
+import at.gv.brz.eval.utils.DEFAULT_DISPLAY_DATE_FORMATTER
+import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @JsonClass(generateAdapter = true)
 data class ConfigModel(
 	val android: String?,
+	@Json(name = "android_force_date") val androidForceDate: String?,
+	@Json(name = "huawei_force_date") val huaweiForceDate: String?,
 	val infoBox: Map<String, InfoBoxModel>?,
 	val questions: Map<String, FaqModel>?,
 	val works: Map<String, FaqModel>?
@@ -58,4 +65,29 @@ data class ConfigModel(
 		}
 		return itemsList
 	}
+
+	fun shouldForceUpdate(type: PlatformUtil.PlatformType): Boolean {
+		val field = (if (type == PlatformUtil.PlatformType.GOOGLE_PLAY) androidForceDate else huaweiForceDate)
+			?: return false
+
+		try {
+			val forceDate = LocalDate.parse(field, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+			return forceDate.isBefore(LocalDate.now())
+		} catch (exception: Exception) {
+		}
+		return false
+	}
+
+	fun formattedForceDate(type: PlatformUtil.PlatformType): String {
+		val field = (if (type == PlatformUtil.PlatformType.GOOGLE_PLAY) androidForceDate else huaweiForceDate)
+			?: return ""
+
+		try {
+			val forceDate = LocalDate.parse(field, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+			return DEFAULT_DISPLAY_DATE_FORMATTER.format(forceDate)
+		} catch (exception: Exception) {
+		}
+		return ""
+	}
+
 }

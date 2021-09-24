@@ -20,6 +20,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import at.gv.brz.common.config.ConfigModel
+import at.gv.brz.common.util.PlatformUtil
 import at.gv.brz.common.util.UrlUtil
 import at.gv.brz.common.util.setSecureFlagToBlockScreenshots
 import at.gv.brz.eval.CovidCertificateSdk
@@ -137,12 +138,33 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	private fun handleConfig(config: ConfigModel) {
-		if (config.android != null && Version(config.android!!).compareTo(Version(BuildConfig.VERSION_NAME)) == 1 && forceUpdateDialog == null) {
-			val forceUpdateDialog = AlertDialog.Builder(this, R.style.CovidCertificate_AlertDialogStyle)
-				.setTitle(R.string.force_update_title)
-				.setMessage(R.string.force_update_text)
-				.setPositiveButton(R.string.force_update_button, null)
+		if (config.android != null && Version(config.android!!).compareTo(Version(BuildConfig.VERSION_NAME)) == 1) {
+			if (forceUpdateDialog != null) {
+				forceUpdateDialog?.dismiss()
+				forceUpdateDialog = null
+			}
+
+			val platformType = PlatformUtil.getPlatformType(this)
+			val shouldForceUpdate = config.shouldForceUpdate(platformType)
+
+			val forceUpdateDialogBuilder = AlertDialog.Builder(this, R.style.CovidCertificate_AlertDialogStyle)
 				.setCancelable(false)
+
+			if (shouldForceUpdate) {
+				forceUpdateDialogBuilder
+					.setTitle(R.string.force_update_title)
+					.setMessage(R.string.force_update_text)
+					.setPositiveButton(R.string.force_update_button, null)
+			} else {
+				val date = config.formattedForceDate(platformType)
+				forceUpdateDialogBuilder
+					.setTitle(R.string.force_update_grace_period_title)
+					.setMessage(getString(R.string.force_update_grace_period_text, date))
+					.setPositiveButton(R.string.force_update_grace_period_update_button, null)
+					.setNegativeButton(R.string.force_update_grace_period_skip_button, null)
+			}
+
+			val forceUpdateDialog = forceUpdateDialogBuilder
 				.create()
 				.apply { window?.setSecureFlagToBlockScreenshots(BuildConfig.FLAVOR) }
 			forceUpdateDialog.setOnShowListener {

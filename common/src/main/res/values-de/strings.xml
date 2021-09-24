@@ -193,6 +193,18 @@ hinzufügen"</string>
     <!-- Config: Update Button Aktualisieren -->
     <string name="force_update_button">"Aktualisieren"</string>
 
+    <!-- Config: Titel wenn App muss geupdatet werden sollte-->
+    <string name="force_update_grace_period_title">"Update benötigt"</string>
+
+    <!-- Config: Text der angezeigt wird falls App muss geupdatet werden -->
+    <string name="force_update_grace_period_text">"Bitte laden Sie vor %s die neueste Version der App."</string>
+
+    <!-- Config: Update Button Aktualisieren -->
+    <string name="force_update_grace_period_update_button">"Aktualisieren"</string>
+
+    <!-- Config: Update Button Aktualisieren -->
+    <string name="force_update_grace_period_skip_button">"Jetzt nicht"</string>
+
     <!-- Wallet: Zertifikat gültig ab: {DATE} -->
     <string name="wallet_certificate_valid_from">"In Österreich gültig ab:
 {DATE}"</string>
@@ -449,7 +461,7 @@ ungültig"</string>
     <!-- Warnung bei fehlender aktueller Zeit durch Timeserver -->
     <string name="wallet_time_missing">"3-G Status nicht verfügbar, bitte aktivieren Sie die Internetverbindung"</string>
     <string name="wallet_validation_data_expired">"3-G Status nicht verfügbar, bitte aktivieren Sie die Internetverbindung"</string>
-    <string name="wallet_3g_status_disclaimer">"3-G Voransicht: Nur gültig mit GreenCheck und Ausweis"</string>
+    <string name="wallet_3g_status_disclaimer">"Nur in Verbindung mit einem amtlichen Lichtbildausweis gültig. Zur Überprüfung verwenden Sie bitte GreenCheck."</string>
 
     <string name="wallet_region_selection_title">"Bundeslandauswahl"</string>
 
@@ -467,4 +479,8 @@ ungültig"</string>
     <string name="region_tirol">"Tirol"</string>
     <string name="region_vorarlberg">"Vorarlberg"</string>
 
+    <string name="vaccination_booster_notification_title">"Achtung Zertifikat läuft ab!"</string>
+    <string name="vaccination_booster_notification_message">"Um weiterhin ein gültiges Zertifikat vorweisen zu können, wird eine Auffrischungsimpfung in den nächsten 3 Monaten empfohlen."</string>
+    <string name="vaccination_booster_notification_later">"Erneut erinnern"</string>
+    <string name="vaccination_booster_notification_read">"Gelesen"</string>
 </resources>

@@ -14,13 +14,13 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.Rect
 import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
 import com.google.zxing.*
 import com.google.zxing.common.HybridBinarizer
 import java.io.File
 import java.util.*
+import kotlin.math.roundToInt
 
 object QRCodeReaderHelper {
 
@@ -51,27 +51,29 @@ object QRCodeReaderHelper {
 		return decoded
 	}
 
+	private fun renderPdfPage(page: PdfRenderer.Page, scale: Float): Bitmap {
+		val bitmap: Bitmap = Bitmap.createBitmap((page.width * scale).roundToInt(),
+			(page.height * scale).roundToInt(), Bitmap.Config.ARGB_8888)
+		val canvas = Canvas(bitmap)
+		canvas.drawColor(Color.WHITE)
+		canvas.drawBitmap(bitmap, 0.0f, 0.0f, null)
+
+		page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_PRINT)
+		return bitmap
+	}
+
 	fun pdfToBitmap(context: Context, pdfFile: File): ArrayList<Bitmap> {
 		val bitmaps = arrayListOf<Bitmap>()
 		try {
 			val renderer = PdfRenderer(ParcelFileDescriptor.open(pdfFile, ParcelFileDescriptor.MODE_READ_ONLY))
-			var bitmap: Bitmap?
 			val pageCount = renderer.pageCount
 
 			if (pageCount <= 2) {
 				for (i in 0 until pageCount) {
 					val page: PdfRenderer.Page = renderer.openPage(i)
-					val width = page.width
-					val height = page.height
-					bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
 
-					val canvas = Canvas(bitmap)
-					canvas.drawColor(Color.WHITE)
-					canvas.drawBitmap(bitmap, 0.0f, 0.0f, null)
-
-					val r = Rect(0, 0, width, height)
-					page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_PRINT)
-					bitmaps.add(bitmap)
+					bitmaps.add(renderPdfPage(page, 1f))
+					bitmaps.add(renderPdfPage(page, 300f / 72f))
 
 					page.close()
 				}

@@ -12,6 +12,7 @@ package at.gv.brz.wallet
 
 import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -28,6 +29,7 @@ import at.gv.brz.eval.decoder.CertificateDecoder
 import at.gv.brz.eval.models.DccHolder
 import at.gv.brz.eval.verification.CertificateVerificationTask
 import at.gv.brz.wallet.data.CertificateStorage
+import at.gv.brz.wallet.data.NotificationSecureStorage
 import at.gv.brz.wallet.data.WalletSecureStorage
 import at.gv.brz.wallet.data.regionModifiedProfile
 import kotlinx.coroutines.Dispatchers
@@ -55,6 +57,7 @@ class CertificatesViewModel(application: Application) : AndroidViewModel(applica
 
 	private val certificateStorage: CertificateStorage by lazy { CertificateStorage.getInstance(getApplication()) }
 	val secureStorage by lazy { WalletSecureStorage.getInstance(getApplication()) }
+	val notificationStorage by lazy { NotificationSecureStorage.getInstance(getApplication()) }
 
 	val onQrCodeClickedSingleLiveEvent = SingleLiveEvent<DccHolder>()
 
@@ -99,10 +102,20 @@ class CertificatesViewModel(application: Application) : AndroidViewModel(applica
 
 		verificationJobs[dccHolder]?.cancel()
 
-		val context: Context = getApplication()
 		val schemaJson = readSchema()
 
-		val task = CertificateVerificationTask(dccHolder, connectivityManager, schemaJson, "AT", listOf("ET".regionModifiedProfile(secureStorage.getSelectedValidationRegion()), "NG".regionModifiedProfile(secureStorage.getSelectedValidationRegion())), false)
+		var overwriteTrustlistClock = false
+		/**
+		 * In test builds (for Q as well as P environment) we allow switching a setting for the app to either use the real time fetched from a time server (behaviour in the published app) or to use the current device time for validating the business rules.
+		 */
+		if (BuildConfig.FLAVOR == "abn" || BuildConfig.FLAVOR == "prodtest") {
+			val context: Context = getApplication()
+			val sharedPreferences =
+				context.getSharedPreferences("wallet.test", Context.MODE_PRIVATE)
+			overwriteTrustlistClock = sharedPreferences.getBoolean("wallet.test.useDeviceTime", false)
+		}
+
+		val task = CertificateVerificationTask(dccHolder, connectivityManager, schemaJson, "AT", listOf("ET".regionModifiedProfile(secureStorage.getSelectedValidationRegion()), "NG".regionModifiedProfile(secureStorage.getSelectedValidationRegion())), false, overwriteTrustlistClock = overwriteTrustlistClock)
 		val job = viewModelScope.launch {
 			task.verificationStateFlow.collect { state ->
 				// Replace the verified certificate in the live data
@@ -152,7 +165,27 @@ class CertificatesViewModel(application: Application) : AndroidViewModel(applica
 
 	fun removeCertificate(certificate: String) {
 		certificateStorage.deleteCertificate(certificate)
+		(CertificateDecoder.decode(certificate) as? DecodeState.SUCCESS)?.dccHolder?.euDGC?.vaccinations?.firstOrNull()?.certificateIdentifier?.let {
+			notificationStorage.deleteCertificateIdentifier(it)
+		}
 		loadCertificates()
+	}
+
+	fun toggleDeviceTimeSetting(): Boolean {
+		/**
+		 * In test builds (for Q as well as P environment) we allow switching a setting for the app to either use the real time fetched from a time server (behaviour in the published app) or to use the current device time for validating the business rules.
+		 */
+		if (BuildConfig.FLAVOR == "abn" || BuildConfig.FLAVOR == "prodtest") {
+			val context: Context = getApplication()
+			val sharedPreferences = context.getSharedPreferences("wallet.test", Context.MODE_PRIVATE)
+			val newValue = !sharedPreferences.getBoolean("wallet.test.useDeviceTime", false)
+			sharedPreferences.edit().putBoolean("wallet.test.useDeviceTime", newValue).apply()
+			dccHolderCollectionLiveData.value?.forEach {
+				startVerification(it)
+			}
+			return newValue
+		}
+		return false
 	}
 
 	private val configMutableLiveData = MutableLiveData<ConfigModel>()

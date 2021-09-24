@@ -41,6 +41,8 @@ class ConfigRepository private constructor(private val configSpec: ConfigSpec) {
 	private val configService: ConfigService
 	private val storage = ConfigSecureStorage.getInstance(configSpec.context)
 
+	private var lastConfigLoadTimestamp: Long? = null
+
 	init {
 		val okHttpBuilder = OkHttpClient.Builder()
 
@@ -66,9 +68,12 @@ class ConfigRepository private constructor(private val configSpec: ConfigSpec) {
 	}
 
 	suspend fun loadConfig(context: Context): ConfigModel? {
-		return null
+		// Deactivate Config loading for Forced Update for now
+		if (true) {
+			return null
+		}
 		var config =
-			if (storage.getConfigLastSuccessTimestamp() + MIN_LOAD_WAIT_TIME <= System.currentTimeMillis()) {
+			if (lastConfigLoadTimestamp == null || (lastConfigLoadTimestamp!! + MIN_LOAD_WAIT_TIME <= System.currentTimeMillis())) {
 				try {
 					val response = withContext(Dispatchers.IO) { configService.getConfig() }
 					if (!response.isSuccessful) throw HttpException(response)

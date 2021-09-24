@@ -1,5 +1,12 @@
 # Grüner Pass - Release Notes
 
+## 2.0.3
+
+- Design-Verbesserungen (EPIEMSCO-1556)
+- Accessibility-Verbesserungen (EPIEMSCO-1124)
+- Aktualisierung der FAQ-Inhalte (EPIEMSCO-1709/EPIEMSCO-1650)
+- Angepasster Hinweistext zu 3G-Voransicht (EPIEMSCO-1675)
+
 ## v.2.0.2 (08.2021)
 - EPIEMSCO-1562: neue Wiener Regeln - Wallet App
 - Fehlerbehebungen

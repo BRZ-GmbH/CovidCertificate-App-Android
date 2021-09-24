@@ -49,6 +49,16 @@ Damit der Build erfolgt ist, muss ein eigener Keystore eingerichtet werden.
 
 Das APK ist anschließend unter `wallet/build/outputs/apk/prod/release/wallet-prod-release.apk` abgelegt.
 
+### Zusätzliche Build Hinweise
+
+Folgende Konfiguration muss in der Build-/Entwicklungsumgebung sichergestellt sein, damit Vertrauenslisten, Geschäftsregeln und weitere Informationen vom Service abgerufen werden können.
+Weitere Informationen können auch unter https://github.com/Federal-Ministry-of-Health-AT/green-pass-overview#getting-access-to-trust-list-business-rules-and-value-sets nachgelesen werden.
+
+```Setzen von Umgebungsvariablen - Verwenden Sie einen Apostroph für die String-Werte, damit die Werte in der Datei "wallet/build/generated/source/buildConfig/*/release/at/gv/brz/wallet/BuildConfig.java" richtig gesetzt werden.
+ WALLET_APP_SDK_API_TOKEN_ABN "<SETZEN SIE HIER IHREN TOKEN EIN>"
+ WALLET_APP_SDK_API_TOKEN_PROD "<SETZEN SIE HIER IHREN TOKEN EIN>"
+```
+
 ## Reproducible builds
 
 To verify that the app distributed on the Play Store was built by the source code published here, please see the instructions

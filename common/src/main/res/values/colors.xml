@@ -46,5 +46,10 @@
 	<color name="orangeish">#FCE6BF</color>
 	<color name="redish">#f2cac6</color>
 
+	<color name="green_valid">#228028</color>
+	<color name="red_invalid">#bf0603</color>
+	<color name="grey_text_light">#646d75</color>
+	<color name="dashed_line">#ECEEEE</color>
+
 	<color name="background_light">#F6F4F0</color>
 </resources>
