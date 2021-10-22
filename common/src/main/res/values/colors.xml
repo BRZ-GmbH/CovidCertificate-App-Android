@@ -27,7 +27,8 @@
 
 	<color name="blue">#143E7F</color>
 	<color name="green">#91C88D</color>
-	<color name="green_dark">#4D9553</color>
+	<color name="green_dark">#448349</color>
+	<color name="green_faq_url">#407D45</color>
 	<color name="orange">#C9872C</color>
 	<color name="red">#a72702</color>
 

@@ -34,9 +34,11 @@
 			android:focusable="true"
 			android:padding="@dimen/spacing_medium_large"
 			android:tint="@color/black"
-			android:src="@drawable/ic_close" />
+			android:src="@drawable/ic_close"
+			android:contentDescription="@string/accessibility_close_button" />
 
 		<TextView
+			android:focusedByDefault="true"
 			android:id="@+id/camera_permission_dialog_text"
 			style="@style/CovidCertificate.Text"
 			android:layout_width="match_parent"

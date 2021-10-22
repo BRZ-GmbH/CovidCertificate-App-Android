@@ -36,6 +36,7 @@
 				android:paddingBottom="@dimen/spacing_large">
 
 				<TextView
+					android:id="@+id/onboarding_subtitle"
 					style="@style/CovidCertificate.Text.Bold.Lead.Grey"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
@@ -51,6 +52,7 @@
 					android:src="@drawable/illu_onboarding_data_protection" />
 
 				<TextView
+					android:id="@+id/onboarding_title"
 					style="@style/CovidCertificate.Text.Bold.Title"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
@@ -76,6 +78,7 @@
 						android:orientation="vertical">
 
 						<TextView
+							android:id="@+id/onboarding_text"
 							style="@style/CovidCertificate.Text"
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"

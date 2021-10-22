@@ -218,6 +218,11 @@ class CertificateDetailFragment : Fragment() {
 
 		binding.certificateDetailInfoEtIcon.setImageResource(if (state.results.first { it.region?.startsWith("ET") == true }.valid) { R.drawable.ic_check_circle} else { R.drawable.ic_minus_circle})
 		binding.certificateDetailInfoNgIcon.setImageResource(if (state.results.first { it.region?.startsWith("NG") == true }.valid) { R.drawable.ic_check_circle} else { R.drawable.ic_minus_circle})
+
+		binding.certificateDetailRegionEtContainer.importantForAccessibility = 1
+		binding.certificateDetailRegionEtContainer.contentDescription = if (state.results.first { it.region?.startsWith("ET") == true }.valid) getString(R.string.accessibility_valid_text) + getString(R.string.region_type_ET)  else getString(R.string.accessibility_invalid_text) + getString(R.string.region_type_ET)
+		binding.certificateDetailRegionNgContainer.importantForAccessibility = 1
+		binding.certificateDetailRegionNgContainer.contentDescription = if (state.results.first { it.region?.startsWith("NG") == true }.valid) getString(R.string.accessibility_valid_text) + getString(R.string.region_type_NG) else getString(R.string.accessibility_invalid_text) + getString(R.string.region_type_NG)
 	}
 
 	private fun displayInvalidState(state: VerificationResultStatus.SIGNATURE_INVALID) {

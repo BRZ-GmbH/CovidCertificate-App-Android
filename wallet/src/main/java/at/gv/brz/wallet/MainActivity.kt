@@ -46,6 +46,10 @@ class MainActivity : AppCompatActivity() {
 	private var forceUpdateDialog: AlertDialog? = null
 	private var isIntentConsumed = false
 
+	private var hasCheckedForcedUpdate = false
+	private var forceRefreshTrustlist = true
+	private var ignoreForcedUpdateBecauseOfPDFImport = false
+
 	private val onAndUpdateBoardingLauncher =
 		registerForActivityResult(StartActivityForResult()) { activityResult: ActivityResult ->
 			if (activityResult.resultCode == RESULT_OK) {
@@ -115,15 +119,30 @@ class MainActivity : AppCompatActivity() {
 
 	private fun handleCertificatePDF(intent: Intent) {
 		if (secureStorage.getOnboardingCompleted()) {
-			intent.clipData?.let { pdfViewModel.importPdf(clipData = it) }
+			intent.clipData?.let {
+				ignoreForcedUpdateBecauseOfPDFImport = true
+				pdfViewModel.importPdf(clipData = it)
+			}
 		}
 	}
 
-
 	override fun onStart() {
 		super.onStart()
+		hasCheckedForcedUpdate = false
 		certificateViewModel.loadConfig()
-		CovidCertificateSdk.getCertificateVerificationController().refreshTrustList(lifecycleScope, false)
+		CovidCertificateSdk.getCertificateVerificationController().refreshTrustList(lifecycleScope, forceRefreshTrustlist, onCompletionCallback = {
+			forceRefreshTrustlist = false
+			if (it) {
+				certificateViewModel.reverifyAllCertificates()
+			}
+		})
+	}
+
+	override fun onPause() {
+		super.onPause()
+		forceUpdateDialog?.dismiss()
+		forceUpdateDialog = null
+		ignoreForcedUpdateBecauseOfPDFImport = false
 	}
 
 	override fun onDestroy() {
@@ -138,13 +157,18 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	private fun handleConfig(config: ConfigModel) {
-		if (config.android != null && Version(config.android!!).compareTo(Version(BuildConfig.VERSION_NAME)) == 1) {
+		if (hasCheckedForcedUpdate || ignoreForcedUpdateBecauseOfPDFImport) {
+			return
+		}
+		hasCheckedForcedUpdate = true
+		val platformType = PlatformUtil.getPlatformType(this)
+		val configVersion = if (platformType == PlatformUtil.PlatformType.HUAWEI) config.huawei else config.android
+		if (configVersion != null && Version(configVersion).compareTo(Version(BuildConfig.VERSION_NAME)) == 1) {
 			if (forceUpdateDialog != null) {
 				forceUpdateDialog?.dismiss()
 				forceUpdateDialog = null
 			}
 
-			val platformType = PlatformUtil.getPlatformType(this)
 			val shouldForceUpdate = config.shouldForceUpdate(platformType)
 
 			val forceUpdateDialogBuilder = AlertDialog.Builder(this, R.style.CovidCertificate_AlertDialogStyle)
@@ -170,9 +194,12 @@ class MainActivity : AppCompatActivity() {
 			forceUpdateDialog.setOnShowListener {
 				forceUpdateDialog.getButton(DialogInterface.BUTTON_POSITIVE)
 					.setOnClickListener {
-						val packageName = packageName
-						UrlUtil.openStoreUrl(this@MainActivity, "market://details?id=$packageName", "appmarket://details?id=$packageName")
+						UrlUtil.openStoreUrl(this@MainActivity, "market://details?id=at.gv.brz.wallet", "appmarket://details?id=at.gv.brz.wallet")
 					}
+				forceUpdateDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener {
+					forceUpdateDialog.dismiss()
+					this.forceUpdateDialog = null
+				}
 			}
 			this.forceUpdateDialog = forceUpdateDialog
 			forceUpdateDialog.show()

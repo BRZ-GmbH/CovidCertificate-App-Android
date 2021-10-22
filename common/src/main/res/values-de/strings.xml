@@ -178,6 +178,12 @@ hinzufügen"</string>
     <!-- Header im FAQ-Screen der Wallet App -->
     <string name="wallet_faq_header">"Häufig gestellte Fragen"</string>
 
+    <!-- Seite geladen im FAQ-Screen der Wallet App -->
+    <string name="wallet_faq_loaded">"Häufig gestellte Fragen, Seite"</string>
+
+    <!-- Haupt seite geladen -->
+    <string name="wallet_main_loaded">"Grüner Pass, Seite"</string>
+
     <!-- Antwort 1 im "So funktionierts" Screen beim Scannen -->
     <string name="wallet_scanner_howitworks_answer1">"Alle EU-konformen Zertifikate des Grünen Passes können mittels Handy-Signatur oder Bürgerkarte über gesundheit.gv.at abgerufen werden."</string>
 
@@ -230,6 +236,9 @@ hinzufügen"</string>
 
     <!-- Header im Onboarding-Screen "Vorteile, Vorweisen" -->
     <string name="wallet_onboarding_show_header">"Vorteile"</string>
+
+    <!-- Accessibility: von -->
+    <string name="accessibility_of_text">" von "</string>
 
     <!-- Accessibility: Information -->
     <string name="accessibility_info_button">"Impressum"</string>
@@ -316,6 +325,21 @@ ungültiger Signatur"</string>
 
     <!-- Accessibility: Info Box Butto -->
     <string name="accessibility_info_box">"Information"</string>
+
+    <!-- Accessibility: Valid for -->
+    <string name="accessibility_valid_text">"Gültig für: "</string>
+
+    <!-- Accessibility: Invalid for -->
+    <string name="accessibility_invalid_text">"Ungültig für: "</string>
+
+    <!-- Accessibility: Move certificates Button -->
+    <string name="accessibility_move_button">"Move"</string>
+
+    <!-- Accessibility: Notifications certificates Button -->
+    <string name="accessibility_notifications">"Benachrichtigungen"</string>
+
+    <!-- Accessibility: State selector -->
+    <string name="accessibility_state_selector">"Bundesland Auswahl"</string>
 
     <!-- Button Schliessen -->
     <string name="close_button">"Schliessen"</string>

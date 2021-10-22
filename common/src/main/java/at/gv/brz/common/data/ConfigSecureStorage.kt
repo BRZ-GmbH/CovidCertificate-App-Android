@@ -28,7 +28,6 @@ class ConfigSecureStorage private constructor(context: Context) {
 
 		private const val KEY_CONFIG = "ConfigKey"
 		private const val KEY_CONFIG_LAST_SUCCESS = "LastSuccessTimestampKey"
-		private const val KEY_CONFIG_LAST_SUCCESS_APP_AND_OS_VERSION = "LastSuccessVersionKey"
 		private const val KEY_CONFIG_SHOWN_INFO_BOX_ID = "LastShownInfoBoxId"
 
 		private val moshi = Moshi.Builder().build()
@@ -69,23 +68,19 @@ class ConfigSecureStorage private constructor(context: Context) {
 			)
 	}
 
-	fun updateConfigData(config: ConfigModel, timestamp: Long, appVersion: String) {
+	fun updateConfigData(config: ConfigModel, timestamp: Long) {
 		val editor = prefs.edit()
 		editor.putLong(KEY_CONFIG_LAST_SUCCESS, timestamp)
-		editor.putString(KEY_CONFIG_LAST_SUCCESS_APP_AND_OS_VERSION, appVersion)
 		editor.putString(KEY_CONFIG, configModelAdapter.toJson(config))
 		editor.apply()
 	}
 
-	fun getConfig(): ConfigModel? =
-		prefs.getString(KEY_CONFIG, null)
-			?.let { configModelAdapter.fromJson(it) }
-
 	fun getConfigLastSuccessTimestamp(): Long =
 		prefs.getLong(KEY_CONFIG_LAST_SUCCESS, 0)
 
-	fun getConfigLastSuccessAppAndOSVersion(): String? =
-		prefs.getString(KEY_CONFIG_LAST_SUCCESS_APP_AND_OS_VERSION, null)
+	fun getConfig(): ConfigModel? =
+		prefs.getString(KEY_CONFIG, null)
+			?.let { configModelAdapter.fromJson(it) }
 
 	fun setLastShownInfoBoxId(infoBoxId: Long) = prefs.edit().putLong(KEY_CONFIG_SHOWN_INFO_BOX_ID, infoBoxId).apply()
 

@@ -16,7 +16,6 @@ import at.gv.brz.common.util.AssetUtil
 import at.gv.brz.wallet.CertificatesViewModel
 import at.gv.brz.wallet.R
 
-
 class WalletFaqFragment : FaqFragment() {
 
 	companion object {

@@ -68,15 +68,15 @@ class HowToScanFragment : Fragment() {
 		view.itemFaqQuestionTitle.setText(question)
 		view.itemFaqQuestionAnswer.apply {
 			setText(answer)
-			isVisible = isSelected
+			isVisible = !isSelected
 		}
 
-		view.itemFaqQuestionLink.isVisible = isSelected
+		view.itemFaqQuestionLink.isVisible = !isSelected
 		view.itemFaqQuestionLink.setOnClickListener {
 			val url = requireContext().getString(R.string.wallet_scanner_howitworks_external_link)
 			UrlUtil.openUrl(requireContext(), url)
 		}
 
-		view.itemFaqQuestionChevron.setImageResource(if (isSelected) R.drawable.ic_arrow_contract else R.drawable.ic_arrow_expand)
+		view.itemFaqQuestionChevron.setImageResource(if (!isSelected) R.drawable.ic_arrow_contract else R.drawable.ic_arrow_expand)
 	}
 }

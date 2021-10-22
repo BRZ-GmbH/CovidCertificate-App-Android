@@ -49,6 +49,19 @@ data class ValueItem(@StringRes val labelResource: Int, val value: String, val s
 		val englishLabel = view.findViewById<TextView>(R.id.item_value_label_english)
 		englishLabel.isVisible = showEnglishVersionForLabels
 		englishLabel.text = getEnglishTranslation(view.context, labelResource)
+
+		//Accessibilty issue concerning 1/2 2/2 vaccines not being read correctly
+		if (labelResource === R.string.wallet_certificate_impfdosis_title) {
+			var first = value.get(1)
+			var second = value.get(3)
+			if (showEnglishVersionForLabels) {
+				view.contentDescription = view.context.getString(labelResource) + ", " + first + " von " + second
+			} else {
+				view.contentDescription = view.context.getString(labelResource) + ", " + first + " of " + second
+			}
+		} else {
+			view.contentDescription = view.context.getString(labelResource) + ", " + value
+		}
 	}
 }
 

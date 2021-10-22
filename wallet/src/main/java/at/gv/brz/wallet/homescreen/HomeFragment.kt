@@ -29,6 +29,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import at.gv.brz.common.config.ConfigModel
 import at.gv.brz.common.config.InfoBoxModel
 import at.gv.brz.common.data.ConfigSecureStorage
 import at.gv.brz.common.dialog.InfoDialogFragment
@@ -48,7 +49,6 @@ import at.gv.brz.wallet.R
 import at.gv.brz.wallet.add.CertificateAddFragment
 import at.gv.brz.wallet.data.Region
 import at.gv.brz.wallet.databinding.FragmentHomeBinding
-import at.gv.brz.wallet.debug.DebugFragment
 import at.gv.brz.wallet.detail.CertificateDetailFragment
 import at.gv.brz.wallet.faq.WalletFaqFragment
 import at.gv.brz.wallet.homescreen.pager.CertificatesPagerAdapter
@@ -63,6 +63,9 @@ import at.gv.brz.wallet.util.nextNotificationTimestamp
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.time.Instant
+import java.time.LocalDateTime
+import java.util.*
 import java.util.concurrent.atomic.AtomicLong
 
 class HomeFragment : Fragment() {
@@ -106,6 +109,7 @@ class HomeFragment : Fragment() {
 		setupPager()
 		setupInfoBox()
 		setupImportObservers()
+		view.announceForAccessibility(getString(at.gv.brz.common.R.string.wallet_main_loaded))
 	}
 
 	override fun onResume() {
@@ -232,7 +236,7 @@ class HomeFragment : Fragment() {
 			it ?: return@observe
 			binding.homescreenLoadingIndicator.isVisible = false
 			updateHomescreen(it)
-			showCertificateNotifications(it)
+			handleCertificateNotifications()
 		}
 
 		certificatesViewModel.onQrCodeClickedSingleLiveEvent.observe(this) { certificate ->
@@ -242,12 +246,15 @@ class HomeFragment : Fragment() {
 				.addToBackStack(CertificateDetailFragment::class.java.canonicalName)
 				.commit()
 		}
+		certificatesViewModel.configLiveData.observe(viewLifecycleOwner) { config -> handleCertificateNotifications() }
+
 	}
 
 	private fun setupImportObservers() {
 		pdfViewModel.pdfImportLiveData.observe(viewLifecycleOwner) { importState ->
 			when (importState) {
 				is PdfImportState.LOADING -> {
+					binding.homescreenAddCertificateOptionsEmpty.optionImportPdf.importantForAccessibility = 2
 					binding.loadingSpinner.showAnimated()
 				}
 				is PdfImportState.DONE -> {
@@ -261,6 +268,7 @@ class HomeFragment : Fragment() {
 							showImportError(importState.decodeState.error.code)
 						}
 					}
+					binding.homescreenAddCertificateOptionsEmpty.optionImportPdf.importantForAccessibility = 0
 					pdfViewModel.clearPdf()
 				}
 			}
@@ -310,11 +318,28 @@ class HomeFragment : Fragment() {
 
 	private fun showAddCertificateOptionsOverlay(show: Boolean) {
 		if (show) {
+			binding.homescreenSupportButton.importantForAccessibility = 2;
+			binding.backgroundDimmed.importantForAccessibility = 2
+			binding.homescreenHeaderNotEmpty.headerImpressum.importantForAccessibility = 2
+			binding.homescreenEmptyContent.importantForAccessibility = 2
+			binding.homescreenCertificatesViewPager.importantForAccessibility = 4
+			binding.homescreenOptionsOverlay.importantForAccessibility = 2
+			binding.homescreenListButton.importantForAccessibility = 2
+			binding.homescreenCertificatesTabLayout.importantForAccessibility = 4
 			binding.homescreenScanButtonSmall.rotate(45f)
+			binding.homescreenScanButtonSmall.contentDescription = getString(R.string.accessibility_close_button)
 			binding.backgroundDimmed.showAnimated()
 			binding.homescreenOptionsOverlay.showAnimated()
 		} else {
+			binding.homescreenSupportButton.importantForAccessibility = 0
+			binding.homescreenHeaderNotEmpty.headerImpressum.importantForAccessibility = 0
+			binding.homescreenEmptyContent.importantForAccessibility = 0
+			binding.homescreenOptionsOverlay.importantForAccessibility = 0
+			binding.homescreenCertificatesViewPager.importantForAccessibility = 0
+			binding.homescreenListButton.importantForAccessibility = 0
+			binding.homescreenCertificatesTabLayout.importantForAccessibility = 0
 			binding.homescreenScanButtonSmall.rotate(0f)
+			binding.homescreenScanButtonSmall.contentDescription = getString(R.string.accessibility_add_button)
 			binding.backgroundDimmed.hideAnimated()
 			binding.homescreenOptionsOverlay.hideAnimated()
 		}
@@ -375,22 +400,31 @@ class HomeFragment : Fragment() {
 		binding.homescreenHeaderNotEmpty.headerRegionText.setText(selectedRegion.getName())
 	}
 
-	private fun showCertificateNotifications(dccHolders: List<DccHolder>) {
-		/*
-		Disable for release 2.1.0 - EPIEMSCO-1527 will be launched with release 2.2.0
-		certificateBoosterNotificationHash = dccHolders.joinToString("_") { it.qrCodeData }.hashCode()
-		viewLifecycleOwner.lifecycleScope.launch {
-			delay(1000)
-			val notifyableCertificates = NotificationUtil().certificatesForBoosterNotification(
-				dccHolders,
-				certificatesViewModel.notificationStorage
-			)
+	private fun handleCertificateNotifications() {
+		val dccHolders = certificatesViewModel.dccHolderCollectionLiveData.value ?: return
+		val config = certificatesViewModel.configLiveData.value ?: return
 
-			showNotificationAlert(notifyableCertificates, certificateBoosterNotificationHash)
-		}*/
+		val vaccinationRefreshCampaignStartDate = config.vaccinationRefreshCampaignStartDate ?: return
+		if (vaccinationRefreshCampaignStartDate.isBefore(LocalDateTime.now())) {
+			certificateBoosterNotificationHash = dccHolders.joinToString("_") { it.qrCodeData }.hashCode()
+			viewLifecycleOwner.lifecycleScope.launch {
+				delay(1000)
+				val notifyableCertificates =
+					NotificationUtil().certificatesForBoosterNotification(
+						dccHolders,
+						certificatesViewModel.notificationStorage
+					)
+
+				showNotificationAlert(
+					notifyableCertificates,
+					certificateBoosterNotificationHash,
+					config
+				)
+			}
+		}
 	}
 
-	private fun showNotificationAlert(certificates: List<DccHolder>, certificateHash: Int) {
+	private fun showNotificationAlert(certificates: List<DccHolder>, certificateHash: Int, config: ConfigModel?) {
 		certificateBoosterNotificationDialog?.dismiss()
 		certificateBoosterNotificationDialog = null
 		if (certificateHash == certificateBoosterNotificationHash) {
@@ -399,27 +433,50 @@ class HomeFragment : Fragment() {
 			if (certificate != null && certificateIdentifier != null) {
 				val remainingCertificates = certificates.drop(1)
 
-				val notificationDialog = AlertDialog.Builder(requireContext(), R.style.CovidCertificate_AlertDialogStyle)
-					.setTitle(R.string.vaccination_booster_notification_title)
-					.setMessage(R.string.vaccination_booster_notification_message)
-					.setPositiveButton(R.string.vaccination_booster_notification_later, null)
-					.setNegativeButton(R.string.vaccination_booster_notification_read, null)
+				val languageKey = getString(R.string.language_key)
+				val vaccinationRefreshCampaignTextModel = certificatesViewModel.configLiveData.value?.vaccinationRefreshCampaignText?.get(languageKey)
+
+				val title = vaccinationRefreshCampaignTextModel?.title ?: getString(R.string.vaccination_booster_notification_title)
+				val message = vaccinationRefreshCampaignTextModel?.message ?: getString(R.string.vaccination_booster_notification_message)
+				val remindAgainButton = vaccinationRefreshCampaignTextModel?.remindAgainButton ?: getString(R.string.vaccination_booster_notification_later)
+				val readButton = vaccinationRefreshCampaignTextModel?.readButton ?: getString(R.string.vaccination_booster_notification_read)
+
+				val nextNotificationTimestampForCertificate = certificate.nextNotificationTimestamp()
+				val showRemindAgainButton = Instant.ofEpochMilli(nextNotificationTimestampForCertificate).isAfter(Instant.now())
+
+				val notificationDialogBuilder = AlertDialog.Builder(requireContext(), R.style.CovidCertificate_AlertDialogStyle)
+					.setTitle(title)
+					.setMessage(message)
+					.setNegativeButton(readButton, null)
 					.setCancelable(false)
-					.create()
+
+				if (showRemindAgainButton) {
+					notificationDialogBuilder.setPositiveButton(remindAgainButton, null)
+				}
+
+				val notificationDialog = notificationDialogBuilder.create()
 					.apply { window?.setSecureFlagToBlockScreenshots(BuildConfig.FLAVOR) }
+
 				notificationDialog.setOnShowListener {
 					notificationDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener {
+						certificateBoosterNotificationDialog?.dismiss()
+						certificateBoosterNotificationDialog = null
 						certificatesViewModel.notificationStorage.setNotificationTimestampForCertificateIdentifier(certificateIdentifier, certificate.nextNotificationTimestamp())
-						showNotificationAlert(remainingCertificates, certificateHash)
+						showNotificationAlert(remainingCertificates, certificateHash, config)
 					}
 					notificationDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener {
+						certificateBoosterNotificationDialog?.dismiss()
+						certificateBoosterNotificationDialog = null
+
 						certificatesViewModel.notificationStorage.setNotificationTimestampForCertificateIdentifier(certificateIdentifier, certificate.neverAgainNotificationTimestamp())
-						showNotificationAlert(remainingCertificates, certificateHash)
+						showNotificationAlert(remainingCertificates, certificateHash, config)
 					}
 				}
 
 				this.certificateBoosterNotificationDialog = notificationDialog
 				notificationDialog.show()
+			} else {
+				certificateBoosterNotificationHash = 0
 			}
 		}
 	}

@@ -157,6 +157,7 @@
 			android:foreground="@drawable/ripple_rounded"
 			android:padding="@dimen/spacing_medium"
 			android:src="@drawable/ic_faq"
+			android:contentDescription="@string/accessibility_faq_button"
 			app:layout_constraintBottom_toBottomOf="parent"
 			app:layout_constraintStart_toStartOf="parent" />
 
@@ -169,6 +170,7 @@
 			android:foreground="@drawable/ripple_rounded"
 			android:padding="@dimen/spacing_medium"
 			android:src="@drawable/ic_list"
+			android:contentDescription="@string/accessibility_list_button"
 			app:layout_constraintBottom_toBottomOf="parent"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintStart_toStartOf="parent" />
@@ -217,6 +219,7 @@
 			android:padding="@dimen/spacing_medium"
 			android:elevation="@dimen/default_elevation"
 			android:src="@drawable/ic_add_certificate"
+			android:contentDescription="@string/accessibility_add_button"
 			app:layout_constraintBottom_toBottomOf="parent"
 			app:layout_constraintEnd_toEndOf="parent" />
 

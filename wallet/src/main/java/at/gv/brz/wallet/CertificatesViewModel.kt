@@ -32,6 +32,9 @@ import at.gv.brz.wallet.data.CertificateStorage
 import at.gv.brz.wallet.data.NotificationSecureStorage
 import at.gv.brz.wallet.data.WalletSecureStorage
 import at.gv.brz.wallet.data.regionModifiedProfile
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -59,7 +62,18 @@ class CertificatesViewModel(application: Application) : AndroidViewModel(applica
 	val secureStorage by lazy { WalletSecureStorage.getInstance(getApplication()) }
 	val notificationStorage by lazy { NotificationSecureStorage.getInstance(getApplication()) }
 
+	private var forceLoadConfig = true
+
 	val onQrCodeClickedSingleLiveEvent = SingleLiveEvent<DccHolder>()
+
+	val certificateSchema: JsonNode by lazy {
+		val objectMapper = ObjectMapper().apply { this.findAndRegisterModules()
+			registerModule(JavaTimeModule())
+		}
+
+		val schemaJson = readSchema()
+		objectMapper.readValue(schemaJson, JsonNode::class.java)
+	}
 
 	init {
 		dccHolderCollectionLiveData.observeForever { certificates ->
@@ -72,6 +86,11 @@ class CertificatesViewModel(application: Application) : AndroidViewModel(applica
 			// (Re-)Verify all certificates
 			certificates.forEach { startVerification(it) }
 		}
+	}
+
+	fun reverifyAllCertificates() {
+		val certificates = dccHolderCollectionLiveData.value
+		certificates?.forEach { startVerification(it) }
 	}
 
 	fun loadCertificates() {
@@ -102,8 +121,6 @@ class CertificatesViewModel(application: Application) : AndroidViewModel(applica
 
 		verificationJobs[dccHolder]?.cancel()
 
-		val schemaJson = readSchema()
-
 		var overwriteTrustlistClock = false
 		/**
 		 * In test builds (for Q as well as P environment) we allow switching a setting for the app to either use the real time fetched from a time server (behaviour in the published app) or to use the current device time for validating the business rules.
@@ -115,7 +132,7 @@ class CertificatesViewModel(application: Application) : AndroidViewModel(applica
 			overwriteTrustlistClock = sharedPreferences.getBoolean("wallet.test.useDeviceTime", false)
 		}
 
-		val task = CertificateVerificationTask(dccHolder, connectivityManager, schemaJson, "AT", listOf("ET".regionModifiedProfile(secureStorage.getSelectedValidationRegion()), "NG".regionModifiedProfile(secureStorage.getSelectedValidationRegion())), false, overwriteTrustlistClock = overwriteTrustlistClock)
+		val task = CertificateVerificationTask(dccHolder, connectivityManager, certificateSchema, "AT", listOf("ET".regionModifiedProfile(secureStorage.getSelectedValidationRegion()), "NG".regionModifiedProfile(secureStorage.getSelectedValidationRegion())), false, overwriteTrustlistClock = overwriteTrustlistClock)
 		val job = viewModelScope.launch {
 			task.verificationStateFlow.collect { state ->
 				// Replace the verified certificate in the live data
@@ -193,11 +210,10 @@ class CertificatesViewModel(application: Application) : AndroidViewModel(applica
 
 	fun loadConfig() {
 		val configRepository = ConfigRepository.getInstance(ConfigSpec(getApplication(),
-			BuildConfig.BASE_URL,
-			BuildConfig.VERSION_NAME,
-			BuildConfig.BUILD_TIME.toString()))
+			BuildConfig.BASE_URL))
 		viewModelScope.launch {
-			configRepository.loadConfig(getApplication())?.let { config -> configMutableLiveData.postValue(config) }
+			configRepository.loadConfig(forceLoadConfig, getApplication())?.let { config -> configMutableLiveData.postValue(config) }
+			forceLoadConfig = false
 		}
 	}
 

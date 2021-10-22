@@ -1,5 +1,14 @@
 # Grüner Pass - Release Notes
 
+## v2.1.0
+- Notification für Erinnerung an Auffrischungsimpfung (EPIEMSCO-1527)
+- App Token via Build Prozess (EPIEMSCO-1729)
+- Support für Forced Update (EPIEMSCO-1125)
+- Support für Android 6 (EPIEMSCO-1298/1588)
+- Optimierung App-Verhalten & Performance (EPIEMSCO-1525)
+- Aktualisierung der FAQ-Texte (EPIEMSCO-1762)
+- Falsches Icon bei FAQ-Einträgen (EPIEMSCO-1879)
+
 ## 2.0.3
 
 - Design-Verbesserungen (EPIEMSCO-1556)

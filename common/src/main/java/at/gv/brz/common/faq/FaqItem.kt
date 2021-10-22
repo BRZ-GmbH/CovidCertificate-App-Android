@@ -13,7 +13,6 @@ package at.gv.brz.common.faq
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
 import at.gv.brz.common.R
 import at.gv.brz.common.faq.model.Header
@@ -56,7 +55,7 @@ data class QuestionItem(
 	override fun bindView(view: View, onItemClickListener: (() -> Unit)?) {
 		view.setOnClickListener {
 			question.isSelected = !question.isSelected
-			view.doOnPreDraw { onItemClickListener?.invoke() }
+			onItemClickListener?.invoke()
 		}
 		view.findViewById<TextView>(R.id.item_faq_question_title).text = question.question
 		view.findViewById<TextView>(R.id.item_faq_question_answer_container).isVisible = question.isSelected
@@ -67,7 +66,7 @@ data class QuestionItem(
 		val linkGroup = view.findViewById<View>(R.id.item_faq_question_link)
 		val linkLabel = view.findViewById<TextView>(R.id.item_faq_question_link_label)
 		val hasLink = !question.linkTitle.isNullOrEmpty() && !question.linkUrl.isNullOrEmpty()
-		(hasLink && question.isSelected)?.let { visible ->
+		(hasLink)?.let { visible ->
 			linkLabel.isVisible = visible
 			linkGroup.isVisible = visible
 		}

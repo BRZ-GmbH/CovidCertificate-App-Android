@@ -32,6 +32,8 @@
             android:src="@drawable/ic_bundwappen_big"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:contentDescription="@string/accessibility_list_button"
+            android:importantForAccessibility="no"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
@@ -44,6 +46,7 @@
             android:src="@drawable/ic_info_outline"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:contentDescription="@string/accessibility_info_button"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -61,6 +64,7 @@
                 android:layout_height="18dp"
                 android:layout_marginStart="@dimen/spacing_medium_large"
                 android:scaleType="fitXY"
+                android:importantForAccessibility="no"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -86,6 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_region_arrow_down"
+                android:contentDescription="@string/accessibility_state_selector"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/header_region_text"
@@ -97,7 +102,7 @@
             android:id="@+id/header_notification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:contentDescription="@string/accessibility_notifications"
             android:layout_gravity="start|center_vertical"
             android:background="@drawable/ripple_rounded"
             android:padding="@dimen/spacing_tiny_small"

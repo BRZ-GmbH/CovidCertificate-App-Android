@@ -94,6 +94,7 @@
 		android:layout_height="wrap_content"
 		android:padding="@dimen/spacing_medium_large"
 		android:src="@drawable/ic_drag"
+		android:contentDescription="@string/accessibility_move_button"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintTop_toTopOf="parent" />

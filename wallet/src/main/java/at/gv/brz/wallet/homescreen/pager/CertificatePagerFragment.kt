@@ -97,8 +97,6 @@ class CertificatePagerFragment : Fragment() {
 				updateStatusInfo(it.state)
 			}
 		}
-
-		certificatesViewModel.startVerification(dccHolder)
 	}
 
 	private fun updateStatusInfo(verificationState: VerificationResultStatus?) {
@@ -146,6 +144,9 @@ class CertificatePagerFragment : Fragment() {
 
 		binding.certificatePageInfoEtIcon.setImageResource(if (state.results.first { it.region?.startsWith("ET") == true }.valid) { R.drawable.ic_check_circle} else { R.drawable.ic_minus_circle})
 		binding.certificatePageInfoNgIcon.setImageResource(if (state.results.first { it.region?.startsWith("NG") == true }.valid) { R.drawable.ic_check_circle} else { R.drawable.ic_minus_circle})
+
+		binding.certificatePageRegionEtContainer.contentDescription = if (state.results.first { it.region?.startsWith("ET") == true }.valid) getString(R.string.accessibility_valid_text) + getString(R.string.region_type_ET)  else getString(R.string.accessibility_invalid_text) + getString(R.string.region_type_ET)
+		binding.certificatePageRegionNgContainer.contentDescription = if (state.results.first { it.region?.startsWith("NG") == true }.valid) getString(R.string.accessibility_valid_text) + getString(R.string.region_type_NG) else getString(R.string.accessibility_invalid_text) + getString(R.string.region_type_NG)
 	}
 
 	private fun displayInvalidState(state: VerificationResultStatus.SIGNATURE_INVALID) {

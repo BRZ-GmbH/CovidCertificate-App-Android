@@ -11,16 +11,10 @@
 package at.gv.brz.common.net
 
 import android.content.Context
-import android.os.Build
 import at.gv.brz.common.BuildConfig
 import at.gv.brz.common.config.ConfigModel
 import at.gv.brz.common.data.ConfigSecureStorage
 import at.gv.brz.common.util.AssetUtil
-import at.gv.brz.eval.CovidCertificateSdk
-import at.gv.brz.eval.data.Config
-import at.gv.brz.eval.net.CertificatePinning
-import at.gv.brz.eval.net.JwsInterceptor
-import at.gv.brz.eval.net.UserAgentInterceptor
 import at.gv.brz.eval.utils.SingletonHolder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -34,7 +28,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 class ConfigRepository private constructor(private val configSpec: ConfigSpec) {
 
 	companion object : SingletonHolder<ConfigRepository, ConfigSpec>(::ConfigRepository) {
-		private const val MIN_LOAD_WAIT_TIME = 8 * 60 * 60 * 1000L // 1h
+		private const val MIN_LOAD_WAIT_TIME = 8 * 60 * 60 * 8000L // 8h
 		private const val MAX_AGE_STATUS_VALID_CACHED_CONFIG = 48 * 60 * 60 * 1000L // 48h
 	}
 
@@ -63,31 +57,27 @@ class ConfigRepository private constructor(private val configSpec: ConfigSpec) {
 			.create(ConfigService::class.java)
 	}
 
-	fun loadDefaultConfig(context: Context): ConfigModel? {
-		return AssetUtil.loadDefaultConfig(context)
-	}
-
-	suspend fun loadConfig(context: Context): ConfigModel? {
-		// Deactivate Config loading for Forced Update for now
-		if (true) {
-			return null
-		}
+	suspend fun loadConfig(force: Boolean, context: Context): ConfigModel? {
 		var config =
-			if (lastConfigLoadTimestamp == null || (lastConfigLoadTimestamp!! + MIN_LOAD_WAIT_TIME <= System.currentTimeMillis())) {
+			if (force || (storage.getConfigLastSuccessTimestamp() + MIN_LOAD_WAIT_TIME <= System.currentTimeMillis())) {
 				try {
 					val response = withContext(Dispatchers.IO) { configService.getConfig() }
 					if (!response.isSuccessful) throw HttpException(response)
-					//response.body()?.let { storage.updateConfigData(it, requestTimeStamp, versionString) }
+					response.body()?.let { storage.updateConfigData(it, System.currentTimeMillis()) }
 					response.body()
 				} catch (e: Exception) {
 					null
 				}
 			} else null
 
+		if (config == null) {
+			config = storage.getConfig()
+		}
+		if (config == null) {
+			config = AssetUtil.loadDefaultConfig(context)
+		}
 		return config
 	}
-
-
 }
 
-class ConfigSpec(val context: Context, val baseUrl: String, val versionName: String, val buildTime: String)
+class ConfigSpec(val context: Context, val baseUrl: String)

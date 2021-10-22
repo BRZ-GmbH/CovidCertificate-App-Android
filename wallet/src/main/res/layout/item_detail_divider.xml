@@ -14,4 +14,5 @@
 	android:layout_height="4dp"
 	android:layout_marginTop="@dimen/spacing_medium_small"
 	android:layout_marginBottom="@dimen/spacing_very_large"
+	android:importantForAccessibility="no"
 	android:background="@drawable/line_dashed_grey"/>

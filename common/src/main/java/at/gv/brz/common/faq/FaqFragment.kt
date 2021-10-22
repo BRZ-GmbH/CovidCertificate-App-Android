@@ -10,10 +10,12 @@
 
 package at.gv.brz.common.faq
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.accessibility.AccessibilityManager
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +24,8 @@ import at.gv.brz.common.databinding.FragmentFaqBinding
 import at.gv.brz.common.faq.model.Faq
 import at.gv.brz.common.util.UrlUtil
 import at.gv.brz.common.views.hideAnimated
+import at.gv.brz.common.R
+import at.gv.brz.common.faq.model.Question
 
 
 abstract class FaqFragment : Fragment() {
@@ -44,6 +48,7 @@ abstract class FaqFragment : Fragment() {
 		}
 
 		setupFaqProvider()
+		view.announceForAccessibility(getString(R.string.wallet_faq_loaded))
 	}
 
 	override fun onDestroyView() {
@@ -55,6 +60,11 @@ abstract class FaqFragment : Fragment() {
 
 	protected fun setupFaqList(items: List<Faq>) {
 		binding.faqLoadingView.hideAnimated()
+
+		val am = activity?.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager?
+		if (am?.isEnabled == true) {
+			items.forEach { (it as? Question)?.isSelected = true }
+		}
 
 		val recyclerView = binding.faqRecyclerView
 		(recyclerView.itemAnimator as SimpleItemAnimator?)?.supportsChangeAnimations = false

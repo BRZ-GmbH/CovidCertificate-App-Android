@@ -59,6 +59,10 @@
 			android:layout_height="wrap_content"
 			android:layout_marginHorizontal="@dimen/spacing_medium_large"
 			android:layout_marginTop="@dimen/spacing_small"
+			android:screenReaderFocusable="true"
+			android:importantForAccessibility="yes"
+			android:focusableInTouchMode="true"
+			android:focusedByDefault="true"
 			tools:text="@string/wallet_faq_questions_answer_1" />
 
 		<LinearLayout

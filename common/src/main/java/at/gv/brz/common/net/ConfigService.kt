@@ -18,7 +18,7 @@ import retrofit2.http.Query
 
 interface ConfigService {
 
-	@GET("wallet-app/config")
+	@GET("config_wallet.json")
 	suspend fun getConfig(): Response<ConfigModel>
 
 }

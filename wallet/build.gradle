@@ -37,10 +37,10 @@ android {
 
 	defaultConfig {
 		applicationId "at.gv.brz.wallet"
-		minSdkVersion 24
+		minSdkVersion 23
 		targetSdkVersion 30
-		versionCode 43
-		versionName "2.0.3"
+		versionCode 54
+		versionName "2.1.0"
 
 		buildConfigField "long", "BUILD_TIME", readPropertyWithDefault('buildTimestamp', System.currentTimeMillis()) + 'L'
 
@@ -52,24 +52,25 @@ android {
         // If you intend to integrate the CovidCertificate-SDK into your app, please read
 		// https://github.com/Federal-Ministry-of-Health-AT/green-pass-overview#getting-access-to-trust-list-business-rules-and-value-sets
 		dev {
-			buildConfigField "String", "BASE_URL", '"http://gruenerpass.gesundheit.gv.at"'
+			buildConfigField "String", "BASE_URL", '"https://dgc-trusttest.qr.gv.at"'
 			buildConfigField "String", "SDK_API_TOKEN", '""'
 			applicationIdSuffix '.dev'
 		}
 		abn {
 			applicationId "at.gv.brz.wallet.abn"
-			buildConfigField "String", "BASE_URL", '"https://gruenerpass.gesundheit.gv.at"'
+			buildConfigField "String", "BASE_URL", '"https://dgc-trusttest.qr.gv.at"'
 			buildConfigField "String", "SDK_API_TOKEN", "$System.env.WALLET_APP_SDK_API_TOKEN_ABN"
 		}
 		prodtest {
 			applicationId "at.gv.brz.wallet.ptest"
-			buildConfigField "String", "BASE_URL", '"https://gruenerpass.gesundheit.gv.at"'
+			buildConfigField "String", "BASE_URL", '"https://dgc-trust.qr.gv.at"'
 			buildConfigField "String", "SDK_API_TOKEN", "$System.env.WALLET_APP_SDK_API_TOKEN_PROD"
 		}
 		prod {
-			buildConfigField "String", "BASE_URL", '"https://gruenerpass.gesundheit.gv.at"'
+			buildConfigField "String", "BASE_URL", '"https://dgc-trust.qr.gv.at"'
 			buildConfigField "String", "SDK_API_TOKEN", "$System.env.WALLET_APP_SDK_API_TOKEN_PROD"
 		}
+
 	}
 
 	flavorDimensions "version"
