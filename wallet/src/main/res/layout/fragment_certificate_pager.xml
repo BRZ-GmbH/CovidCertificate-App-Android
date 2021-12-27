@@ -60,17 +60,6 @@
                         android:text="@string/covid_certificate_title"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageView
-                        android:id="@+id/certificate_page_qr_code"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_marginTop="@dimen/home_certificate_qr_top_padding"
-                        app:layout_constraintDimensionRatio="1"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/certificate_page_title"
-                        tools:src="@drawable/ic_qrcode" />
 
                     <TextView
                         android:id="@+id/certificate_page_name"
@@ -80,12 +69,14 @@
                         android:gravity="center_horizontal|bottom"
                         android:maxLines="4"
                         android:minLines="1"
+                        android:layout_marginTop="@dimen/certificate_pager_spacing_huger"
                         app:autoSizeMaxTextSize="@dimen/text_size_large"
                         app:autoSizeMinTextSize="@dimen/text_size_small"
                         app:autoSizeTextType="uniform"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/certificate_page_qr_code"
+                        app:layout_constraintTop_toBottomOf="@id/certificate_page_title"
+
                         tools:text="Muster Marta" />
 
                     <TextView
@@ -95,11 +86,25 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_very_small"
                         android:gravity="center_horizontal"
-                        app:layout_constraintBottom_toBottomOf="parent"
+
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/certificate_page_name"
                         tools:text="21.11.1966" />
+
+
+                    <ImageView
+                        android:id="@+id/certificate_page_qr_code"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="@dimen/spacing_medium"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintDimensionRatio="1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/certificate_page_birthdate"
+                        tools:src="@drawable/ic_qrcode" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

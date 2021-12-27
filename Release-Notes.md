@@ -1,5 +1,9 @@
 # Grüner Pass - Release Notes
 
+## v2.2.1
+
+- Anzeige von Name und Geburtsdatum oberhalb von QR-Code (EPIEMSCO-2237)
+
 ## v2.2.0
 
 - Anzeige des Gültigkeitsdatums von Zertifikaten (EPIEMSCO-1672)

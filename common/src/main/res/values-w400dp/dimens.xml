@@ -16,6 +16,5 @@
     <dimen name="home_certificate_top_padding">25dp</dimen>
     <dimen name="certificate_pager_spacing_huger">15dp</dimen>
     <dimen name="home_certificate_validation_vertical_padding">12dp</dimen>
-    <dimen name="home_certificate_qr_top_padding">15dp</dimen>
     <dimen name="home_certificate_qr_side_padding">25dp</dimen>
 </resources>

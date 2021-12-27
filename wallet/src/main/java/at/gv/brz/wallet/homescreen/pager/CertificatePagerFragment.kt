@@ -88,25 +88,29 @@ class CertificatePagerFragment : Fragment() {
 		if (maximumQRHeight != null) {
 			binding.certificatePageQrCode.updateLayoutParams {
 				this.height = CertificatePagerFragment.maximumQRHeight!!
+				this.width = CertificatePagerFragment.maximumQRHeight!!
 			}
 		} else if (maximumQRWidth != null) {
 			binding.certificatePageQrCode.updateLayoutParams {
 				this.width = CertificatePagerFragment.maximumQRWidth!!
+				this.height = CertificatePagerFragment.maximumQRWidth!!
 			}
 		} else {
 			globalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
 
-				val maximumHeight = binding.certificateContentScrollview.measuredHeight - binding.certificatePageTitle.measuredHeight - resources.getDimensionPixelSize(R.dimen.spacing_huger)
+				val maximumHeight = binding.certificateContentScrollview.measuredHeight - resources.getDimensionPixelSize(R.dimen.spacing_large)
 				val qrHeight = binding.certificatePageQrCode.measuredHeight
 				if (qrHeight > maximumHeight) {
 					CertificatePagerFragment.maximumQRHeight = maximumHeight
 					binding.certificatePageQrCode.updateLayoutParams {
 						this.height = maximumHeight
+						this.width = maximumHeight
 					}
 				} else {
 					binding.certificatePageQrCode.updateLayoutParams {
 						CertificatePagerFragment.maximumQRWidth = binding.certificateContentScrollview.measuredWidth - resources.getDimensionPixelSize(R.dimen.certificate_details_side_padding) * 2
 						this.width = binding.certificateContentScrollview.measuredWidth - resources.getDimensionPixelSize(R.dimen.certificate_details_side_padding) * 2
+						this.height = binding.certificateContentScrollview.measuredWidth - resources.getDimensionPixelSize(R.dimen.certificate_details_side_padding) * 2
 					}
 				}
 				if (globalLayoutListener != null) {

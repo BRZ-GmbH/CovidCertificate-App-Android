@@ -99,6 +99,6 @@
 
 	<dimen name="home_certificate_validation_vertical_padding">8dp</dimen>
 
-	<dimen name="home_certificate_qr_top_padding">0dp</dimen>
+	<dimen name="home_certificate_qr_top_padding">15dp</dimen>
 	<dimen name="home_certificate_qr_side_padding">0dp</dimen>
 </resources>

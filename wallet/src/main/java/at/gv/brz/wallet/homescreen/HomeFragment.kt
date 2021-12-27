@@ -138,13 +138,6 @@ class HomeFragment : Fragment() {
 		certificateBoosterNotificationHash = 0
 	}
 
-	override fun onPause() {
-		super.onPause()
-		certificateBoosterNotificationDialog?.dismiss()
-		certificateBoosterNotificationDialog = null
-		certificateBoosterNotificationHash = 0
-	}
-
 	override fun onDestroyView() {
 		super.onDestroyView()
 		_binding = null
@@ -440,6 +433,144 @@ class HomeFragment : Fragment() {
 						)
 					}
 				}
+			}
+
+		}
+		val selectedRegion = Region.getRegionFromIdentifier(certificatesViewModel.secureStorage.getSelectedValidationRegion())
+		if (selectedRegion != null) {
+			binding.homescreenHeaderEmpty.headerRegionFlag.setImageResource(selectedRegion.getFlag())
+			binding.homescreenHeaderNotEmpty.headerRegionFlag.setImageResource(selectedRegion.getFlag())
+			binding.homescreenHeaderEmpty.headerRegionText.setText(selectedRegion.getName())
+			binding.homescreenHeaderNotEmpty.headerRegionText.setText(selectedRegion.getName())
+			binding.homescreenHeaderEmpty.headerRegionText.contentDescription =
+				"${getString(selectedRegion.getName())}.\n" +
+						"\n${getString(R.string.accessibility_state_selector)}.\n" +
+						"\n${getString(R.string.accessibility_change_selected_region)}"
+			binding.homescreenHeaderNotEmpty.headerRegionText.contentDescription =
+				"${getString(selectedRegion.getName())}.\n" +
+						"\n${getString(R.string.accessibility_state_selector)}.\n" +
+						"\n${getString(R.string.accessibility_change_selected_region)}"
+		} else {
+			binding.homescreenHeaderEmpty.headerRegionText.contentDescription =
+						"\n${getString(R.string.accessibility_state_selector)}.\n" +
+						"\n${getString(R.string.accessibility_change_selected_region)}"
+			binding.homescreenHeaderNotEmpty.headerRegionText.contentDescription =
+						"\n${getString(R.string.accessibility_state_selector)}.\n" +
+						"\n${getString(R.string.accessibility_change_selected_region)}"
+		}
+	}
+
+	private fun handleCertificateNotifications() {
+		// EPIEMSCO-2173 Currently deactivate campaigns
+		/*val dccHolders = certificatesViewModel.dccHolderCollectionLiveData.value ?: return
+
+		if (NotificationUtil().shouldShowJohnsonBoosterNotification(dccHolders, notificationSecureStorage = certificatesViewModel.notificationStorage)) {
+			showJohnsonBoosterNotification()
+			return
+		}
+
+		certificateBoosterNotificationHash = dccHolders.joinToString("_") { it.qrCodeData }.hashCode()
+		viewLifecycleOwner.lifecycleScope.launch {
+			delay(1000)
+			val notifyableCertificates =
+				NotificationUtil().certificatesForBoosterNotification(
+					dccHolders,
+					certificatesViewModel.notificationStorage
+				)
+
+			showNotificationAlert(
+				notifyableCertificates,
+				certificateBoosterNotificationHash
+			)
+		}*/
+	}
+
+	private fun showJohnsonBoosterNotification() {
+		certificatesViewModel.notificationStorage.setJohnsonBoosterNotificationShown(true)
+
+		val notificationDialogBuilder = AlertDialog.Builder(requireContext(), R.style.CovidCertificate_AlertDialogStyle)
+			.setMessage(R.string.wallet_notification_johnson_booster_message)
+			.setNegativeButton(R.string.wallet_notification_johnson_booster_ok_button, null)
+			.setPositiveButton(R.string.wallet_notification_johnson_booster_info_button, null)
+			.setCancelable(false)
+
+		val notificationDialog = notificationDialogBuilder.create()
+			.apply { window?.setSecureFlagToBlockScreenshots(BuildConfig.FLAVOR) }
+
+		notificationDialog.setOnShowListener {
+			notificationDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener {
+				notificationDialog.dismiss()
+
+				UrlUtil.openUrl(requireContext(), getString(R.string.wallet_notification_johnson_booster_info_url))
+			}
+			notificationDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener {
+				notificationDialog.dismiss()
+
+				handleCertificateNotifications()
+			}
+		}
+
+		notificationDialog.show()
+	}
+
+	private fun showNotificationAlert(certificates: List<DccHolder>, certificateHash: Int) {
+		certificateBoosterNotificationDialog?.dismiss()
+		certificateBoosterNotificationDialog = null
+		if (certificateHash == certificateBoosterNotificationHash) {
+			val certificate = certificates.firstOrNull()
+			val certificateIdentifier = certificate?.euDGC?.vaccinations?.firstOrNull()?.certificateIdentifier
+			if (certificate != null && certificateIdentifier != null) {
+				val remainingCertificates = certificates.drop(1)
+
+				val title = getString(R.string.wallet_notification_booster_title)
+				val message = getString(R.string.wallet_notification_booster_message)
+				val remindAgainButton = getString(R.string.wallet_notification_booster_later_button)
+				val readButton = getString(R.string.wallet_notification_booster_ok_button)
+
+				val nextNotificationTimestampForCertificate = certificate.nextNotificationTimestamp()
+				val showRemindAgainButton = Instant.ofEpochMilli(nextNotificationTimestampForCertificate).isAfter(Instant.now())
+
+				val notificationDialogBuilder = AlertDialog.Builder(requireContext(), R.style.CovidCertificate_AlertDialogStyle)
+					.setTitle(title)
+					.setMessage(message)
+					.setNeutralButton(getString(R.string.wallet_notification_booster_info_button), null)
+					.setNegativeButton(readButton, null)
+					.setCancelable(false)
+
+				if (showRemindAgainButton) {
+					notificationDialogBuilder.setPositiveButton(remindAgainButton, null)
+				}
+
+				val notificationDialog = notificationDialogBuilder.create()
+					.apply { window?.setSecureFlagToBlockScreenshots(BuildConfig.FLAVOR) }
+
+				notificationDialog.setOnShowListener {
+					notificationDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener {
+						certificateBoosterNotificationDialog?.dismiss()
+						certificateBoosterNotificationDialog = null
+						certificatesViewModel.notificationStorage.setNotificationTimestampForCertificateIdentifier(certificateIdentifier, certificate.nextNotificationTimestamp())
+						showNotificationAlert(remainingCertificates, certificateHash)
+					}
+					notificationDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener {
+						certificateBoosterNotificationDialog?.dismiss()
+						certificateBoosterNotificationDialog = null
+
+						certificatesViewModel.notificationStorage.setNotificationTimestampForCertificateIdentifier(certificateIdentifier, certificate.neverAgainNotificationTimestamp())
+						showNotificationAlert(remainingCertificates, certificateHash)
+					}
+					notificationDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener {
+						certificateBoosterNotificationDialog?.dismiss()
+						certificateBoosterNotificationDialog = null
+
+						certificatesViewModel.notificationStorage.setNotificationTimestampForCertificateIdentifier(certificateIdentifier, certificate.neverAgainNotificationTimestamp())
+						UrlUtil.openUrl(requireContext(), getString(R.string.wallet_notification_booster_info_url))
+					}
+				}
+
+				this.certificateBoosterNotificationDialog = notificationDialog
+				notificationDialog.show()
+			} else {
+				certificateBoosterNotificationHash = 0
 			}
 
 		}
