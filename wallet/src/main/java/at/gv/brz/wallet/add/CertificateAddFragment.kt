@@ -11,9 +11,12 @@
 package at.gv.brz.wallet.add
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.accessibility.AccessibilityEvent
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -97,6 +100,16 @@ class CertificateAddFragment : Fragment() {
 			binding.certificateAddRetry.isVisible = false
 		}
 
+		if (isAlreadyAdded) {
+			binding.certificateAddDataRecyclerView.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
+			val mainHandler = Handler(Looper.getMainLooper())
+			mainHandler.postDelayed({
+				binding.certificateAlreadyExistsInfoText.requestFocus()
+				binding.certificateAlreadyExistsInfoText.sendAccessibilityEvent(
+					AccessibilityEvent.TYPE_VIEW_FOCUSED)
+				binding.certificateAddDataRecyclerView.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
+			}, 500)
+		}
 	}
 
 	override fun onDestroyView() {

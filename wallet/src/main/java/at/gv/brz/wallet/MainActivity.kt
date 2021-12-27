@@ -27,8 +27,10 @@ import at.gv.brz.eval.CovidCertificateSdk
 import at.gv.brz.wallet.data.WalletSecureStorage
 import at.gv.brz.wallet.databinding.ActivityMainBinding
 import at.gv.brz.wallet.homescreen.HomeFragment
+import at.gv.brz.wallet.onboarding.FeatureIntroActivity
 import at.gv.brz.wallet.onboarding.OnboardingActivity
 import at.gv.brz.wallet.pdf.PdfViewModel
+import at.gv.brz.wallet.util.WalletAssetUtil
 import java.lang.Integer.max
 
 class MainActivity : AppCompatActivity() {
@@ -53,7 +55,18 @@ class MainActivity : AppCompatActivity() {
 	private val onAndUpdateBoardingLauncher =
 		registerForActivityResult(StartActivityForResult()) { activityResult: ActivityResult ->
 			if (activityResult.resultCode == RESULT_OK) {
+				secureStorage.setLastInstalledVersion(BuildConfig.VERSION_NAME)
 				secureStorage.setOnboardingCompleted(true)
+				showHomeFragment()
+			} else {
+				finish()
+			}
+		}
+
+	private val onAndUpdateFeatureLauncher =
+		registerForActivityResult(StartActivityForResult()) { activityResult: ActivityResult ->
+			if (activityResult.resultCode == RESULT_OK) {
+				secureStorage.setLastInstalledVersion(BuildConfig.VERSION_NAME)
 				showHomeFragment()
 			} else {
 				finish()
@@ -71,9 +84,14 @@ class MainActivity : AppCompatActivity() {
 
 		if (savedInstanceState == null) {
 			val onboardingCompleted: Boolean = secureStorage.getOnboardingCompleted()
+			val sameVersion: Boolean = secureStorage.getLastInstalledVersion() == BuildConfig.VERSION_NAME
+
 			if (!onboardingCompleted) {
 				onAndUpdateBoardingLauncher.launch(Intent(this, OnboardingActivity::class.java))
+			} else if (!sameVersion && WalletAssetUtil.hasFeatureIntrosForLanguageAndVersion(this, getString(R.string.language_key), BuildConfig.VERSION_NAME)) {
+				onAndUpdateFeatureLauncher.launch(Intent(this, FeatureIntroActivity::class.java))
 			} else {
+				secureStorage.setLastInstalledVersion(BuildConfig.VERSION_NAME)
 				showHomeFragment()
 			}
 		}

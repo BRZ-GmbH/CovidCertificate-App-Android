@@ -40,6 +40,7 @@ data class VerifiedCeritificateItem(val verifiedCertificate: CertificatesViewMod
 		setCertificateType(binding.itemCertificateListType, state, certificate.certType)
 		binding.itemCertificateListType.isVisible = certType != null
 
+		var validityAccessibilityString = binding.root.resources.getString(R.string.accessibility_certificate_list_invalid)
 		when (state) {
 			is VerificationResultStatus.LOADING -> {
 				binding.itemCertificateListIconLoadingView.isVisible = true
@@ -52,6 +53,7 @@ data class VerifiedCeritificateItem(val verifiedCertificate: CertificatesViewMod
 				binding.itemCertificateListIconStatusGroup.isVisible = false
 				binding.itemCertificateListIconStatus.isVisible = true
 				binding.itemCertificateListIconStatus.setImageResource(R.drawable.ic_info_blue)
+				validityAccessibilityString = binding.root.resources.getString(R.string.accessibility_certificate_list_valid)
 			}
 			is VerificationResultStatus.SIGNATURE_INVALID -> {
 				binding.itemCertificateListIconLoadingView.isVisible = false
@@ -80,6 +82,8 @@ data class VerifiedCeritificateItem(val verifiedCertificate: CertificatesViewMod
 				binding.itemCertificateListIconStatus.setImageResource(R.drawable.ic_no_connection)
 			}
 		}
+
+		binding.root.contentDescription = "${name}. ${binding.itemCertificateListType.text}. ${validityAccessibilityString}"
 
 		binding.root.setOnClickListener {
 			onCertificateClickListener?.invoke(certificate)

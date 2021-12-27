@@ -44,6 +44,7 @@
 					android:layout_height="wrap_content"
 					android:layout_marginBottom="@dimen/spacing_larger"
 					android:gravity="center_horizontal"
+					android:accessibilityHeading="true"
 					tools:text="Subtitle" />
 
 				<ImageView
@@ -68,6 +69,7 @@
 					android:orientation="horizontal">
 
 					<ImageView
+						android:importantForAccessibility="no"
 						android:id="@+id/onboarding_description_1_icon"
 						tools:src="@drawable/ic_data_protection"
 						android:layout_width="@dimen/icon_size_small"
@@ -93,6 +95,7 @@
 					android:orientation="horizontal">
 
 					<ImageView
+						android:importantForAccessibility="no"
 						android:id="@+id/onboarding_description_2_icon"
 						tools:src="@drawable/ic_privacy"
 						android:layout_width="@dimen/icon_size_small"

@@ -15,6 +15,7 @@ import android.graphics.Paint
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.view.accessibility.AccessibilityEvent
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import at.gv.brz.common.R
@@ -38,6 +39,10 @@ class CameraPermissionExplanationDialog(context: Context) : AlertDialog(context)
 			}
 		}
 		findViewById<View>(R.id.camera_permission_dialog_close_button)?.setOnClickListener { _ -> cancel() }
+	}
+
+	fun requestAccessibilityFocus() {
+		findViewById<TextView>(R.id.camera_permission_dialog_text)?.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED)
 	}
 
 	fun setGrantCameraAccessClickListener(listener: View.OnClickListener?) {

@@ -27,7 +27,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
-        app:srcCompat="@drawable/ic_flag_at"
         app:strokeColor="@color/grey_light"
         app:strokeWidth="1dp" />
 
@@ -46,6 +45,7 @@
         tools:text="Muster Marta" />
 
     <RadioButton
+        android:importantForAccessibility="no"
         android:id="@+id/item_region_list_radio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

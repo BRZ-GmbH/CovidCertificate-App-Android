@@ -61,7 +61,7 @@
 	<dimen name="header_shadow_height">5dp</dimen>
 
 	<dimen name="certificates_elevation">5dp</dimen>
-	<dimen name="certificates_padding">30dp</dimen>
+	<dimen name="certificates_padding">20dp</dimen>
 
 	<dimen name="onboarding_illustration_height">200dp</dimen>
 
@@ -76,6 +76,29 @@
 	<dimen name="onboarding_intro_spacing_huge">20dp</dimen>
 	<dimen name="onboarding_intro_illustration_spacing_large">0dp</dimen>
 
-	<dimen name="certificate_pager_spacing_huger">15dp</dimen>
+	<dimen name="certificate_pager_spacing_huger">8dp</dimen>
 	<dimen name="certificate_pager_bottom_spacing_medium_top">0dp</dimen>
+
+	<dimen name="header_top_padding">5dp</dimen>
+	<dimen name="certificate_details_side_padding">15dp</dimen>
+	<dimen name="home_bottom_padding">10dp</dimen>
+	<dimen name="home_button_side_padding">0dp</dimen>
+	<dimen name="home_side_padding">10dp</dimen>
+	<dimen name="home_bubble_size">95dp</dimen>
+	<dimen name="home_vertical_padding_huge">15dp</dimen>
+	<dimen name="home_empty_scroll_top_padding">65dp</dimen>
+	<dimen name="home_empty_scroll_bottom_padding">80dp</dimen>
+
+	<dimen name="home_viewpager_top_padding">65dp</dimen>
+	<dimen name="home_viewpager_bottom_padding">10dp</dimen>
+
+	<dimen name="home_certificate_top_padding">15dp</dimen>
+
+	<dimen name="home_certificate_info_top_padding_without_validity_hint">18dp</dimen>
+	<dimen name="home_certificate_info_top_padding_with_validity_hint">0dp</dimen>
+
+	<dimen name="home_certificate_validation_vertical_padding">8dp</dimen>
+
+	<dimen name="home_certificate_qr_top_padding">0dp</dimen>
+	<dimen name="home_certificate_qr_side_padding">0dp</dimen>
 </resources>

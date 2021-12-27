@@ -1,5 +1,14 @@
 # Grüner Pass - Release Notes
 
+## v2.2.0
+
+- Anzeige des Gültigkeitsdatums von Zertifikaten (EPIEMSCO-1672)
+- Accessibility-Verbesserung (EPIEMSCO-1850)
+- Designverbesserung auf kleinen Geräten (EPIEMSCO-1895)
+- Auswahlmöglichkeit aller 9 Bundesländer (EPIEMSCO-2007)
+- Informations-Benachrichtigung zu Gültigkeit für erste Johnson & Johnson Dosis (EPIEMSCO-2008)
+- Deaktivierung der Kampagne für die Auffrischungsimpfung (EPIEMSCO-2173)
+
 ## v2.1.0
 - Notification für Erinnerung an Auffrischungsimpfung (EPIEMSCO-1527)
 - App Token via Build Prozess (EPIEMSCO-1729)

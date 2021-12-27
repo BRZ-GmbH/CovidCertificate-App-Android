@@ -78,6 +78,7 @@
 			android:paddingEnd="@dimen/spacing_medium_small">
 
 			<ImageView
+				android:importantForAccessibility="no"
 				android:layout_width="@dimen/icon_size_small"
 				android:layout_height="@dimen/icon_size_small"
 				android:layout_marginTop="@dimen/spacing_tiny_small"
@@ -90,7 +91,9 @@
 				android:layout_height="wrap_content"
 				android:layout_gravity="center_vertical"
 				android:layout_marginStart="@dimen/spacing_very_small"
-				android:text="@string/wallet_scanner_howitworks_external_link_title" />
+				android:text="@string/wallet_scanner_howitworks_external_link_title"
+				android:hint="@string/accessibility_external_link"
+				/>
 
 		</LinearLayout>
 	</LinearLayout>

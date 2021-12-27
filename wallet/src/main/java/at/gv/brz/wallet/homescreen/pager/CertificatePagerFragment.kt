@@ -17,20 +17,16 @@ import android.text.SpannableString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import at.gv.brz.common.util.getStatusInformationString
-import at.gv.brz.common.util.makeBold
 import at.gv.brz.common.util.makeSubStringBold
-import at.gv.brz.eval.data.EvalErrorCodes
-import at.gv.brz.eval.data.state.CheckNationalRulesState
-import at.gv.brz.eval.data.state.CheckSignatureState
 import at.gv.brz.eval.data.state.VerificationResultStatus
-import at.gv.brz.eval.data.state.VerificationState
 import at.gv.brz.eval.models.DccHolder
 import at.gv.brz.eval.utils.DEFAULT_DISPLAY_DATE_FORMATTER
 import at.gv.brz.eval.utils.prettyPrintIsoDateTime
@@ -40,8 +36,6 @@ import at.gv.brz.wallet.databinding.FragmentCertificatePagerBinding
 import at.gv.brz.wallet.util.QrCode
 import at.gv.brz.wallet.util.getNameDobColor
 import at.gv.brz.wallet.util.getQrAlpha
-import at.gv.brz.wallet.util.getValidationStatusString
-import at.gv.brz.wallet.util.isOfflineMode
 
 class CertificatePagerFragment : Fragment() {
 
@@ -51,6 +45,9 @@ class CertificatePagerFragment : Fragment() {
 		fun newInstance(certificate: DccHolder) = CertificatePagerFragment().apply {
 			arguments = bundleOf(ARG_CERTIFICATE to certificate)
 		}
+
+		var maximumQRHeight: Int? = null
+		var maximumQRWidth: Int? = null
 	}
 
 	private val certificatesViewModel by activityViewModels<CertificatesViewModel>()
@@ -59,6 +56,8 @@ class CertificatePagerFragment : Fragment() {
 	private val binding get() = _binding!!
 
 	private lateinit var dccHolder: DccHolder
+
+	private var globalLayoutListener: ViewTreeObserver.OnGlobalLayoutListener? = null
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -84,10 +83,51 @@ class CertificatePagerFragment : Fragment() {
 		setupStatusInfo()
 
 		binding.certificatePageMainGroup.setOnClickListener { certificatesViewModel.onQrCodeClicked(dccHolder) }
+		binding.certificateContentScrollviewLayout.setOnClickListener { certificatesViewModel.onQrCodeClicked(dccHolder) }
+
+		if (maximumQRHeight != null) {
+			binding.certificatePageQrCode.updateLayoutParams {
+				this.height = CertificatePagerFragment.maximumQRHeight!!
+			}
+		} else if (maximumQRWidth != null) {
+			binding.certificatePageQrCode.updateLayoutParams {
+				this.width = CertificatePagerFragment.maximumQRWidth!!
+			}
+		} else {
+			globalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
+
+				val maximumHeight = binding.certificateContentScrollview.measuredHeight - binding.certificatePageTitle.measuredHeight - resources.getDimensionPixelSize(R.dimen.spacing_huger)
+				val qrHeight = binding.certificatePageQrCode.measuredHeight
+				if (qrHeight > maximumHeight) {
+					CertificatePagerFragment.maximumQRHeight = maximumHeight
+					binding.certificatePageQrCode.updateLayoutParams {
+						this.height = maximumHeight
+					}
+				} else {
+					binding.certificatePageQrCode.updateLayoutParams {
+						CertificatePagerFragment.maximumQRWidth = binding.certificateContentScrollview.measuredWidth - resources.getDimensionPixelSize(R.dimen.certificate_details_side_padding) * 2
+						this.width = binding.certificateContentScrollview.measuredWidth - resources.getDimensionPixelSize(R.dimen.certificate_details_side_padding) * 2
+					}
+				}
+				if (globalLayoutListener != null) {
+					binding.certificatePageMainGroup.viewTreeObserver.removeOnGlobalLayoutListener(
+						globalLayoutListener
+					)
+					globalLayoutListener = null
+				}
+			}
+			binding.certificatePageMainGroup.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
+		}
 	}
 
 	override fun onDestroyView() {
 		super.onDestroyView()
+		if (globalLayoutListener != null) {
+			binding.certificatePageMainGroup.viewTreeObserver.removeOnGlobalLayoutListener(
+				globalLayoutListener
+			)
+			globalLayoutListener = null
+		}
 		_binding = null
 	}
 
@@ -122,6 +162,9 @@ class CertificatePagerFragment : Fragment() {
 		binding.certificatePageStatusIcon.setImageResource(0)
 		binding.certificatePageInfo.text = SpannableString(context.getString(R.string.wallet_certificate_verifying))
 
+		binding.certificatePageInfo.updateLayoutParams {
+			(this as? ViewGroup.MarginLayoutParams)?.topMargin = resources.getDimensionPixelSize(R.dimen.home_certificate_info_top_padding_without_validity_hint)
+		}
 		binding.certificatePageStatusIcon.visibility = View.VISIBLE
 		binding.certificatePageInfo.visibility = View.VISIBLE
 		binding.certificatePageInfoCircle.visibility = View.VISIBLE
@@ -138,6 +181,10 @@ class CertificatePagerFragment : Fragment() {
 		binding.certificatePageInfoCircle.visibility = View.INVISIBLE
 		binding.certificatePageRegionValidityContainer.visibility = View.VISIBLE
 		binding.certificatePageValidityHintEt.visibility = View.VISIBLE
+
+		binding.certificatePageInfo.updateLayoutParams {
+			(this as? ViewGroup.MarginLayoutParams)?.topMargin = resources.getDimensionPixelSize(R.dimen.home_certificate_info_top_padding_with_validity_hint)
+		}
 
 		binding.certificatePageRegionEtContainer.setBackgroundResource(if (state.results.first { it.region?.startsWith("ET") == true }.valid) { R.drawable.bg_certificate_bubble_valid} else { R.drawable.bg_certificate_bubble_invalid})
 		binding.certificatePageRegionNgContainer.setBackgroundResource(if (state.results.first { it.region?.startsWith("NG") == true }.valid) { R.drawable.bg_certificate_bubble_valid} else { R.drawable.bg_certificate_bubble_invalid})
@@ -160,6 +207,9 @@ class CertificatePagerFragment : Fragment() {
 		binding.certificatePageStatusIcon.visibility = View.VISIBLE
 		binding.certificatePageInfo.visibility = View.VISIBLE
 		binding.certificatePageInfoCircle.visibility = View.VISIBLE
+		binding.certificatePageInfo.updateLayoutParams {
+			(this as? ViewGroup.MarginLayoutParams)?.topMargin = resources.getDimensionPixelSize(R.dimen.home_certificate_info_top_padding_without_validity_hint)
+		}
 		binding.certificatePageValidityHintEt.visibility = View.GONE
 		binding.certificatePageRegionValidityContainer.visibility = View.INVISIBLE
 
@@ -176,6 +226,9 @@ class CertificatePagerFragment : Fragment() {
 		binding.certificatePageStatusIcon.visibility = View.VISIBLE
 		binding.certificatePageInfo.visibility = View.VISIBLE
 		binding.certificatePageInfoCircle.visibility = View.VISIBLE
+		binding.certificatePageInfo.updateLayoutParams {
+			(this as? ViewGroup.MarginLayoutParams)?.topMargin = resources.getDimensionPixelSize(R.dimen.home_certificate_info_top_padding_without_validity_hint)
+		}
 		binding.certificatePageRegionValidityContainer.visibility = View.INVISIBLE
 		binding.certificatePageValidityHintEt.visibility = View.GONE
 
@@ -192,6 +245,9 @@ class CertificatePagerFragment : Fragment() {
 		binding.certificatePageStatusIcon.visibility = View.VISIBLE
 		binding.certificatePageInfo.visibility = View.VISIBLE
 		binding.certificatePageInfoCircle.visibility = View.VISIBLE
+		binding.certificatePageInfo.updateLayoutParams {
+			(this as? ViewGroup.MarginLayoutParams)?.topMargin = resources.getDimensionPixelSize(R.dimen.home_certificate_info_top_padding_without_validity_hint)
+		}
 		binding.certificatePageRegionValidityContainer.visibility = View.INVISIBLE
 		binding.certificatePageValidityHintEt.visibility = View.GONE
 
@@ -207,6 +263,9 @@ class CertificatePagerFragment : Fragment() {
 		binding.certificatePageStatusIcon.visibility = View.VISIBLE
 		binding.certificatePageInfo.visibility = View.VISIBLE
 		binding.certificatePageInfoCircle.visibility = View.VISIBLE
+		binding.certificatePageInfo.updateLayoutParams {
+			(this as? ViewGroup.MarginLayoutParams)?.topMargin = resources.getDimensionPixelSize(R.dimen.home_certificate_info_top_padding_without_validity_hint)
+		}
 		binding.certificatePageRegionValidityContainer.visibility = View.INVISIBLE
 		binding.certificatePageValidityHintEt.visibility = View.GONE
 

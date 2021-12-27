@@ -45,7 +45,10 @@
 				android:layout_height="wrap_content"
 				android:background="@color/background_light"
 				android:orientation="vertical"
-				android:padding="@dimen/spacing_very_large">
+				android:paddingTop="@dimen/spacing_very_large"
+				android:paddingBottom="@dimen/spacing_very_large"
+				android:paddingStart="@dimen/certificate_details_side_padding"
+				android:paddingEnd="@dimen/certificate_details_side_padding">
 
 				<androidx.constraintlayout.widget.ConstraintLayout
 					android:id="@+id/certificate_already_exists_info"

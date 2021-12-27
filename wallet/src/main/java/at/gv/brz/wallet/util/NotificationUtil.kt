@@ -43,22 +43,11 @@ class NotificationUtil {
                 return@filter false
             }
 
-            // People over 65 should get booster after 6 months
-            if (certificate.euDGC.isOver65() && vaccination.atLeastSixMonthsAgo()) {
-                return@filter true
+            if (!vaccination.atLeastSixMonthsAgo()) {
+                return@filter false
             }
 
-            // People with AstraZeneca or Janssen should get booster after 6 months
-            if ((vaccination.isJanssenVaccination() || vaccination.isVaxzevriaVaccination()) && vaccination.atLeastSixMonthsAgo()) {
-                return@filter true
-            }
-
-            // People over 18 with mRNA should get booster after 9 months
-            if (certificate.euDGC.isOver18() && !vaccination.isJanssenVaccination() && !vaccination.isVaxzevriaVaccination() && vaccination.atLeastNineMonthsAgo()) {
-                return@filter true
-            }
-
-            return@filter false
+            return@filter (!vaccination.isJanssenVaccination() && vaccination.doseNumber <= 2) || (vaccination.isJanssenVaccination() && vaccination.doseNumber == 2)
         }
     }
 
@@ -76,6 +65,17 @@ class NotificationUtil {
 
             return@filter notificationTimestamp == null || Instant.ofEpochMilli(notificationTimestamp).isBefore(Instant.now())
         }
+    }
+
+    fun shouldShowJohnsonBoosterNotification(certificates: List<DccHolder>, notificationSecureStorage: NotificationSecureStorage): Boolean {
+        if (notificationSecureStorage.getJohnsonBoosterNotificationShown()) {
+            return false
+        }
+        val johnsonSingleShotCertificates = certificates.filter { certificates ->
+            return certificates.euDGC.vaccinations?.firstOrNull()?.isJanssenVaccination() == true
+                    && certificates.euDGC.vaccinations?.firstOrNull()?.doseNumber == 1
+        }
+        return johnsonSingleShotCertificates.isNotEmpty()
     }
 }
 

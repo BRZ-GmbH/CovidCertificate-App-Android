@@ -311,8 +311,7 @@ invalid signature"</string>
     <string name="wallet_certificate_already_exists">"This EU-compliant certificate has already been stored in the app"</string>
 
     <!-- Titel Gültigkeit im Zertifikatsdetail -->
-    <string name="wallet_certificate_validity">"Validity in
-Austria"</string>
+    <string name="wallet_certificate_validity">%s\n%s</string>
 
     <!-- "Bis" Label im Zertifikats-Detail -->
     <string name="wallet_certificate_valid_until">"until"</string>
@@ -339,7 +338,7 @@ Austria"</string>
     <string name="accessibility_notifications">"Notifications"</string>
 
     <!-- Accessibility: State selector -->
-    <string name="accessibility_state_selector">"State selector"</string>
+    <string name="accessibility_state_selector">"Federal State selector"</string>
 
     <!-- Button Schliessen -->
     <string name="close_button">"Close"</string>
@@ -482,6 +481,9 @@ invalid"</string>
     <string name="region_type_ET">"Entry Test"</string>
     <string name="region_type_NG">"Night Club"</string>
 
+    <string name="region_type_ET_validity">"Entry"</string>
+    <string name="region_type_NG_validity">"Night Club"</string>
+
     <!-- Warnung bei fehlender aktueller Zeit durch Timeserver -->
     <string name="wallet_time_missing">"3-G Status not available, please activate internet connection"</string>
     <string name="wallet_validation_data_expired">"3-G Status not available, please activate internet connection"</string>
@@ -500,11 +502,40 @@ invalid"</string>
     <string name="region_oberoesterreich">"Upper Austria"</string>
     <string name="region_salzburg">"Salzburg"</string>
     <string name="region_steiermark">"Styria"</string>
-    <string name="region_tirol">"Tirol"</string>
+    <string name="region_tirol">"Tyrol"</string>
     <string name="region_vorarlberg">"Vorarlberg"</string>
+
+    <string name="region_nationwide_validity">"Nationwide\n(excl. Vienna)"</string>
 
     <string name="vaccination_booster_notification_title">"Achtung Zertifikat läuft ab!"</string>
     <string name="vaccination_booster_notification_message">"Um weiterhin ein gültiges Zertifikat vorweisen zu können, wird eine Auffrischungsimpfung in den nächsten 3 Monaten empfohlen."</string>
     <string name="vaccination_booster_notification_later">"Erneut erinnern"</string>
     <string name="vaccination_booster_notification_read">"Gelesen"</string>
+
+    <string name="wallet_3g_status_validity_headline">"This certificate entitles to"</string>
+
+    <string name="accessibility_external_link">Opens in a new window</string>
+    <string name="accessibility_region_active">Active</string>
+    <string name="accessibility_region_inactive">Double-tap to change.\n\nAfter changing the window will be automatically closed.</string>
+    <string name="accessibility_change_selected_region">Double-tap to change</string>
+
+    <string name="accessibility_active_camera">Camera is active</string>
+    <string name="accessibility_inactive_camera">Camera is no longer active</string>
+
+    <string name="accessibility_certificate_list_valid">Valid</string>
+    <string name="accessibility_certificate_list_invalid">Invalid</string>
+
+    <string name="wallet_notification_johnson_booster_message">"Please note: from 28 days after your first vaccination with the COVID-19 Vaccine Janssen („Johnson&amp;Johnson“), please get your second vaccination!\nFrom Monday 3 January 2022, your EU Digital COVID Certificate is only valid if you have been vaccinated twice."</string>
+    <string name="wallet_notification_johnson_booster_ok_button">"OK"</string>
+    <string name="wallet_notification_johnson_booster_info_button">"Appointment"</string>
+    <string name="wallet_notification_johnson_booster_info_url">"https://www.oesterreich-impft.at/jetzt-impfen/"</string>
+
+    <string name="wallet_notification_booster_title">"Achtung!"</string>
+    <string name="wallet_notification_booster_message">"Holen Sie sich ab 6 Monate nach Ihrer 2. Covid-19 Schutzimpfung Ihre 3. Impfung, um auch gegen die Delta-Variante geschützt zu bleiben!\nIhr Impfzertifikat für den Grünen Pass ist ab 06.12.2021 nur noch 9 Monate ab der 2. Impfung gültig und wird mit der 3. Impfung verlängert."</string>
+    <string name="wallet_notification_booster_ok_button">"Gelesen"</string>
+    <string name="wallet_notification_booster_later_button">"Erneut erinnern"</string>
+    <string name="wallet_notification_booster_info_button">"Termin"</string>
+    <string name="wallet_notification_booster_info_url">"https://www.oesterreich-impft.at/jetzt-impfen/"</string>
+
+
 </resources>

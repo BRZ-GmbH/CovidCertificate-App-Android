@@ -15,6 +15,7 @@ import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 import at.gv.brz.eval.utils.SingletonHolder
+import at.gv.brz.wallet.BuildConfig
 import java.io.IOException
 import java.security.GeneralSecurityException
 
@@ -22,6 +23,7 @@ class WalletSecureStorage private constructor(context: Context) {
 
 	companion object : SingletonHolder<WalletSecureStorage, Context>(::WalletSecureStorage) {
 
+		private const val KEY_LAST_INSTALLED_VERSION = "last_installed_version"
 		private const val PREFERENCES = "SecureStorage"
 		private const val KEY_ONBOARDING_COMPLETED = "onboarding_completed"
 		private const val KEY_SELECTED_VALIDATION_REGION = "selected_validation_region"
@@ -60,13 +62,15 @@ class WalletSecureStorage private constructor(context: Context) {
 				EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
 			)
 	}
+	fun getLastInstalledVersion(): String = prefs.getString(KEY_LAST_INSTALLED_VERSION, BuildConfig.VERSION_NAME)!!
 
+	fun setLastInstalledVersion(version: String) = prefs.edit().putString(KEY_LAST_INSTALLED_VERSION, version).apply()
 
 	fun getOnboardingCompleted(): Boolean = prefs.getBoolean(KEY_ONBOARDING_COMPLETED, false)
 
 	fun setOnboardingCompleted(completed: Boolean) = prefs.edit().putBoolean(KEY_ONBOARDING_COMPLETED, completed).apply()
 
-	fun getSelectedValidationRegion(): String = prefs.getString(KEY_SELECTED_VALIDATION_REGION, "")!!
+	fun getSelectedValidationRegion(): String? = prefs.getString(KEY_SELECTED_VALIDATION_REGION, null)
 
 	fun setSelectedValidationRegion(region: String) = prefs.edit().putString(KEY_SELECTED_VALIDATION_REGION, region).apply()
 

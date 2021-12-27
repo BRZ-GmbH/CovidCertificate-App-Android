@@ -14,9 +14,13 @@ import android.content.ActivityNotFoundException
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.accessibility.AccessibilityEvent
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -37,6 +41,7 @@ import at.gv.brz.common.html.BuildInfo
 import at.gv.brz.common.html.HtmlFragment
 import at.gv.brz.common.util.AssetUtil
 import at.gv.brz.common.util.HorizontalMarginItemDecoration
+import at.gv.brz.common.util.UrlUtil
 import at.gv.brz.common.util.setSecureFlagToBlockScreenshots
 import at.gv.brz.common.views.hideAnimated
 import at.gv.brz.common.views.rotate
@@ -49,6 +54,7 @@ import at.gv.brz.wallet.R
 import at.gv.brz.wallet.add.CertificateAddFragment
 import at.gv.brz.wallet.data.Region
 import at.gv.brz.wallet.databinding.FragmentHomeBinding
+import at.gv.brz.wallet.databinding.PartialHomeAddCertificateOptionsBinding
 import at.gv.brz.wallet.detail.CertificateDetailFragment
 import at.gv.brz.wallet.faq.WalletFaqFragment
 import at.gv.brz.wallet.homescreen.pager.CertificatesPagerAdapter
@@ -90,6 +96,9 @@ class HomeFragment : Fragment() {
 	private var certificateBoosterNotificationDialog: AlertDialog? = null
 	private var certificateBoosterNotificationHash: Int = 0
 
+	private var currentPagerIndex: Int = -1
+	private var currentCertificateCount: Int = 0
+
 	private val filePickerLauncher =
 		registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult: ActivityResult ->
 			if (activityResult.resultCode == AppCompatActivity.RESULT_OK) {
@@ -115,6 +124,18 @@ class HomeFragment : Fragment() {
 	override fun onResume() {
 		super.onResume()
 		reloadCertificates()
+
+		val region = Region.getRegionFromIdentifier(certificatesViewModel.secureStorage.getSelectedValidationRegion())
+		if (region == null) {
+			showRegionSelection()
+		}
+	}
+
+	override fun onPause() {
+		super.onPause()
+		certificateBoosterNotificationDialog?.dismiss()
+		certificateBoosterNotificationDialog = null
+		certificateBoosterNotificationHash = 0
 	}
 
 	override fun onPause() {
@@ -172,11 +193,7 @@ class HomeFragment : Fragment() {
 		}
 
 		val regionSelectionClickListener = View.OnClickListener {
-			parentFragmentManager.beginTransaction()
-				.setCustomAnimations(R.anim.slide_enter, R.anim.slide_exit, R.anim.slide_pop_enter, R.anim.slide_pop_exit)
-				.replace(R.id.fragment_container, RegionListFragment.newInstance())
-				.addToBackStack(RegionListFragment::class.java.canonicalName)
-				.commit()
+			showRegionSelection()
 		}
 		binding.homescreenHeaderEmpty.headerRegion.setOnClickListener(regionSelectionClickListener)
 		binding.homescreenHeaderNotEmpty.headerRegion.setOnClickListener(regionSelectionClickListener)
@@ -216,6 +233,14 @@ class HomeFragment : Fragment() {
 		}
 	}
 
+	private fun showRegionSelection() {
+		parentFragmentManager.beginTransaction()
+			.setCustomAnimations(R.anim.slide_enter, R.anim.slide_exit, R.anim.slide_pop_enter, R.anim.slide_pop_exit)
+			.replace(R.id.fragment_container, RegionListFragment.newInstance())
+			.addToBackStack(RegionListFragment::class.java.canonicalName)
+			.commit()
+	}
+
 	private fun setupPager() {
 		val viewPager = binding.homescreenCertificatesViewPager
 
@@ -247,6 +272,11 @@ class HomeFragment : Fragment() {
 				.commit()
 		}
 		certificatesViewModel.configLiveData.observe(viewLifecycleOwner) { config -> handleCertificateNotifications() }
+		viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+			override fun onPageScrollStateChanged(state: Int) {
+				currentPagerIndex = viewPager.currentItem
+			}
+		})
 
 	}
 
@@ -318,26 +348,34 @@ class HomeFragment : Fragment() {
 
 	private fun showAddCertificateOptionsOverlay(show: Boolean) {
 		if (show) {
-			binding.homescreenSupportButton.importantForAccessibility = 2;
-			binding.backgroundDimmed.importantForAccessibility = 2
-			binding.homescreenHeaderNotEmpty.headerImpressum.importantForAccessibility = 2
-			binding.homescreenEmptyContent.importantForAccessibility = 2
-			binding.homescreenCertificatesViewPager.importantForAccessibility = 4
-			binding.homescreenOptionsOverlay.importantForAccessibility = 2
-			binding.homescreenListButton.importantForAccessibility = 2
-			binding.homescreenCertificatesTabLayout.importantForAccessibility = 4
+			binding.homescreenSupportButton.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+			binding.backgroundDimmed.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+			binding.homescreenHeaderNotEmpty.headerImpressum.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+			binding.homescreenHeaderNotEmpty.headerRegion.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
+			binding.homescreenEmptyContent.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+			binding.homescreenCertificatesViewPager.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
+			binding.homescreenOptionsOverlay.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+			binding.homescreenListButton.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+			binding.homescreenCertificatesTabLayout.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
 			binding.homescreenScanButtonSmall.rotate(45f)
 			binding.homescreenScanButtonSmall.contentDescription = getString(R.string.accessibility_close_button)
 			binding.backgroundDimmed.showAnimated()
 			binding.homescreenOptionsOverlay.showAnimated()
+
+			val mainHandler = Handler(Looper.getMainLooper())
+			mainHandler.postDelayed({
+				binding.homescreenAddCertificateOptionsNotEmpty.homescreenOptionsOverlayAddCertificateOptionsTitle.requestFocus()
+				binding.homescreenAddCertificateOptionsNotEmpty.homescreenOptionsOverlayAddCertificateOptionsTitle.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED)
+			}, 500)
 		} else {
-			binding.homescreenSupportButton.importantForAccessibility = 0
-			binding.homescreenHeaderNotEmpty.headerImpressum.importantForAccessibility = 0
-			binding.homescreenEmptyContent.importantForAccessibility = 0
-			binding.homescreenOptionsOverlay.importantForAccessibility = 0
-			binding.homescreenCertificatesViewPager.importantForAccessibility = 0
-			binding.homescreenListButton.importantForAccessibility = 0
-			binding.homescreenCertificatesTabLayout.importantForAccessibility = 0
+			binding.homescreenSupportButton.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
+			binding.homescreenHeaderNotEmpty.headerImpressum.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
+			binding.homescreenHeaderNotEmpty.headerRegion.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
+			binding.homescreenEmptyContent.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
+			binding.homescreenOptionsOverlay.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
+			binding.homescreenCertificatesViewPager.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
+			binding.homescreenListButton.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
+			binding.homescreenCertificatesTabLayout.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
 			binding.homescreenScanButtonSmall.rotate(0f)
 			binding.homescreenScanButtonSmall.contentDescription = getString(R.string.accessibility_add_button)
 			binding.backgroundDimmed.hideAnimated()
@@ -387,10 +425,159 @@ class HomeFragment : Fragment() {
 		binding.homescreenListButton.isVisible = dccHolders.size > 1
 		certificatesAdapter.setData(dccHolders)
 		if (hasCertificates) {
-			binding.homescreenCertificatesViewPager.postDelayed(250) {
-				if (isAdded) {
-					binding.homescreenCertificatesViewPager.setCurrentItem(0, true)
+			if (currentPagerIndex != -1 && currentCertificateCount == dccHolders.count()) {
+				binding.homescreenCertificatesViewPager.setCurrentItem(
+					currentPagerIndex,
+					false
+				)
+			} else {
+				binding.homescreenCertificatesViewPager.postDelayed(250) {
+					if (isAdded) {
+						currentCertificateCount = dccHolders.count()
+						binding.homescreenCertificatesViewPager.setCurrentItem(
+							0,
+							true
+						)
+					}
 				}
+			}
+
+		}
+		val selectedRegion = Region.getRegionFromIdentifier(certificatesViewModel.secureStorage.getSelectedValidationRegion())
+		if (selectedRegion != null) {
+			binding.homescreenHeaderEmpty.headerRegionFlag.setImageResource(selectedRegion.getFlag())
+			binding.homescreenHeaderNotEmpty.headerRegionFlag.setImageResource(selectedRegion.getFlag())
+			binding.homescreenHeaderEmpty.headerRegionText.setText(selectedRegion.getName())
+			binding.homescreenHeaderNotEmpty.headerRegionText.setText(selectedRegion.getName())
+			binding.homescreenHeaderEmpty.headerRegionText.contentDescription =
+				"${getString(selectedRegion.getName())}.\n" +
+						"\n${getString(R.string.accessibility_state_selector)}.\n" +
+						"\n${getString(R.string.accessibility_change_selected_region)}"
+			binding.homescreenHeaderNotEmpty.headerRegionText.contentDescription =
+				"${getString(selectedRegion.getName())}.\n" +
+						"\n${getString(R.string.accessibility_state_selector)}.\n" +
+						"\n${getString(R.string.accessibility_change_selected_region)}"
+		} else {
+			binding.homescreenHeaderEmpty.headerRegionText.contentDescription =
+						"\n${getString(R.string.accessibility_state_selector)}.\n" +
+						"\n${getString(R.string.accessibility_change_selected_region)}"
+			binding.homescreenHeaderNotEmpty.headerRegionText.contentDescription =
+						"\n${getString(R.string.accessibility_state_selector)}.\n" +
+						"\n${getString(R.string.accessibility_change_selected_region)}"
+		}
+	}
+
+	private fun handleCertificateNotifications() {
+		// EPIEMSCO-2173 Currently deactivate campaigns
+		/*val dccHolders = certificatesViewModel.dccHolderCollectionLiveData.value ?: return
+
+		if (NotificationUtil().shouldShowJohnsonBoosterNotification(dccHolders, notificationSecureStorage = certificatesViewModel.notificationStorage)) {
+			showJohnsonBoosterNotification()
+			return
+		}
+
+		certificateBoosterNotificationHash = dccHolders.joinToString("_") { it.qrCodeData }.hashCode()
+		viewLifecycleOwner.lifecycleScope.launch {
+			delay(1000)
+			val notifyableCertificates =
+				NotificationUtil().certificatesForBoosterNotification(
+					dccHolders,
+					certificatesViewModel.notificationStorage
+				)
+
+			showNotificationAlert(
+				notifyableCertificates,
+				certificateBoosterNotificationHash
+			)
+		}*/
+	}
+
+	private fun showJohnsonBoosterNotification() {
+		certificatesViewModel.notificationStorage.setJohnsonBoosterNotificationShown(true)
+
+		val notificationDialogBuilder = AlertDialog.Builder(requireContext(), R.style.CovidCertificate_AlertDialogStyle)
+			.setMessage(R.string.wallet_notification_johnson_booster_message)
+			.setNegativeButton(R.string.wallet_notification_johnson_booster_ok_button, null)
+			.setPositiveButton(R.string.wallet_notification_johnson_booster_info_button, null)
+			.setCancelable(false)
+
+		val notificationDialog = notificationDialogBuilder.create()
+			.apply { window?.setSecureFlagToBlockScreenshots(BuildConfig.FLAVOR) }
+
+		notificationDialog.setOnShowListener {
+			notificationDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener {
+				notificationDialog.dismiss()
+
+				UrlUtil.openUrl(requireContext(), getString(R.string.wallet_notification_johnson_booster_info_url))
+			}
+			notificationDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener {
+				notificationDialog.dismiss()
+
+				handleCertificateNotifications()
+			}
+		}
+
+		notificationDialog.show()
+	}
+
+	private fun showNotificationAlert(certificates: List<DccHolder>, certificateHash: Int) {
+		certificateBoosterNotificationDialog?.dismiss()
+		certificateBoosterNotificationDialog = null
+		if (certificateHash == certificateBoosterNotificationHash) {
+			val certificate = certificates.firstOrNull()
+			val certificateIdentifier = certificate?.euDGC?.vaccinations?.firstOrNull()?.certificateIdentifier
+			if (certificate != null && certificateIdentifier != null) {
+				val remainingCertificates = certificates.drop(1)
+
+				val title = getString(R.string.wallet_notification_booster_title)
+				val message = getString(R.string.wallet_notification_booster_message)
+				val remindAgainButton = getString(R.string.wallet_notification_booster_later_button)
+				val readButton = getString(R.string.wallet_notification_booster_ok_button)
+
+				val nextNotificationTimestampForCertificate = certificate.nextNotificationTimestamp()
+				val showRemindAgainButton = Instant.ofEpochMilli(nextNotificationTimestampForCertificate).isAfter(Instant.now())
+
+				val notificationDialogBuilder = AlertDialog.Builder(requireContext(), R.style.CovidCertificate_AlertDialogStyle)
+					.setTitle(title)
+					.setMessage(message)
+					.setNeutralButton(getString(R.string.wallet_notification_booster_info_button), null)
+					.setNegativeButton(readButton, null)
+					.setCancelable(false)
+
+				if (showRemindAgainButton) {
+					notificationDialogBuilder.setPositiveButton(remindAgainButton, null)
+				}
+
+				val notificationDialog = notificationDialogBuilder.create()
+					.apply { window?.setSecureFlagToBlockScreenshots(BuildConfig.FLAVOR) }
+
+				notificationDialog.setOnShowListener {
+					notificationDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener {
+						certificateBoosterNotificationDialog?.dismiss()
+						certificateBoosterNotificationDialog = null
+						certificatesViewModel.notificationStorage.setNotificationTimestampForCertificateIdentifier(certificateIdentifier, certificate.nextNotificationTimestamp())
+						showNotificationAlert(remainingCertificates, certificateHash)
+					}
+					notificationDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener {
+						certificateBoosterNotificationDialog?.dismiss()
+						certificateBoosterNotificationDialog = null
+
+						certificatesViewModel.notificationStorage.setNotificationTimestampForCertificateIdentifier(certificateIdentifier, certificate.neverAgainNotificationTimestamp())
+						showNotificationAlert(remainingCertificates, certificateHash)
+					}
+					notificationDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener {
+						certificateBoosterNotificationDialog?.dismiss()
+						certificateBoosterNotificationDialog = null
+
+						certificatesViewModel.notificationStorage.setNotificationTimestampForCertificateIdentifier(certificateIdentifier, certificate.neverAgainNotificationTimestamp())
+						UrlUtil.openUrl(requireContext(), getString(R.string.wallet_notification_booster_info_url))
+					}
+				}
+
+				this.certificateBoosterNotificationDialog = notificationDialog
+				notificationDialog.show()
+			} else {
+				certificateBoosterNotificationHash = 0
 			}
 		}
 		val selectedRegion = Region.values().first { it.identifier == certificatesViewModel.secureStorage.getSelectedValidationRegion() }

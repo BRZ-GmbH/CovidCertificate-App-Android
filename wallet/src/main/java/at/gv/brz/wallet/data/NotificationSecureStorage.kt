@@ -18,6 +18,7 @@ class NotificationSecureStorage  private constructor(context: Context) {
     companion object :
         SingletonHolder<NotificationSecureStorage, Context>(::NotificationSecureStorage) {
         private const val SHARED_PREFERENCES_NOTIFICATIONS_KEY = "NotificationsStorageKey"
+        private const val SHARED_PREFERENCES_JOHNSON_BOOSTER_NOTIFICATION_SHOWN_KEY = "JohnsonBoosterNotificationShownStorageKey"
         const val SHARED_PREFERENCES_NAME: String = "NotificationsStorageName"
 
         private val moshi = Moshi.Builder().build()
@@ -68,6 +69,16 @@ class NotificationSecureStorage  private constructor(context: Context) {
         val bfsIdsJson = notificationTimestampsAdapter.toJson(timestamps)
         val editor = prefs.edit()
         editor.putString(SHARED_PREFERENCES_NOTIFICATIONS_KEY, bfsIdsJson)
+        editor.apply()
+    }
+
+    fun getJohnsonBoosterNotificationShown(): Boolean {
+        return prefs.getBoolean(SHARED_PREFERENCES_JOHNSON_BOOSTER_NOTIFICATION_SHOWN_KEY, false)
+    }
+
+    fun setJohnsonBoosterNotificationShown(value: Boolean) {
+        val editor = prefs.edit()
+        editor.putBoolean(SHARED_PREFERENCES_JOHNSON_BOOSTER_NOTIFICATION_SHOWN_KEY, value)
         editor.apply()
     }
 

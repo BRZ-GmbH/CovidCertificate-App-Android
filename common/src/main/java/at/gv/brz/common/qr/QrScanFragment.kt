@@ -16,9 +16,12 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Size
 import android.view.MotionEvent
 import android.view.View
+import android.view.accessibility.AccessibilityEvent
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.annotation.ColorRes
@@ -236,14 +239,25 @@ abstract class QrScanFragment : Fragment() {
 		when (cameraPermissionState) {
 			CameraPermissionState.GRANTED -> {
 				errorView.isVisible = false
+				qrCodeScanner.contentDescription = getString(R.string.accessibility_active_camera)
+				val mainHandler = Handler(Looper.getMainLooper())
+				mainHandler.postDelayed(Runnable {
+					qrCodeScanner.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED)
+				}, 200)
 			}
 			CameraPermissionState.REQUESTING -> {
 				errorView.isVisible = false
+				qrCodeScanner.contentDescription = getString(R.string.accessibility_inactive_camera)
 				showCameraPermissionExplanationDialog()
 			}
 			CameraPermissionState.CANCELLED, CameraPermissionState.DENIED -> {
 				errorView.isVisible = true
+				qrCodeScanner.contentDescription = getString(R.string.accessibility_inactive_camera)
 				ErrorHelper.updateErrorView(errorView, ErrorState.CAMERA_ACCESS_DENIED, null, context)
+				val mainHandler = Handler(Looper.getMainLooper())
+				mainHandler.postDelayed(Runnable {
+					qrCodeScanner.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED)
+				}, 200)
 			}
 		}
 		updateQrCodeScannerState(QrScannerState.NO_CODE_FOUND)
@@ -266,6 +280,10 @@ abstract class QrScanFragment : Fragment() {
 				cameraPermissionExplanationDialog = null
 			}
 			show()
+			val mainHandler = Handler(Looper.getMainLooper())
+			mainHandler.postDelayed(Runnable {
+				cameraPermissionExplanationDialog?.requestAccessibilityFocus()
+			}, 500)
 		}
 	}
 

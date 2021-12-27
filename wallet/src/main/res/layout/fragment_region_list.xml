@@ -31,6 +31,7 @@
             app:navigationContentDescription="@string/accessibility_close_button"
             app:navigationIcon="@drawable/ic_close_red"
             app:title="@string/wallet_region_selection_title"
+            android:contentDescription="@string/wallet_region_selection_title"
             app:titleTextAppearance="@style/CovidCertificate.ToolbarTitle"
             app:titleTextColor="@color/grey" />
 

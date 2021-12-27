@@ -12,7 +12,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:clipChildren="false"
     android:clipToPadding="false"
     android:padding="@dimen/spacing_small"
@@ -29,250 +29,250 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_certificate_top"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_certificate"
             android:elevation="@dimen/certificates_elevation"
             android:paddingHorizontal="@dimen/certificate_pager_spacing_huger"
-            android:paddingTop="@dimen/spacing_larger">
+            android:paddingTop="@dimen/home_certificate_top_padding">
 
-            <TextView
-                android:id="@+id/certificate_page_title"
-                style="@style/CovidCertificate.Text.Bold.Lead.Grey"
+            <ScrollView
+                android:id="@+id/certificate_content_scrollview"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@id/certificate_page_validation_container"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/certificate_content_scrollview_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/certificate_page_title"
+                        style="@style/CovidCertificate.Text.Bold.Lead.Grey"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:minLines="1"
+                        android:text="@string/covid_certificate_title"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/certificate_page_qr_code"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="@dimen/home_certificate_qr_top_padding"
+                        app:layout_constraintDimensionRatio="1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/certificate_page_title"
+                        tools:src="@drawable/ic_qrcode" />
+
+                    <TextView
+                        android:id="@+id/certificate_page_name"
+                        style="@style/CovidCertificate.Text.Bold.Title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal|bottom"
+                        android:maxLines="4"
+                        android:minLines="1"
+                        app:autoSizeMaxTextSize="@dimen/text_size_large"
+                        app:autoSizeMinTextSize="@dimen/text_size_small"
+                        app:autoSizeTextType="uniform"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/certificate_page_qr_code"
+                        tools:text="Muster Marta" />
+
+                    <TextView
+                        android:id="@+id/certificate_page_birthdate"
+                        style="@style/CovidCertificate.Text.Smaller"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_very_small"
+                        android:gravity="center_horizontal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/certificate_page_name"
+                        tools:text="21.11.1966" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </ScrollView>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/certificate_page_validation_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/covid_certificate_title"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/certificate_page_qr_code"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="@dimen/spacing_medium_large"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/home_certificate_validation_vertical_padding"
+                android:paddingBottom="@dimen/home_certificate_validation_vertical_padding"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/certificate_page_title"
-                tools:src="@drawable/ic_qrcode" />
+                app:layout_constraintTop_toBottomOf="@id/certificate_content_scrollview"
+                app:layout_constraintVertical_bias="1">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <View
+                    android:id="@+id/certificate_page_separator"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:background="@drawable/line_dashed_thin"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:elevation="@dimen/certificates_elevation"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            app:layout_constraintTop_toTopOf="parent">
+                <TextView
+                    android:id="@+id/certificate_page_validity_hint_et"
+                    style="@style/CovidCertificate.Text.GreyLightSmall"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/home_certificate_validation_vertical_padding"
+                    android:breakStrategy="high_quality"
+                    android:gravity="center_horizontal"
+                    android:hyphenationFrequency="full"
+                    android:text="@string/wallet_3g_status_disclaimer"
+                    android:textAlignment="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/certificate_page_separator" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/corner_radius_sheet"
-                android:adjustViewBounds="true"
-                android:scaleType="fitStart"
-                android:src="@drawable/cutout_left"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="@dimen/corner_radius_sheet"
-                android:layout_weight="1"
-                android:background="@color/white" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/corner_radius_sheet"
-                android:adjustViewBounds="true"
-                android:scaleType="fitStart"
-                android:src="@drawable/cutout_right"
-                app:layout_constraintTop_toTopOf="parent" />
-        </LinearLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_certificate_bottom"
-            android:elevation="@dimen/certificates_elevation"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:paddingStart="@dimen/spacing_medium"
-            android:paddingTop="@dimen/certificate_pager_bottom_spacing_medium_top"
-            android:paddingEnd="@dimen/spacing_medium"
-            android:paddingBottom="@dimen/spacing_medium">
-
-            <TextView
-                android:id="@+id/certificate_page_name"
-                style="@style/CovidCertificate.Text.Bold.Title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal|bottom"
-                android:maxLines="4"
-                android:minLines="1"
-                app:autoSizeMaxTextSize="@dimen/text_size_large"
-                app:autoSizeMinTextSize="@dimen/text_size_small"
-                app:autoSizeTextType="uniform"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Muster Marta" />
-
-            <TextView
-                android:id="@+id/certificate_page_birthdate"
-                style="@style/CovidCertificate.Text.Smaller"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_very_small"
-                android:gravity="center_horizontal"
-                app:layout_constraintTop_toBottomOf="@id/certificate_page_name"
-                tools:text="21.11.1966" />
-
-            <View
-                android:id="@+id/certificate_page_separator"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/certificate_page_birthdate"
-                android:layout_marginStart="@dimen/spacing_medium_large"
-                android:layout_marginEnd="@dimen/spacing_medium_large"
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:layout_marginTop="@dimen/spacing_medium"
-                app:layout_goneMarginTop="@dimen/spacing_medium"
-                android:background="@drawable/line_dashed_thin"/>
-
-            <TextView
-                android:id="@+id/certificate_page_validity_hint_et"
-                style="@style/CovidCertificate.Text.GreyLightSmall"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_medium_small"
-                android:layout_weight="1"
-                android:breakStrategy="high_quality"
-                android:gravity="center"
-                android:hyphenationFrequency="full"
-                android:text="@string/wallet_3g_status_disclaimer"
-                android:textAlignment="center"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/certificate_page_separator"/>
-
-            <TextView
-                android:id="@+id/certificate_page_info"
-                android:importantForAccessibility="yes"
-                android:screenReaderFocusable="true"
-                style="@style/CovidCertificate.Text.White"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/homescreen_empty_spacing_large"
-                android:background="@drawable/bg_certificate_bubble"
-                android:backgroundTint="@color/greenish"
-                android:breakStrategy="high_quality"
-                android:gravity="center"
-                android:hyphenationFrequency="full"
-                android:minLines="2"
-                android:padding="@dimen/spacing_medium_large"
-                app:layout_constraintTop_toBottomOf="@id/certificate_page_validity_hint_et"
-                tools:text="@string/verifier_verify_success_info" />
-
-            <LinearLayout
-                android:id="@+id/certificate_page_region_validity_container"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:orientation="horizontal"
-                android:visibility="visible"
-                android:weightSum="2"
-                app:layout_constraintBottom_toBottomOf="@id/certificate_page_info"
-                app:layout_constraintEnd_toEndOf="@id/certificate_page_info"
-                app:layout_constraintStart_toStartOf="@id/certificate_page_info"
-                app:layout_constraintTop_toTopOf="@id/certificate_page_info">
+                <TextView
+                    android:id="@+id/certificate_page_info"
+                    style="@style/CovidCertificate.Text.White"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:background="@drawable/bg_certificate_bubble"
+                    android:backgroundTint="@color/greenish"
+                    android:breakStrategy="high_quality"
+                    android:gravity="center_horizontal"
+                    android:hyphenationFrequency="full"
+                    android:importantForAccessibility="yes"
+                    android:minLines="2"
+                    android:paddingTop="@dimen/spacing_medium"
+                    android:paddingBottom="@dimen/spacing_medium"
+                    android:screenReaderFocusable="true"
+                    app:layout_constraintTop_toTopOf="@id/certificate_page_info_circle"
+                    tools:text="@string/verifier_verify_success_info" />
 
                 <LinearLayout
-                    android:id="@+id/certificate_page_region_et_container"
-                    android:importantForAccessibility="yes"
-                    android:screenReaderFocusable="true"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:layout_marginEnd="4dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_certificate_bubble"
-                    android:orientation="vertical"
-                    android:paddingTop="8dp">
+                    android:id="@+id/certificate_page_region_validity_container"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:orientation="horizontal"
+                    android:visibility="visible"
+                    android:weightSum="2"
+                    app:layout_constraintBottom_toBottomOf="@id/certificate_page_info"
+                    app:layout_constraintEnd_toEndOf="@id/certificate_page_info"
+                    app:layout_constraintStart_toStartOf="@id/certificate_page_info"
+                    app:layout_constraintTop_toTopOf="@id/certificate_page_info">
 
-                    <ImageView
-                        android:id="@+id/certificate_page_info_et_icon"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_gravity="center_horizontal"
-                        android:src="@drawable/ic_minus_circle" />
-
-                    <TextView
-                        android:id="@+id/certificate_page_info_et"
-                        style="@style/CovidCertificate.Text.WhiteBubble"
+                    <LinearLayout
+                        android:id="@+id/certificate_page_region_et_container"
                         android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:breakStrategy="high_quality"
-                        android:gravity="center"
-                        android:hyphenationFrequency="full"
-                        android:text="@string/region_type_ET"
-                        android:textAlignment="center" />
+                        android:layout_height="fill_parent"
+                        android:layout_marginEnd="4dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_certificate_bubble"
+                        android:importantForAccessibility="yes"
+                        android:orientation="vertical"
+                        android:paddingTop="8dp"
+                        android:screenReaderFocusable="true">
+
+                        <ImageView
+                            android:id="@+id/certificate_page_info_et_icon"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/ic_minus_circle" />
+
+                        <TextView
+                            android:id="@+id/certificate_page_info_et"
+                            style="@style/CovidCertificate.Text.WhiteBubble"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:breakStrategy="high_quality"
+                            android:ellipsize="end"
+                            android:gravity="center"
+                            android:hyphenationFrequency="full"
+                            android:maxLines="1"
+                            android:minLines="1"
+                            android:text="@string/region_type_ET"
+                            android:textAlignment="center" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/certificate_page_region_ng_container"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginStart="4dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_certificate_bubble"
+                        android:importantForAccessibility="yes"
+                        android:orientation="vertical"
+                        android:paddingTop="8dp"
+                        android:screenReaderFocusable="true">
+
+                        <ImageView
+                            android:id="@+id/certificate_page_info_ng_icon"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/ic_minus_circle" />
+
+                        <TextView
+                            android:id="@+id/certificate_page_info_ng"
+                            style="@style/CovidCertificate.Text.WhiteBubble"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:breakStrategy="high_quality"
+                            android:ellipsize="end"
+                            android:gravity="center"
+                            android:hyphenationFrequency="full"
+                            android:maxLines="1"
+                            android:minLines="1"
+                            android:text="@string/region_type_NG"
+                            android:textAlignment="center" />
+                    </LinearLayout>
+
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/certificate_page_region_ng_container"
-                    android:importantForAccessibility="yes"
-                    android:screenReaderFocusable="true"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:layout_marginStart="4dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_certificate_bubble"
-                    android:orientation="vertical"
-                    android:paddingTop="8dp">
-
-                    <ImageView
-                        android:id="@+id/certificate_page_info_ng_icon"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_gravity="center_horizontal"
-                        android:src="@drawable/ic_minus_circle" />
-
-                    <TextView
-                        android:id="@+id/certificate_page_info_ng"
-                        style="@style/CovidCertificate.Text.WhiteBubble"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:breakStrategy="high_quality"
-                        android:gravity="center"
-                        android:hyphenationFrequency="full"
-                        android:text="@string/region_type_NG"
-                        android:textAlignment="center" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <FrameLayout
-                android:id="@+id/certificate_page_info_circle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/circle_white"
-                android:padding="@dimen/spacing_very_small"
-                app:layout_constraintBottom_toTopOf="@id/certificate_page_info"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/certificate_page_info">
-
-                <ImageView
-                    android:id="@+id/certificate_page_status_icon"
+                <FrameLayout
+                    android:id="@+id/certificate_page_info_circle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_info_blue" />
+                    android:layout_marginTop="@dimen/home_certificate_validation_vertical_padding"
+                    android:background="@drawable/circle_white"
+                    android:padding="@dimen/spacing_very_small"
 
-                <ProgressBar
-                    android:id="@+id/certificate_page_status_loading"
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
-                    android:visibility="gone" />
-            </FrameLayout>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/certificate_page_validity_hint_et">
+
+                    <ImageView
+                        android:id="@+id/certificate_page_status_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_info_blue" />
+
+                    <ProgressBar
+                        android:id="@+id/certificate_page_status_loading"
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:visibility="gone" />
+                </FrameLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </LinearLayout>
 </FrameLayout>

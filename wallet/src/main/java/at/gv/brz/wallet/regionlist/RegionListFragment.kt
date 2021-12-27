@@ -27,8 +27,14 @@ class RegionListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val region = Region.getRegionFromIdentifier(secureStorage.getSelectedValidationRegion())
+        if (region == null) {
+            binding.regionListToolbar.setNavigationIcon(null)
+        }
         binding.regionListToolbar.setNavigationOnClickListener { v: View? ->
-            parentFragmentManager.popBackStack()
+            if (region != null) {
+                parentFragmentManager.popBackStack()
+            }
         }
         setupRecyclerView()
     }
@@ -47,6 +53,8 @@ class RegionListFragment : Fragment() {
         }
         recyclerView.adapter = adapter
 
-        adapter.setItems(Region.values().map { RegionItem(it, secureStorage.getSelectedValidationRegion()) })
+        adapter.setItems(Region.values().sortedWith { r1, r2 ->
+            resources.getString(r1.getName()).compareTo(resources.getString(r2.getName()))
+        }.map { RegionItem(it, secureStorage.getSelectedValidationRegion()) })
     }
 }

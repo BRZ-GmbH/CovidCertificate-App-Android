@@ -19,6 +19,7 @@
 	android:paddingVertical="@dimen/spacing_medium_small">
 
 	<FrameLayout
+		android:importantForAccessibility="no"
 		android:id="@+id/item_certificate_list_icon_group"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -58,6 +59,7 @@
 	</FrameLayout>
 
 	<TextView
+		android:importantForAccessibility="no"
 		android:id="@+id/item_certificate_list_name"
 		style="@style/CovidCertificate.Text.Bold.Emphasized"
 		android:layout_width="0dp"
@@ -73,6 +75,7 @@
 		tools:text="Muster Marta" />
 
 	<TextView
+		android:importantForAccessibility="no"
 		android:id="@+id/item_certificate_list_type"
 		style="@style/CovidCertificate.Text.Bold.Lead"
 		android:layout_width="wrap_content"
@@ -90,6 +93,7 @@
 
 	<ImageView
 		android:id="@+id/item_certificate_list_drag_handle"
+		android:importantForAccessibility="no"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:padding="@dimen/spacing_medium_large"

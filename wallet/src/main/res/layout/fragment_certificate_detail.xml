@@ -48,7 +48,10 @@
                     android:layout_height="wrap_content"
                     android:clipToPadding="false"
                     android:orientation="vertical"
-                    android:padding="@dimen/spacing_very_large">
+                    android:paddingStart="@dimen/certificate_details_side_padding"
+                    android:paddingTop="@dimen/spacing_very_large"
+                    android:paddingEnd="@dimen/certificate_details_side_padding"
+                    android:paddingBottom="@dimen/spacing_very_large">
 
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -121,13 +124,13 @@
 
                     <View
                         android:id="@+id/certificate_detail_separator"
-                        android:layout_marginStart="@dimen/spacing_medium_large"
-                        android:layout_marginEnd="@dimen/spacing_medium_large"
                         android:layout_width="match_parent"
                         android:layout_height="4dp"
+                        android:layout_marginStart="@dimen/spacing_medium_large"
                         android:layout_marginTop="@dimen/spacing_medium"
-                        app:layout_goneMarginTop="@dimen/spacing_medium"
-                        android:background="@drawable/line_dashed_thin"/>
+                        android:layout_marginEnd="@dimen/spacing_medium_large"
+                        android:background="@drawable/line_dashed_thin"
+                        app:layout_goneMarginTop="@dimen/spacing_medium" />
 
                     <TextView
                         android:id="@+id/certificate_detail_validity_hint_et"
@@ -198,8 +201,11 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
                                     android:breakStrategy="high_quality"
+                                    android:ellipsize="end"
                                     android:gravity="center"
                                     android:hyphenationFrequency="full"
+                                    android:maxLines="1"
+                                    android:minLines="1"
                                     android:text="@string/region_type_ET"
                                     android:textAlignment="center" />
                             </LinearLayout>
@@ -228,8 +234,11 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
                                     android:breakStrategy="high_quality"
+                                    android:ellipsize="end"
                                     android:gravity="center"
                                     android:hyphenationFrequency="full"
+                                    android:maxLines="1"
+                                    android:minLines="1"
                                     android:text="@string/region_type_NG"
                                     android:textAlignment="center" />
                             </LinearLayout>
@@ -301,8 +310,19 @@
 
                     </LinearLayout>
 
+                    <TextView
+                        android:id="@+id/certificate_detail_info_validity_headline"
+                        style="@style/CovidCertificate.Text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="-20dp"
+                        android:layout_marginTop="@dimen/spacing_large"
+                        android:gravity="center"
+                        android:padding="@dimen/spacing_medium"
+                        android:text="@string/wallet_3g_status_validity_headline" />
+
                     <LinearLayout
-                        android:id="@+id/certificate_detail_info_validity_group"
+                        android:id="@+id/certificate_detail_info_et_validity_group"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_very_small"
@@ -313,7 +333,7 @@
                         android:paddingVertical="@dimen/spacing_medium_small">
 
                         <TextView
-                            android:id="@+id/certificate_detail_info_validity_date_disclaimer"
+                            android:id="@+id/certificate_detail_info_et_validity_date_disclaimer"
                             style="@style/CovidCertificate.Text"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -321,7 +341,7 @@
                             android:text="@string/wallet_certificate_validity" />
 
                         <LinearLayout
-                            android:id="@+id/certificate_detail_info_validity_date_group"
+                            android:id="@+id/certificate_detail_info_et_validity_date_group"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -336,7 +356,7 @@
                                 android:text="@string/wallet_certificate_valid_until" />
 
                             <TextView
-                                android:id="@+id/certificate_detail_info_validity_date"
+                                android:id="@+id/certificate_detail_info_et_validity_date"
                                 style="@style/CovidCertificate.Text.Bold"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -347,6 +367,54 @@
                         </LinearLayout>
 
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/certificate_detail_info_ng_validity_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_very_small"
+                        android:background="@drawable/bg_certificate_bubble"
+                        android:backgroundTint="@color/greenish"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/spacing_medium_large"
+                        android:paddingVertical="@dimen/spacing_medium_small">
+
+                        <TextView
+                            android:id="@+id/certificate_detail_info_ng_validity_date_disclaimer"
+                            style="@style/CovidCertificate.Text"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/wallet_certificate_validity" />
+
+                        <LinearLayout
+                            android:id="@+id/certificate_detail_info_ng_validity_date_group"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/CovidCertificate.Text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/greenish"
+                                android:gravity="end"
+                                android:text="@string/wallet_certificate_valid_until" />
+
+                            <TextView
+                                android:id="@+id/certificate_detail_info_ng_validity_date"
+                                style="@style/CovidCertificate.Text.Bold"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/greenish"
+                                android:gravity="end"
+                                tools:text="01.01.2022" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
 
                     <TextView
                         android:id="@+id/certificate_detail_error_code"

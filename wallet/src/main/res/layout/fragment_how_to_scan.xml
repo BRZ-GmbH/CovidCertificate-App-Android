@@ -70,6 +70,7 @@
 				android:orientation="horizontal">
 
 				<ImageView
+					android:importantForAccessibility="no"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:src="@drawable/ic_bund_small" />
@@ -91,6 +92,7 @@
 				android:orientation="horizontal">
 
 				<ImageView
+					android:importantForAccessibility="no"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:src="@drawable/ic_one" />
@@ -112,6 +114,7 @@
 				android:orientation="horizontal">
 
 				<ImageView
+					android:importantForAccessibility="no"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:src="@drawable/ic_two" />
@@ -133,6 +136,7 @@
 				android:orientation="horizontal">
 
 				<ImageView
+					android:importantForAccessibility="no"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:src="@drawable/ic_three" />

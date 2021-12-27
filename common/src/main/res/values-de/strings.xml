@@ -311,8 +311,7 @@ ungültiger Signatur"</string>
     <string name="wallet_certificate_already_exists">"Dieses EU-konforme Zertifikat ist bereits in der App gespeichert"</string>
 
     <!-- Titel Gültigkeit im Zertifikatsdetail -->
-    <string name="wallet_certificate_validity">"Gültigkeit in
-Österreich"</string>
+    <string name="wallet_certificate_validity">%s\n%s</string>
 
     <!-- "Bis" Label im Zertifikats-Detail -->
     <string name="wallet_certificate_valid_until">"bis"</string>
@@ -482,6 +481,9 @@ ungültig"</string>
     <string name="region_type_ET">"Eintritt"</string>
     <string name="region_type_NG">"Nachtgastronomie"</string>
 
+    <string name="region_type_ET_validity">"Eintritt"</string>
+    <string name="region_type_NG_validity">"Nachtgastronomie"</string>
+
     <!-- Warnung bei fehlender aktueller Zeit durch Timeserver -->
     <string name="wallet_time_missing">"3-G Status nicht verfügbar, bitte aktivieren Sie die Internetverbindung"</string>
     <string name="wallet_validation_data_expired">"3-G Status nicht verfügbar, bitte aktivieren Sie die Internetverbindung"</string>
@@ -503,8 +505,35 @@ ungültig"</string>
     <string name="region_tirol">"Tirol"</string>
     <string name="region_vorarlberg">"Vorarlberg"</string>
 
+    <string name="region_nationwide_validity">"Bundesweit\n(exkl. Wien)"</string>
+
     <string name="vaccination_booster_notification_title">"Achtung Zertifikat läuft ab!"</string>
     <string name="vaccination_booster_notification_message">"Um weiterhin ein gültiges Zertifikat vorweisen zu können, wird eine Auffrischungsimpfung in den nächsten 3 Monaten empfohlen."</string>
     <string name="vaccination_booster_notification_later">"Erneut erinnern"</string>
     <string name="vaccination_booster_notification_read">"Gelesen"</string>
+
+    <string name="wallet_3g_status_validity_headline">"Dieses Zertifikat berechtigt für"</string>
+
+    <string name="accessibility_external_link">Öffnet in neuem Fenster</string>
+    <string name="accessibility_region_active">Aktiv</string>
+    <string name="accessibility_region_inactive">Zum Ändern Doppeltippen.\n\nNach Auswahl wird der Dialog automatisch geschlossen.</string>
+    <string name="accessibility_change_selected_region">Zum Ändern Doppeltippen</string>
+
+    <string name="accessibility_active_camera">Kamera ist Aktiv</string>
+    <string name="accessibility_inactive_camera">Kamera ist nicht mehr Aktiv</string>
+
+    <string name="accessibility_certificate_list_valid">Gültig</string>
+    <string name="accessibility_certificate_list_invalid">Ungültig</string>
+
+    <string name="wallet_notification_johnson_booster_message">"Achtung: Holen Sie sich ab 28 Tagen nach Ihrer Erstimpfung mit dem COVID-19 Vaccine Janssen (\"Johnson&amp;Johnson\") Ihre 2. Impfung!\nIhr Impfzertifikat für den Grünen Pass ist ab Montag, 03.01.2022, nur noch mit 2 Impfungen gültig."</string>
+    <string name="wallet_notification_johnson_booster_ok_button">"OK"</string>
+    <string name="wallet_notification_johnson_booster_info_button">"Termin"</string>
+    <string name="wallet_notification_johnson_booster_info_url">"https://www.oesterreich-impft.at/jetzt-impfen/"</string>
+
+    <string name="wallet_notification_booster_title">"Achtung!"</string>
+    <string name="wallet_notification_booster_message">"Holen Sie sich ab 6 Monate nach Ihrer 2. Covid-19 Schutzimpfung Ihre 3. Impfung, um auch gegen die Delta-Variante geschützt zu bleiben!\nIhr Impfzertifikat für den Grünen Pass ist ab 06.12.2021 nur noch 9 Monate ab der 2. Impfung gültig und wird mit der 3. Impfung verlängert."</string>
+    <string name="wallet_notification_booster_ok_button">"Gelesen"</string>
+    <string name="wallet_notification_booster_later_button">"Erneut erinnern"</string>
+    <string name="wallet_notification_booster_info_button">"Termin"</string>
+    <string name="wallet_notification_booster_info_url">"https://www.oesterreich-impft.at/jetzt-impfen/"</string>
 </resources>

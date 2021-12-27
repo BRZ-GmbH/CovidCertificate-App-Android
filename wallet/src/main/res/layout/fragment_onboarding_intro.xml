@@ -43,6 +43,7 @@
 					android:layout_height="wrap_content"
 					android:layout_marginBottom="@dimen/spacing_very_large"
 					android:gravity="center_horizontal"
+					android:accessibilityHeading="true"
 					android:text="@string/wallet_onboarding_app_header" />
 
 				<ImageView

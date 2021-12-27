@@ -24,6 +24,7 @@
 		android:orientation="vertical">
 
 		<TextView
+			android:id="@+id/homescreen_options_overlay_add_certificate_options_title"
 			style="@style/CovidCertificate.Text.Bold.Emphasized"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"

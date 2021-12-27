@@ -27,7 +27,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import at.gv.brz.common.util.makeBold
 import at.gv.brz.common.util.setSecureFlagToBlockScreenshots
 import at.gv.brz.common.views.animateBackgroundTintColor
 import at.gv.brz.common.views.hideAnimated
@@ -35,20 +34,19 @@ import at.gv.brz.common.views.showAnimated
 import at.gv.brz.eval.models.CertType
 import at.gv.brz.eval.models.DccHolder
 import at.gv.brz.eval.utils.*
-import at.gv.brz.common.util.getInvalidErrorCode
 import at.gv.brz.common.util.makeSubStringBold
-import at.gv.brz.eval.data.EvalErrorCodes
 import at.gv.brz.eval.data.state.*
 import at.gv.brz.wallet.BuildConfig
 import at.gv.brz.wallet.CertificatesViewModel
 import at.gv.brz.wallet.R
+import at.gv.brz.wallet.data.Region
 import at.gv.brz.wallet.databinding.FragmentCertificateDetailBinding
 import at.gv.brz.wallet.util.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
+import java.time.OffsetDateTime
 
 class CertificateDetailFragment : Fragment() {
 
@@ -180,7 +178,9 @@ class CertificateDetailFragment : Fragment() {
 		val context = context ?: return
 		showLoadingIndicator(true)
 		binding.certificateDetailInfoDescriptionGroup.isVisible = false
-		binding.certificateDetailInfoValidityGroup.isVisible = false
+		binding.certificateDetailInfoEtValidityGroup.isVisible = false
+		binding.certificateDetailInfoNgValidityGroup.isVisible = false
+		binding.certificateDetailInfoValidityHeadline.isVisible = false
 		binding.certificateDetailErrorCode.isVisible = false
 		setInfoBubbleBackgrounds(R.color.greyish, R.color.greyish)
 
@@ -202,8 +202,6 @@ class CertificateDetailFragment : Fragment() {
 	private fun displaySuccessState(state: VerificationResultStatus.SUCCESS) {
 		showLoadingIndicator(false)
 		binding.certificateDetailInfoDescriptionGroup.isVisible = false
-		// TODO: AT - Hide validity info
-		binding.certificateDetailInfoValidityGroup.isVisible = false
 		binding.certificateDetailErrorCode.isVisible = false
 		setInfoBubbleBackgrounds(R.color.green_valid, R.color.green_valid)
 
@@ -213,24 +211,55 @@ class CertificateDetailFragment : Fragment() {
 		binding.certificateDetailRegionValidityContainer.visibility = View.VISIBLE
 		binding.certificateDetailValidityHintEt.visibility = View.VISIBLE
 
-		binding.certificateDetailRegionEtContainer.setBackgroundResource(if (state.results.first { it.region?.startsWith("ET") == true }.valid) { R.drawable.bg_certificate_bubble_valid} else { R.drawable.bg_certificate_bubble_invalid})
-		binding.certificateDetailRegionNgContainer.setBackgroundResource(if (state.results.first { it.region?.startsWith("NG") == true }.valid) { R.drawable.bg_certificate_bubble_valid} else { R.drawable.bg_certificate_bubble_invalid})
+		val etResult = state.results.first { it.region?.startsWith("ET") == true }
+		val ngResult = state.results.first { it.region?.startsWith("NG") == true }
 
-		binding.certificateDetailInfoEtIcon.setImageResource(if (state.results.first { it.region?.startsWith("ET") == true }.valid) { R.drawable.ic_check_circle} else { R.drawable.ic_minus_circle})
-		binding.certificateDetailInfoNgIcon.setImageResource(if (state.results.first { it.region?.startsWith("NG") == true }.valid) { R.drawable.ic_check_circle} else { R.drawable.ic_minus_circle})
+		binding.certificateDetailRegionEtContainer.setBackgroundResource(if (etResult.valid) { R.drawable.bg_certificate_bubble_valid} else { R.drawable.bg_certificate_bubble_invalid})
+		binding.certificateDetailRegionNgContainer.setBackgroundResource(if (ngResult.valid) { R.drawable.bg_certificate_bubble_valid} else { R.drawable.bg_certificate_bubble_invalid})
+
+		binding.certificateDetailInfoEtIcon.setImageResource(if (etResult.valid) { R.drawable.ic_check_circle} else { R.drawable.ic_minus_circle})
+		binding.certificateDetailInfoNgIcon.setImageResource(if (ngResult.valid) { R.drawable.ic_check_circle} else { R.drawable.ic_minus_circle})
 
 		binding.certificateDetailRegionEtContainer.importantForAccessibility = 1
-		binding.certificateDetailRegionEtContainer.contentDescription = if (state.results.first { it.region?.startsWith("ET") == true }.valid) getString(R.string.accessibility_valid_text) + getString(R.string.region_type_ET)  else getString(R.string.accessibility_invalid_text) + getString(R.string.region_type_ET)
+		binding.certificateDetailRegionEtContainer.contentDescription = if (etResult.valid) getString(R.string.accessibility_valid_text) + getString(R.string.region_type_ET)  else getString(R.string.accessibility_invalid_text) + getString(R.string.region_type_ET)
 		binding.certificateDetailRegionNgContainer.importantForAccessibility = 1
-		binding.certificateDetailRegionNgContainer.contentDescription = if (state.results.first { it.region?.startsWith("NG") == true }.valid) getString(R.string.accessibility_valid_text) + getString(R.string.region_type_NG) else getString(R.string.accessibility_invalid_text) + getString(R.string.region_type_NG)
+		binding.certificateDetailRegionNgContainer.contentDescription = if (ngResult.valid) getString(R.string.accessibility_valid_text) + getString(R.string.region_type_NG) else getString(R.string.accessibility_invalid_text) + getString(R.string.region_type_NG)
+
+		binding.certificateDetailInfoEtValidityGroup.isVisible = etResult.valid
+		binding.certificateDetailInfoNgValidityGroup.isVisible = ngResult.valid
+		binding.certificateDetailInfoValidityHeadline.isVisible = etResult.valid || ngResult.valid
+
+		val selectedRegion = Region.getRegionFromIdentifier(certificatesViewModel.secureStorage.getSelectedValidationRegion())
+
+		if (selectedRegion != null) {
+			if (etResult.valid) {
+				binding.certificateDetailInfoEtValidityDateDisclaimer.text = getString(
+					R.string.wallet_certificate_validity,
+					getString(R.string.region_type_ET_validity),
+					getString(selectedRegion.getName())
+				)
+				binding.certificateDetailInfoEtValidityDate.text =
+					getValidityDate(etResult.validUntil, dccHolder.certType)
+			}
+			if (ngResult.valid) {
+				binding.certificateDetailInfoNgValidityDateDisclaimer.text = getString(
+					R.string.wallet_certificate_validity,
+					getString(R.string.region_type_NG_validity),
+					getString(selectedRegion.getName())
+				)
+				binding.certificateDetailInfoNgValidityDate.text =
+					getValidityDate(ngResult.validUntil, dccHolder.certType)
+			}
+		}
 	}
 
 	private fun displayInvalidState(state: VerificationResultStatus.SIGNATURE_INVALID) {
 		val context = context ?: return
 		showLoadingIndicator(false)
-		// TODO: AT - Hide validity info
 		binding.certificateDetailInfoDescriptionGroup.isVisible = false
-		binding.certificateDetailInfoValidityGroup.isVisible = false
+		binding.certificateDetailInfoEtValidityGroup.isVisible = false
+		binding.certificateDetailInfoNgValidityGroup.isVisible = false
+		binding.certificateDetailInfoValidityHeadline.isVisible = false
 
 		showStatusInfoAndDescription(null, context.getString(R.string.wallet_error_invalid_signature)
 			.makeSubStringBold(context.getString(R.string.wallet_error_invalid_signature_bold)),R.drawable.ic_error)
@@ -254,7 +283,9 @@ class CertificateDetailFragment : Fragment() {
 		val context = context ?: return
 		showLoadingIndicator(false)
 		binding.certificateDetailInfoDescriptionGroup.isVisible = false
-		binding.certificateDetailInfoValidityGroup.isVisible = false
+		binding.certificateDetailInfoEtValidityGroup.isVisible = false
+		binding.certificateDetailInfoNgValidityGroup.isVisible = false
+		binding.certificateDetailInfoValidityHeadline.isVisible = false
 		setInfoBubbleBackgrounds(R.color.red_invalid, R.color.red_invalid)
 
 		binding.certificateDetailInfo.text = context.getString(R.string.wallet_error_invalid_format)
@@ -276,7 +307,9 @@ class CertificateDetailFragment : Fragment() {
 		val context = context ?: return
 		showLoadingIndicator(false)
 		binding.certificateDetailInfoDescriptionGroup.isVisible = false
-		binding.certificateDetailInfoValidityGroup.isVisible = false
+		binding.certificateDetailInfoEtValidityGroup.isVisible = false
+		binding.certificateDetailInfoNgValidityGroup.isVisible = false
+		binding.certificateDetailInfoValidityHeadline.isVisible = false
 		setInfoBubbleBackgrounds(R.color.orange, R.color.orange)
 
 		binding.certificateDetailInfo.text = context.getString(R.string.wallet_time_missing)
@@ -297,7 +330,9 @@ class CertificateDetailFragment : Fragment() {
 		val context = context ?: return
 		showLoadingIndicator(false)
 		binding.certificateDetailInfoDescriptionGroup.isVisible = false
-		binding.certificateDetailInfoValidityGroup.isVisible = false
+		binding.certificateDetailInfoEtValidityGroup.isVisible = false
+		binding.certificateDetailInfoNgValidityGroup.isVisible = false
+		binding.certificateDetailInfoValidityHeadline.isVisible = false
 		setInfoBubbleBackgrounds(R.color.orange, R.color.orange)
 
 		binding.certificateDetailInfo.text = context.getString(R.string.wallet_validation_data_expired)
@@ -330,23 +365,19 @@ class CertificateDetailFragment : Fragment() {
 	 */
 	private fun changeAlpha(alpha: Float) {
 		binding.certificateDetailQrCode.alpha = alpha
-		binding.certificateDetailInfoValidityDateDisclaimer.alpha = alpha
-		binding.certificateDetailInfoValidityDateGroup.alpha = alpha
 		binding.certificateDetailDataRecyclerView.alpha = alpha
 	}
 
 	/**
 	 * Display the formatted validity date of the vaccine or test
 	 */
-	private fun showValidityDate(validUntil: LocalDateTime?, certificateType: CertType?) {
+	private fun getValidityDate(validUntil: OffsetDateTime?, certificateType: CertType?): String {
 		val formatter = when (certificateType) {
-			null -> null
 			CertType.TEST -> DEFAULT_DISPLAY_DATE_TIME_FORMATTER
 			else -> DEFAULT_DISPLAY_DATE_FORMATTER
 		}
 
-		val formattedDate = validUntil?.let { formatter?.format(it) } ?: "-"
-		binding.certificateDetailInfoValidityDate.text = formattedDate
+		return validUntil?.let { formatter?.format(it) } ?: "-"
 	}
 
 	/**
@@ -369,13 +400,11 @@ class CertificateDetailFragment : Fragment() {
 			binding.certificateDetailInfo.animateBackgroundTintColor(infoBubbleColor)
 			binding.certificateDetailInfoVerificationStatus.animateBackgroundTintColor(infoBubbleValidationColor)
 			binding.certificateDetailInfoDescriptionGroup.animateBackgroundTintColor(infoBubbleValidationColor)
-			binding.certificateDetailInfoValidityGroup.animateBackgroundTintColor(infoBubbleValidationColor)
 		} else {
 			val infoBubbleColorTintList = ColorStateList.valueOf(infoBubbleColor)
 			binding.certificateDetailInfo.backgroundTintList = infoBubbleColorTintList
 			binding.certificateDetailInfoVerificationStatus.backgroundTintList = ColorStateList.valueOf(infoBubbleValidationColor)
 			binding.certificateDetailInfoDescriptionGroup.backgroundTintList = infoBubbleColorTintList
-			binding.certificateDetailInfoValidityGroup.backgroundTintList = infoBubbleColorTintList
 		}
 	}
 
@@ -440,9 +469,6 @@ class CertificateDetailFragment : Fragment() {
 			)
 
 			binding.certificateDetailInfoVerificationStatus.hideAnimated()
-			binding.certificateDetailInfoValidityGroup.animateBackgroundTintColor(
-				ContextCompat.getColor(context, infoBubbleColorId)
-			)
 
 			binding.certificateDetailStatusIcon.setImageResource(statusIconId)
 

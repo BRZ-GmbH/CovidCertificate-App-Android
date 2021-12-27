@@ -42,7 +42,7 @@ object AssetUtil {
 
 	private const val ASSET_FILENAME_DEFAULT_CONFIG = "faq/config.json"
 
-	private fun loadAssetJson(context: Context, filename: String): String? {
+	fun loadAssetJson(context: Context, filename: String): String? {
 		return try {
 			val inputStream = context.assets.open(filename)
 			val json = inputStream.bufferedReader().use { it.readText() }

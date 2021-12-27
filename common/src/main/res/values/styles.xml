@@ -241,6 +241,7 @@
 		<item name="android:textColorPrimary">@color/black</item>
 		<item name="buttonBarPositiveButtonStyle">@style/CovidCertificate.Button.AlertDialog</item>
 		<item name="buttonBarNegativeButtonStyle">@style/CovidCertificate.Button.AlertDialog</item>
+		<item name="buttonBarNeutralButtonStyle">@style/CovidCertificate.Button.AlertDialog</item>
 		<item name="android:fontFamily">@font/sourcesanspro_regular</item>
 		<item name="fontFamily">@font/sourcesanspro_regular</item>
 	</style>

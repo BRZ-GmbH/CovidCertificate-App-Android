@@ -12,13 +12,14 @@ package at.gv.brz.wallet.onboarding
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import at.gv.brz.wallet.R
 import at.gv.brz.wallet.databinding.ActivityOnboardingBinding
 
-class OnboardingActivity : AppCompatActivity() {
+open class OnboardingActivity : AppCompatActivity() {
 
 	private lateinit var binding: ActivityOnboardingBinding
-	private lateinit var pagerAdapter: OnboardingSlidePageAdapter
+	private lateinit var pagerAdapter: FragmentStateAdapter
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -26,16 +27,21 @@ class OnboardingActivity : AppCompatActivity() {
 		binding = ActivityOnboardingBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 
-		binding.viewPager.setUserInputEnabled(false)
-		pagerAdapter = OnboardingSlidePageAdapter(this)
-		binding.viewPager.setAdapter(pagerAdapter)
+		binding.viewPager.isUserInputEnabled = false
+		pagerAdapter = createAdapter()
+		binding.viewPager.adapter = pagerAdapter
+	}
+
+	open fun createAdapter(): FragmentStateAdapter {
+		return OnboardingSlidePageAdapter(this)
 	}
 
 	fun continueToNextPage() {
-		val currentItem: Int = binding.viewPager.getCurrentItem()
-		if (currentItem < pagerAdapter.getItemCount() - 1) {
+		val currentItem: Int = binding.viewPager.currentItem
+		if (currentItem < pagerAdapter.itemCount - 1) {
 			binding.viewPager.setCurrentItem(currentItem + 1, true)
 		} else {
+
 			setResult(RESULT_OK)
 			finish()
 			overridePendingTransition(R.anim.fragment_open_enter, R.anim.fragment_open_exit)

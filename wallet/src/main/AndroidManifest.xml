@@ -46,6 +46,10 @@
             android:name=".onboarding.OnboardingActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".onboarding.FeatureIntroActivity"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>
