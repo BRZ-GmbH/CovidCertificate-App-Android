@@ -12,9 +12,9 @@ Download and install [Docker](https://www.docker.com/).
 3. Checkout the Tag that corresponds to the version of your app (e.g., 1.0.0)
 
 ```shell
-git clone https://github.com/admin-ch/CovidCertificate-App-Android.git ~/CovidCertificate-App-Android
+git clone https://github.com/BRZ-GmbH/CovidCertificate-App-Android.git ~/CovidCertificate-App-Android
 cd ~/CovidCertificate-App-Android
-git checkout 1.0.0
+git checkout v1.0.0-210701.9-wallet
 ```
 
 ## Wallet App
