@@ -8,28 +8,39 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
-package at.gv.brz.common.html
+package at.gv.brz.wallet.html
 
+import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.ValueCallback
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.TextView
 import androidx.annotation.IdRes
-import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import at.gv.brz.common.R
-import at.gv.brz.common.databinding.FragmentHtmlBinding
 import at.gv.brz.common.util.AssetUtil.loadImpressumHtmlFile
 import at.gv.brz.common.util.UrlUtil
 import at.gv.brz.common.views.hideAnimated
+import androidx.lifecycle.lifecycleScope
+import at.gv.brz.common.BuildConfig
+import at.gv.brz.common.html.BuildInfo
+import at.gv.brz.common.util.setSecureFlagToBlockScreenshots
+import at.gv.brz.eval.CovidCertificateSdk
+import at.gv.brz.wallet.data.WalletSecureStorage
+import at.gv.brz.wallet.databinding.FragmentHtmlBinding
 
 class HtmlFragment : Fragment() {
 
 	companion object {
 		private const val COVID_CERT_IMPRESSUM_PREFIX = "ccert://"
+		private const val DATA_UPDATE_IMPRESSUM_PREFIX = "dataupdate://"
+		private const val TOGGLE_CAMPAIGN_OPT_OUT_IMPRESSUM_PREFIX = "togglecampaignoptout://"
 
 		private const val ARG_BASE_URL = "ARG_BASE_URL"
 		private const val ARG_BUILD_INFO = "ARG_BUILD_INFO"
@@ -92,6 +103,7 @@ class HtmlFragment : Fragment() {
 		web.webViewClient = object : WebViewClient() {
 			override fun onPageFinished(view: WebView, url: String) {
 				loadingSpinner.hideAnimated()
+				updateCampaignOptOutElement()
 				super.onPageFinished(view, url)
 			}
 
@@ -116,6 +128,29 @@ class HtmlFragment : Fragment() {
 						.addToBackStack(HtmlFragment::class.java.canonicalName)
 						.commit()
 					return true
+				} else if (url.toLowerCase().startsWith(DATA_UPDATE_IMPRESSUM_PREFIX)) {
+					val alertDialog = getAlertDialog(requireContext(), R.layout.dialog_progress, true)
+					alertDialog.show()
+					alertDialog.findViewById<TextView>(R.id.text_progress_bar).setText(R.string.business_rule_update_progress)
+					CovidCertificateSdk.getCertificateVerificationController().refreshTrustList(lifecycleScope, true, onCompletionCallback = {
+						alertDialog.dismiss()
+						val message = if (it.failed) R.string.business_rule_update_failed_message else R.string.business_rule_update_success_message
+						androidx.appcompat.app.AlertDialog.Builder(requireContext(), R.style.CovidCertificate_AlertDialogStyle)
+							.setMessage(message)
+							.setPositiveButton(R.string.business_rule_update_ok_button) { dialog, _ ->
+								dialog.dismiss()
+							}
+							.setCancelable(true)
+							.create()
+							.apply { window?.setSecureFlagToBlockScreenshots(BuildConfig.FLAVOR) }
+							.show()
+					})
+					return true
+				} else if (url.toLowerCase().startsWith(TOGGLE_CAMPAIGN_OPT_OUT_IMPRESSUM_PREFIX)) {
+					val secureStorage = WalletSecureStorage.getInstance(requireContext())
+					secureStorage.setHasOptedOutOfNonImportantCampaigns(!secureStorage.getHasOptedOutOfNonImportantCampaigns())
+					updateCampaignOptOutElement()
+					return true
 				}
 				UrlUtil.openUrl(context, url)
 				return true
@@ -126,6 +161,29 @@ class HtmlFragment : Fragment() {
 		} else {
 			web.loadUrl(baseUrl)
 		}
+	}
+
+	private fun updateCampaignOptOutElement() {
+		val secureStorage = WalletSecureStorage.getInstance(requireContext())
+		val text = if (secureStorage.getHasOptedOutOfNonImportantCampaigns()) getString(R.string.campaigns_opt_in_action) else getString(R.string.campaigns_opt_out_action)
+		binding.htmlWebview.settings.javaScriptEnabled = true
+		binding.htmlWebview.evaluateJavascript("document.getElementById('campaignOptOut').innerHTML = \"${text}\";", ValueCallback {
+			binding.htmlWebview.settings.javaScriptEnabled = false
+		})
+	}
+
+	fun getAlertDialog(
+		context: Context,
+		layout: Int,
+		setCancellationOnTouchOutside: Boolean
+	): AlertDialog {
+		val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+		val customLayout: View =
+			layoutInflater.inflate(layout, null)
+		builder.setView(customLayout)
+		val dialog = builder.create()
+		dialog.setCanceledOnTouchOutside(setCancellationOnTouchOutside)
+		return dialog
 	}
 
 	override fun onDestroyView() {

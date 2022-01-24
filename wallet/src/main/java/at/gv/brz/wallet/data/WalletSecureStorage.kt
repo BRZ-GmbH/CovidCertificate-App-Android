@@ -27,6 +27,8 @@ class WalletSecureStorage private constructor(context: Context) {
 		private const val PREFERENCES = "SecureStorage"
 		private const val KEY_ONBOARDING_COMPLETED = "onboarding_completed"
 		private const val KEY_SELECTED_VALIDATION_REGION = "selected_validation_region"
+		private const val KEY_HAS_ASKED_FOR_INAPP_REVIEW = "has_asked_for_inapp_review"
+		private const val KEY_HAS_OPTED_OUT_OF_NON_IMPORTANT_CAMPAIGNS = "has_opted_out_of_non_important_campaigns"
 	}
 
 	private val prefs: SharedPreferences
@@ -73,5 +75,16 @@ class WalletSecureStorage private constructor(context: Context) {
 	fun getSelectedValidationRegion(): String? = prefs.getString(KEY_SELECTED_VALIDATION_REGION, null)
 
 	fun setSelectedValidationRegion(region: String) = prefs.edit().putString(KEY_SELECTED_VALIDATION_REGION, region).apply()
+
+	fun getHasAskedForInAppReview(): Boolean = prefs.getBoolean(KEY_HAS_ASKED_FOR_INAPP_REVIEW, false)
+
+	fun setHasAskedForInAppReview(asked: Boolean) = prefs.edit().putBoolean(
+		KEY_HAS_ASKED_FOR_INAPP_REVIEW, asked).apply()
+
+	fun getHasOptedOutOfNonImportantCampaigns(): Boolean = prefs.getBoolean(
+		KEY_HAS_OPTED_OUT_OF_NON_IMPORTANT_CAMPAIGNS, false)
+
+	fun setHasOptedOutOfNonImportantCampaigns(optedOut: Boolean) = prefs.edit().putBoolean(
+		KEY_HAS_OPTED_OUT_OF_NON_IMPORTANT_CAMPAIGNS, optedOut).apply()
 
 }

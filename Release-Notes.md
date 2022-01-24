@@ -1,5 +1,14 @@
 # Grüner Pass - Release Notes
 
+## v2.3.0
+
+- Update von QR Scan Fragment zur Verbesserung der Performance (EPIEMSCO-1885)
+- Automatisches Entfernen abgelaufener Testzertifikate (EPIEMSCO-1884)
+- Integration von Aufforderung zu Store-Bewertung (EPIEMSCO-1655)
+- Manuelles Update der Business Rules & Trust list (EPIEMSCO-2064)
+- Anpassung der 3-G Status Meldung (EPIEMSCO-2065)
+- Kampagnenfunktionalität (EPIEMSCO-2217)
+
 ## v2.2.1
 
 - Anzeige von Name und Geburtsdatum oberhalb von QR-Code (EPIEMSCO-2237)

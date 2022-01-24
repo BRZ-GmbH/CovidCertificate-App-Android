@@ -163,7 +163,7 @@
                             android:minLines="2"
                             android:padding="@dimen/spacing_medium_large"
                             app:layout_constraintTop_toTopOf="parent"
-                            tools:text="@string/verifier_verify_success_info" />
+                            tools:text="@string/wallet_verify_success_info" />
 
                         <LinearLayout
                             android:id="@+id/certificate_detail_region_validity_container"
@@ -258,7 +258,7 @@
                             android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="@id/certificate_detail_info"
                             app:layout_constraintTop_toTopOf="@id/certificate_detail_info"
-                            tools:text="@string/verifier_verify_success_title"
+                            tools:text="@string/wallet_verify_success_title"
                             tools:visibility="visible" />
 
                         <FrameLayout
@@ -460,18 +460,6 @@
                 </LinearLayout>
 
             </androidx.core.widget.NestedScrollView>
-
-            <ImageButton
-                android:id="@+id/certificate_detail_button_reverify"
-                style="@style/CovidCertificate.FloatingImageButton"
-                android:layout_width="@dimen/floating_button_height"
-                android:layout_height="@dimen/floating_button_height"
-                android:layout_gravity="bottom|end"
-                android:layout_marginEnd="@dimen/spacing_very_large"
-                android:layout_marginBottom="@dimen/spacing_very_large"
-                android:elevation="@dimen/floating_button_elevation"
-                android:src="@drawable/ic_load"
-                android:visibility="gone" />
 
         </FrameLayout>
 

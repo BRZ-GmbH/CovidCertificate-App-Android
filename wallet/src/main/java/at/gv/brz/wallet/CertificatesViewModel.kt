@@ -35,6 +35,7 @@ import at.gv.brz.wallet.data.regionModifiedProfile
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import dgca.verifier.app.engine.UTC_ZONE_ID
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -44,6 +45,8 @@ import kotlinx.coroutines.withContext
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.lang.StringBuilder
+import java.time.Instant
+import java.time.ZonedDateTime
 import kotlin.collections.set
 
 class CertificatesViewModel(application: Application) : AndroidViewModel(application) {
@@ -188,6 +191,16 @@ class CertificatesViewModel(application: Application) : AndroidViewModel(applica
 		loadCertificates()
 	}
 
+	fun removeCertificates(certificates: List<String>) {
+		certificates.forEach {
+			certificateStorage.deleteCertificate(it)
+			(CertificateDecoder.decode(it) as? DecodeState.SUCCESS)?.dccHolder?.euDGC?.vaccinations?.firstOrNull()?.certificateIdentifier?.let {
+				notificationStorage.deleteCertificateIdentifier(it)
+			}
+		}
+		loadCertificates()
+	}
+
 	fun toggleDeviceTimeSetting(): Boolean {
 		/**
 		 * In test builds (for Q as well as P environment) we allow switching a setting for the app to either use the real time fetched from a time server (behaviour in the published app) or to use the current device time for validating the business rules.
@@ -205,14 +218,50 @@ class CertificatesViewModel(application: Application) : AndroidViewModel(applica
 		return false
 	}
 
+	fun getValidationTime(): ZonedDateTime? {
+		if (BuildConfig.FLAVOR == "abn" || BuildConfig.FLAVOR == "prodtest") {
+			val context: Context = getApplication()
+			val sharedPreferences =
+				context.getSharedPreferences("wallet.test", Context.MODE_PRIVATE)
+			if (sharedPreferences.getBoolean("wallet.test.useDeviceTime", false)) {
+				return ZonedDateTime.now()
+			}
+		}
+		return CovidCertificateSdk.getValidationClock()
+	}
+
 	private val configMutableLiveData = MutableLiveData<ConfigModel>()
 	val configLiveData: LiveData<ConfigModel> = configMutableLiveData
+
+	private var hasLoadedConfig = false
+	private var hasLoadedTrustlistData = false
+
+	private val dataUpdateMutableLiveData = MutableLiveData<Unit>()
+	val dataUpdateLiveData: LiveData<Unit> = dataUpdateMutableLiveData
+
+	fun setHasUpdatedTrustlistData() {
+		hasLoadedTrustlistData = true
+		dataUpdateMutableLiveData.postValue(Unit)
+	}
+
+	fun hasLoadedData(): Boolean {
+		return hasLoadedConfig && hasLoadedTrustlistData
+	}
+
+	fun resetLoadingFlags() {
+		hasLoadedConfig = false
+		hasLoadedTrustlistData = false
+	}
 
 	fun loadConfig() {
 		val configRepository = ConfigRepository.getInstance(ConfigSpec(getApplication(),
 			BuildConfig.BASE_URL))
 		viewModelScope.launch {
-			configRepository.loadConfig(forceLoadConfig, getApplication())?.let { config -> configMutableLiveData.postValue(config) }
+			configRepository.loadConfig(forceLoadConfig, getApplication())?.let { config ->
+				hasLoadedConfig = true
+				configMutableLiveData.postValue(config)
+				dataUpdateMutableLiveData.postValue(Unit)
+			}
 			forceLoadConfig = false
 		}
 	}

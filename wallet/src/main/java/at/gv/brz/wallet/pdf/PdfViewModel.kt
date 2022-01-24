@@ -19,7 +19,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import at.gv.brz.common.qr.QRCodeReaderHelper
 import at.gv.brz.eval.data.state.DecodeState
-import at.gv.brz.eval.data.state.Error
+import at.gv.brz.eval.data.state.StateError
 import at.gv.brz.eval.decoder.CertificateDecoder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -34,7 +34,7 @@ class PdfViewModel(application: Application) : AndroidViewModel(application) {
 	fun importPdf(clipData: ClipData) {
 		if (clipData.itemCount != 1 || clipData.getItemAt(0) == null || clipData.getItemAt(0).uri == null) {
 			pdfImportMutableLiveData.postValue(
-				PdfImportState.DONE(DecodeState.ERROR(Error(PdfErrorCodes.FAILED_TO_READ, "The PDF was not be imported")))
+				PdfImportState.DONE(DecodeState.ERROR(StateError(PdfErrorCodes.FAILED_TO_READ, "The PDF was not be imported")))
 			)
 			return
 		}
@@ -65,7 +65,7 @@ class PdfViewModel(application: Application) : AndroidViewModel(application) {
 			}
 
 			pdfImportMutableLiveData.postValue(
-				PdfImportState.DONE(DecodeState.ERROR(Error(PdfErrorCodes.NO_QR_CODE_FOUND, "The PDF was not be imported")))
+				PdfImportState.DONE(DecodeState.ERROR(StateError(PdfErrorCodes.NO_QR_CODE_FOUND, "The PDF was not be imported")))
 			)
 		}
 	}

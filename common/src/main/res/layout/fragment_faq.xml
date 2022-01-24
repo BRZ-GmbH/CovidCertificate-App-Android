@@ -37,7 +37,7 @@
 			app:navigationIcon="@drawable/ic_close_red"
 			app:navigationContentDescription="@string/accessibility_close_button"
 			android:elevation="@dimen/toolbar_elevation"
-			app:title="@string/verifier_support_header"
+			app:title="@string/wallet_support_header"
 			app:titleTextAppearance="@style/CovidCertificate.ToolbarTitle"
 			app:titleTextColor="@color/grey" />
 

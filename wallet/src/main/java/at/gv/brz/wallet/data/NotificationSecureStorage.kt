@@ -17,7 +17,12 @@ class NotificationSecureStorage  private constructor(context: Context) {
 
     companion object :
         SingletonHolder<NotificationSecureStorage, Context>(::NotificationSecureStorage) {
-        private const val SHARED_PREFERENCES_NOTIFICATIONS_KEY = "NotificationsStorageKey"
+        private const val SHARED_PREFERENCES_CERTIFICATE_CAMPAIGN_LAST_DISPLAY_TIMESTAMPS_KEY = "CertificateCampaignLastDisplayTimestampsKey"
+
+        private const val SHARED_PREFERENCES_LAST_EXPIRED_TEST_CERTIFICATE_REMINDER_DATE_KEY = "LastExpiredTestCertificateReminderDateKey"
+        private const val SHARED_PREFERENCES_EXPIRED_TEST_CERTIFICATE_REMINDER_COUNT_KEY = "ExpiredTestCertificateReminderCountKey"
+        private const val SHARED_PREFERENCES_IGNORE_EXPIRED_TEST_CERTIFICATES_KEY = "IgnoreExpiredTestCertificatesKey"
+
         private const val SHARED_PREFERENCES_JOHNSON_BOOSTER_NOTIFICATION_SHOWN_KEY = "JohnsonBoosterNotificationShownStorageKey"
         const val SHARED_PREFERENCES_NAME: String = "NotificationsStorageName"
 
@@ -35,40 +40,79 @@ class NotificationSecureStorage  private constructor(context: Context) {
     /**
      * Get the notification timestamp for the given certificate identifier
      */
-    fun getNotificationTimestampForCertificateIdentifier(identifier: String): Long? {
-        return getNotificationTimestamps()[identifier]
+    fun getCertificateCampaignLastDisplayTimestampForIdentifier(identifier: String): Long? {
+        return getModifiableCertificateCampaignLastDisplayTimestamps()[identifier]
+    }
+
+    fun getCurrentCertificateCampaignLastDisplayTimestamps(): Map<String, Long> {
+        val json = prefs.getString(SHARED_PREFERENCES_CERTIFICATE_CAMPAIGN_LAST_DISPLAY_TIMESTAMPS_KEY, null)
+        if (json == null || json.isEmpty()) {
+            return mapOf()
+        }
+        return notificationTimestampsAdapter.fromJson(json) ?: mapOf()
     }
 
     /**
      * Set or update the notification timestamp for the given certificate identifier
      */
-    fun setNotificationTimestampForCertificateIdentifier(identifier: String, timestamp: Long) {
-        val timestamps = getNotificationTimestamps()
+    fun setCertificateCampaignLastDisplayTimestampForIdentifier(identifier: String, timestamp: Long) {
+        val timestamps = getModifiableCertificateCampaignLastDisplayTimestamps()
         timestamps[identifier] = timestamp
-        updateNotificationTimestamps(timestamps)
+        updateCertificateCampaignLastDisplayTimestamps(timestamps)
     }
 
     /**
      * Remove the stored timestamp for the given certificate identifier
      */
     fun deleteCertificateIdentifier(identifier: String) {
-        val timestamps = getNotificationTimestamps()
-        timestamps.remove(identifier)
-        updateNotificationTimestamps(timestamps)
+        val timestamps = getModifiableCertificateCampaignLastDisplayTimestamps()
+        val keysToRemove = timestamps.keys.filter { it.endsWith("_${identifier}") }
+        keysToRemove.forEach { timestamps.remove(it) }
+        updateCertificateCampaignLastDisplayTimestamps(timestamps)
     }
 
-    private fun getNotificationTimestamps(): MutableMap<String, Long> {
-        val json = prefs.getString(SHARED_PREFERENCES_NOTIFICATIONS_KEY, null)
+    private fun getModifiableCertificateCampaignLastDisplayTimestamps(): MutableMap<String, Long> {
+        val json = prefs.getString(SHARED_PREFERENCES_CERTIFICATE_CAMPAIGN_LAST_DISPLAY_TIMESTAMPS_KEY, null)
         if (json == null || json.isEmpty()) {
             return mutableMapOf()
         }
         return notificationTimestampsAdapter.fromJson(json) ?: mutableMapOf()
     }
 
-    private fun updateNotificationTimestamps(timestamps: MutableMap<String, Long>) {
+    private fun updateCertificateCampaignLastDisplayTimestamps(timestamps: MutableMap<String, Long>) {
         val bfsIdsJson = notificationTimestampsAdapter.toJson(timestamps)
         val editor = prefs.edit()
-        editor.putString(SHARED_PREFERENCES_NOTIFICATIONS_KEY, bfsIdsJson)
+        editor.putString(SHARED_PREFERENCES_CERTIFICATE_CAMPAIGN_LAST_DISPLAY_TIMESTAMPS_KEY, bfsIdsJson)
+        editor.apply()
+    }
+
+    fun getLastExpiredTestCertificateReminderDate(): Long {
+        return prefs.getLong(SHARED_PREFERENCES_LAST_EXPIRED_TEST_CERTIFICATE_REMINDER_DATE_KEY, 0)
+    }
+
+    fun setLastExpiredTestCertificateReminderDate(value: Long) {
+        val editor = prefs.edit()
+        editor.putLong(SHARED_PREFERENCES_LAST_EXPIRED_TEST_CERTIFICATE_REMINDER_DATE_KEY, value)
+        editor.apply()
+    }
+
+    fun getExpiredTestCertificateReminderCount(): Int {
+        return prefs.getInt(SHARED_PREFERENCES_EXPIRED_TEST_CERTIFICATE_REMINDER_COUNT_KEY, 0)
+    }
+
+    fun setExpiredTestCertificateReminderCount(value: Int) {
+        val editor = prefs.edit()
+        editor.putInt(SHARED_PREFERENCES_EXPIRED_TEST_CERTIFICATE_REMINDER_COUNT_KEY, value)
+        editor.apply()
+    }
+
+    fun shouldIgnoreExpiredTestCertificates(): Boolean {
+        return prefs.getBoolean(SHARED_PREFERENCES_IGNORE_EXPIRED_TEST_CERTIFICATES_KEY, false)
+    }
+
+    fun setShouldIgnoreExpiredTestCertificates(value: Boolean) {
+        val editor = prefs.edit()
+        editor.putBoolean(SHARED_PREFERENCES_IGNORE_EXPIRED_TEST_CERTIFICATES_KEY, value)
         editor.apply()
     }
 

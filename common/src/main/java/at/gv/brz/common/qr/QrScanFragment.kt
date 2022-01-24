@@ -39,13 +39,16 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import at.gv.brz.common.R
+import at.gv.brz.common.data.ConfigSecureStorage
 import at.gv.brz.common.util.ErrorHelper
 import at.gv.brz.common.util.ErrorState
-import at.gv.brz.eval.data.state.DecodeState
-import at.gv.brz.eval.data.state.Error
-import at.gv.brz.eval.decoder.CertificateDecoder
-import at.gv.brz.eval.models.DccHolder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import java.util.concurrent.Executor
+import androidx.lifecycle.liveData
+import at.gv.brz.eval.data.state.StateError
 
 abstract class QrScanFragment : Fragment() {
 
@@ -56,33 +59,45 @@ abstract class QrScanFragment : Fragment() {
 	}
 
 	// These need to be set by implementing classes during onCreateView. That's why they are not private.
-	lateinit var toolbar: Toolbar
-	lateinit var flashButton: ImageButton
-	lateinit var errorView: View
+	protected lateinit var toolbar: Toolbar
+	protected lateinit var flashButton: ImageButton
+	protected lateinit var errorView: View
+	protected lateinit var errorCodeView: TextView
+	protected lateinit var zoomButton: ImageButton
 
-	lateinit var invalidCodeText: TextView
-	lateinit var viewFinderTopLeftIndicator: View
-	lateinit var viewFinderTopRightIndicator: View
-	lateinit var viewFinderBottomLeftIndicator: View
-	lateinit var viewFinderBottomRightIndicator: View
-	lateinit var qrCodeScanner: PreviewView
-	lateinit var cutOut: View
+	protected lateinit var invalidCodeText: TextView
+	protected lateinit var viewFinderTopLeftIndicator: View
+	protected lateinit var viewFinderTopRightIndicator: View
+	protected lateinit var viewFinderBottomLeftIndicator: View
+	protected lateinit var viewFinderBottomRightIndicator: View
+	protected lateinit var qrCodeScanner: PreviewView
+	protected lateinit var cutOut: View
 	private var preview: Preview? = null
 	private var imageCapture: ImageCapture? = null
 	private var imageAnalyzer: ImageAnalysis? = null
 	private lateinit var mainExecutor: Executor
 	private var camera: Camera? = null
-
 	abstract val viewFinderColor: Int
+
 	abstract val viewFinderErrorColor: Int
 	abstract val torchOnDrawable: Int
 	abstract val torchOffDrawable: Int
-
+	abstract val zoomOnDrawable: Int
+	abstract val zoomOffDrawable: Int
 	private var lastUIErrorUpdate = 0L
 
 	private var cameraPermissionState = CameraPermissionState.REQUESTING
+	private val secureStorage by lazy { ConfigSecureStorage.getInstance(requireContext()) }
 	private var cameraPermissionExplanationDialog: CameraPermissionExplanationDialog? = null
 	private var isTorchOn: Boolean = false
+	protected var isCameraActivated = false
+
+	private val autoFocusClockLiveData = liveData(Dispatchers.IO) {
+		while (currentCoroutineContext().isActive) {
+			emit(Unit)
+			delay(3 * 1000L)
+		}
+	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -96,7 +111,7 @@ abstract class QrScanFragment : Fragment() {
 
 		// Wait for the views to be properly laid out
 		qrCodeScanner.post {
-			bindCameraUseCases()
+			initializeCamera()
 		}
 	}
 
@@ -115,7 +130,7 @@ abstract class QrScanFragment : Fragment() {
 		outState.putBoolean(STATE_IS_TORCH_ON, isTorchOn)
 	}
 
-	abstract fun onDecodeSuccess(dccHolder: DccHolder)
+	abstract fun decodeQrCodeData(qrCodeData: String, onDecodeSuccess: () -> Unit, onDecodeError: (StateError) -> Unit)
 
 	override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
 		if (requestCode == PERMISSION_REQUEST_CAMERA) {
@@ -126,36 +141,74 @@ abstract class QrScanFragment : Fragment() {
 		}
 	}
 
-	@SuppressLint("ClickableViewAccessibility")
-	private fun bindCameraUseCases() {
-		val rotation = qrCodeScanner.display.rotation
-		val cameraSelector = CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
+	protected fun activateCamera() {
+		deactivateCamera()
+
 		val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
 		cameraProviderFuture.addListener({
-			val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-			preview = Preview.Builder()
-				.setTargetResolution(Size(720, 1280))
-				.setTargetRotation(rotation)
+			val cameraProvider = cameraProviderFuture.get()
+
+			val cameraSelector = CameraSelector.Builder()
+				.requireLensFacing(CameraSelector.LENS_FACING_BACK)
 				.build()
 
-			preview?.setSurfaceProvider(qrCodeScanner.surfaceProvider)
+			try {
+				qrCodeScanner.isVisible = true
+				camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture, imageAnalyzer)
+				isCameraActivated = true
 
-			imageCapture = ImageCapture.Builder()
-				.setCaptureMode(ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY)
-				.setTargetResolution(Size(720, 1280))
-				.setTargetRotation(rotation)
-				.build()
+				// Set focus to the center of the viewfinder to help the auto focus
+				autoFocusClockLiveData.observe(viewLifecycleOwner) {
+					autoFocus()
+				}
+				setupZoomButton()
+				setupFlashButton()
+			} catch (e: Exception) {
+				e.printStackTrace()
+			}
+		}, mainExecutor)
+	}
 
-			imageAnalyzer = ImageAnalysis.Builder()
-				.setTargetResolution(Size(720, 1280))
-				.setTargetRotation(rotation)
-				.setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-				.build()
-				.also { imageAnalysis ->
-					imageAnalysis.setAnalyzer(mainExecutor, QRCodeAnalyzer { decodeCertificateState: DecodeCertificateState ->
+	protected fun deactivateCamera() {
+		autoFocusClockLiveData.removeObservers(viewLifecycleOwner)
+		val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
+		cameraProviderFuture.addListener({
+			val cameraProvider = cameraProviderFuture.get()
+			cameraProvider.unbindAll()
+			qrCodeScanner.isVisible = false
+			isCameraActivated = false
+		}, mainExecutor)
+	}
+
+	@SuppressLint("ClickableViewAccessibility")
+	private fun initializeCamera() {
+		if (!isAdded || !qrCodeScanner.isAttachedToWindow) return
+
+		val rotation = qrCodeScanner.display.rotation
+		preview = Preview.Builder()
+			.setTargetResolution(Size(720, 1280))
+			.setTargetRotation(rotation)
+			.build()
+			.also { it.setSurfaceProvider(qrCodeScanner.surfaceProvider) }
+
+		imageCapture = ImageCapture.Builder()
+			.setCaptureMode(ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY)
+			.setTargetResolution(Size(720, 1280))
+			.setTargetRotation(rotation)
+			.build()
+
+		imageAnalyzer = ImageAnalysis.Builder()
+			.setTargetResolution(Size(720, 1280))
+			.setTargetRotation(rotation)
+			.setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+			.build()
+			.also { imageAnalysis ->
+				imageAnalysis.setAnalyzer(
+					mainExecutor,
+					QRCodeMixedZXingAnalyzer { decodeCertificateState: DecodeCertificateState ->
 						when (decodeCertificateState) {
 							is DecodeCertificateState.ERROR -> {
-								handleInvalidQRCodeExceptions(null, decodeCertificateState.error)
+								handleInvalidQRCodeExceptions(decodeCertificateState.error)
 							}
 							DecodeCertificateState.SCANNING -> {
 								view?.post { updateQrCodeScannerState(QrScannerState.NO_CODE_FOUND) }
@@ -163,42 +216,24 @@ abstract class QrScanFragment : Fragment() {
 							is DecodeCertificateState.SUCCESS -> {
 								val qrCodeData = decodeCertificateState.qrCode
 								qrCodeData?.let {
-									when (val decodeState = CertificateDecoder.decode(it)) {
-										is DecodeState.SUCCESS -> {
+									decodeQrCodeData(
+										it,
+										onDecodeSuccess = {
 											// Once successfully decoded, clear the analyzer from stopping more frames being
 											// analyzed and possibly decoded successfully
 											imageAnalysis.clearAnalyzer()
 
-											onDecodeSuccess(decodeState.dccHolder)
 											view?.post { updateQrCodeScannerState(QrScannerState.VALID) }
+										},
+										onDecodeError = { error ->
+											view?.post { handleInvalidQRCodeExceptions(error) }
 										}
-										is DecodeState.ERROR -> {
-											view?.post { handleInvalidQRCodeExceptions(qrCodeData, decodeState.error) }
-										}
-									}
+									)
 								}
 							}
 						}
 					})
-				}
-
-			cameraProvider.unbindAll()
-
-			try {
-				camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture, imageAnalyzer)
-
-				// Set focus to the center of the viewfinder to help the auto focus
-				val metricPointFactory = qrCodeScanner.meteringPointFactory
-				val centerX = cutOut.left + cutOut.width / 2.0f
-				val centerY = cutOut.top + cutOut.height / 2.0f
-				val point = metricPointFactory.createPoint(centerX, centerY)
-				val action = FocusMeteringAction.Builder(point).build()
-				camera?.cameraControl?.startFocusAndMetering(action)
-				setupFlashButton()
-			} catch (e: Exception) {
-				e.printStackTrace()
 			}
-		}, mainExecutor)
 
 		cutOut.setOnTouchListener { _: View, motionEvent: MotionEvent ->
 			when (motionEvent.action) {
@@ -218,6 +253,27 @@ abstract class QrScanFragment : Fragment() {
 				else -> false
 			}
 		}
+	}
+
+	private fun setZoom() {
+		val zoomRatio = if (secureStorage.getZoomOn()) {
+			camera?.cameraInfo?.zoomState?.value?.maxZoomRatio
+		} else {
+			camera?.cameraInfo?.zoomState?.value?.minZoomRatio
+		}
+		zoomRatio?.let {
+			camera?.cameraControl?.setZoomRatio(zoomRatio)
+		}
+	}
+
+	private fun autoFocus() {
+		// Set focus to the center of the viewfinder to help the auto focus
+		val metricPointFactory = qrCodeScanner.meteringPointFactory
+		val centerX = cutOut.left + cutOut.width / 2.0f
+		val centerY = cutOut.top + cutOut.height / 2.0f
+		val point = metricPointFactory.createPoint(centerX, centerY)
+		val action = FocusMeteringAction.Builder(point).build()
+		camera?.cameraControl?.startFocusAndMetering(action)
 	}
 
 	private fun checkCameraPermission() {
@@ -301,6 +357,10 @@ abstract class QrScanFragment : Fragment() {
 			isTorchOn = !flashButton.isSelected
 			setFlashAndButtonStyle()
 		}
+		zoomButton.setOnClickListener {
+			secureStorage.setZoomOn(!secureStorage.getZoomOn())
+			setupZoomButton()
+		}
 	}
 
 	private fun setFlashAndButtonStyle() {
@@ -308,15 +368,28 @@ abstract class QrScanFragment : Fragment() {
 		val drawableId = if (isTorchOn) torchOnDrawable else torchOffDrawable
 		flashButton.isSelected = isTorchOn
 		flashButton.setImageResource(drawableId)
-		flashButton.contentDescription = if (isTorchOn) getString(R.string.accessibility_lamp_off_button) else getString(R.string.accessibility_lamp_on_button)
 	}
 
-	private fun handleInvalidQRCodeExceptions(qrCodeData: String?, error: Error?) {
-		//TODO Show error code on screen
-		updateQrCodeScannerState(QrScannerState.INVALID_FORMAT)
+	private fun setupZoomButton() {
+		if (requireContext().packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_AUTOFOCUS)) {
+			zoomButton.isVisible = false
+		} else {
+			val isZoomOn = secureStorage.getZoomOn()
+			zoomButton.isVisible = true
+			val drawableId = if (isZoomOn) zoomOnDrawable else zoomOffDrawable
+			zoomButton.isSelected = isZoomOn
+			zoomButton.setImageResource(drawableId)
+			setZoom()
+		}
 	}
 
-	private fun updateQrCodeScannerState(qrScannerState: QrScannerState) {
+	private fun handleInvalidQRCodeExceptions(error: StateError?) {
+		updateQrCodeScannerState(QrScannerState.INVALID_FORMAT, error?.code)
+	}
+
+	private fun updateQrCodeScannerState(qrScannerState: QrScannerState, errorCode: String? = null) {
+		if (!isAdded) return
+
 		val currentTime = System.currentTimeMillis()
 		if (lastUIErrorUpdate > currentTime - MIN_ERROR_VISIBILITY && qrScannerState == QrScannerState.NO_CODE_FOUND) {
 			return
@@ -326,10 +399,13 @@ abstract class QrScanFragment : Fragment() {
 		var color: Int = viewFinderColor
 		when (qrScannerState) {
 			QrScannerState.VALID, QrScannerState.NO_CODE_FOUND -> {
-				invalidCodeText.visibility = View.INVISIBLE
+				invalidCodeText.isVisible = false
+				errorCodeView.isVisible = false
 			}
 			QrScannerState.INVALID_FORMAT -> {
-				invalidCodeText.visibility = View.VISIBLE
+				invalidCodeText.isVisible = true
+				errorCodeView.isVisible = errorCode != null
+				errorCodeView.text = errorCode
 				color = viewFinderErrorColor
 			}
 		}

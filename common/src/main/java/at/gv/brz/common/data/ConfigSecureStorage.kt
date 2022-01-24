@@ -28,7 +28,8 @@ class ConfigSecureStorage private constructor(context: Context) {
 
 		private const val KEY_CONFIG = "ConfigKey"
 		private const val KEY_CONFIG_LAST_SUCCESS = "LastSuccessTimestampKey"
-		private const val KEY_CONFIG_SHOWN_INFO_BOX_ID = "LastShownInfoBoxId"
+
+		private const val KEY_ZOOM_ACTIVE = "KEY_ZOOM_ACTIVE"
 
 		private val moshi = Moshi.Builder().build()
 		private val configModelAdapter = moshi.adapter(ConfigModel::class.java)
@@ -82,7 +83,6 @@ class ConfigSecureStorage private constructor(context: Context) {
 		prefs.getString(KEY_CONFIG, null)
 			?.let { configModelAdapter.fromJson(it) }
 
-	fun setLastShownInfoBoxId(infoBoxId: Long) = prefs.edit().putLong(KEY_CONFIG_SHOWN_INFO_BOX_ID, infoBoxId).apply()
-
-	fun getLastShownInfoBoxId() : Long = prefs.getLong(KEY_CONFIG_SHOWN_INFO_BOX_ID, 0L)
+	fun getZoomOn(): Boolean = prefs.getBoolean(KEY_ZOOM_ACTIVE, false)
+	fun setZoomOn(isZoomActive: Boolean) = prefs.edit().putBoolean(KEY_ZOOM_ACTIVE, isZoomActive).apply()
 }

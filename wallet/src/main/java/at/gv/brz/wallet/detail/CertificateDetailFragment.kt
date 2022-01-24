@@ -25,12 +25,8 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import at.gv.brz.common.util.setSecureFlagToBlockScreenshots
-import at.gv.brz.common.views.animateBackgroundTintColor
-import at.gv.brz.common.views.hideAnimated
-import at.gv.brz.common.views.showAnimated
 import at.gv.brz.eval.models.CertType
 import at.gv.brz.eval.models.DccHolder
 import at.gv.brz.eval.utils.*
@@ -42,18 +38,11 @@ import at.gv.brz.wallet.R
 import at.gv.brz.wallet.data.Region
 import at.gv.brz.wallet.databinding.FragmentCertificateDetailBinding
 import at.gv.brz.wallet.util.*
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
 import java.time.OffsetDateTime
 
 class CertificateDetailFragment : Fragment() {
 
 	companion object {
-		private const val STATUS_HIDE_DELAY = 2000L
-		private const val STATUS_LOAD_DELAY = 1000L
-
 		private const val ARG_CERTIFICATE = "ARG_CERTIFICATE"
 
 		fun newInstance(certificate: DccHolder): CertificateDetailFragment = CertificateDetailFragment().apply {
@@ -67,10 +56,6 @@ class CertificateDetailFragment : Fragment() {
 	private val binding get() = _binding!!
 
 	private lateinit var dccHolder: DccHolder
-
-	private var hideDelayedJob: Job? = null
-
-	private var isForceValidate = false
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -108,14 +93,6 @@ class CertificateDetailFragment : Fragment() {
 				.apply { window?.setSecureFlagToBlockScreenshots(BuildConfig.FLAVOR) }
 				.show()
 		}
-
-		binding.certificateDetailButtonReverify.setOnClickListener {
-			binding.certificateDetailButtonReverify.hideAnimated()
-			binding.scrollview.smoothScrollTo(0, 0)
-			isForceValidate = true
-			hideDelayedJob?.cancel()
-			certificatesViewModel.startVerification(dccHolder, delayInMillis = STATUS_LOAD_DELAY, isForceVerification = true)
-		}
 	}
 
 	override fun onDestroyView() {
@@ -141,7 +118,7 @@ class CertificateDetailFragment : Fragment() {
 		val dateOfBirth = dccHolder.euDGC.dateOfBirth.prettyPrintIsoDateTime(DEFAULT_DISPLAY_DATE_FORMATTER)
 		binding.certificateDetailBirthdate.text = dateOfBirth
 
-		binding.certificateDetailInfo.setText(R.string.verifier_verify_success_info)
+		binding.certificateDetailInfo.setText(R.string.wallet_verify_success_info)
 
 		val detailItems = CertificateDetailItemListBuilder(recyclerView.context, dccHolder).buildAll()
 		adapter.setItems(detailItems)
@@ -150,7 +127,6 @@ class CertificateDetailFragment : Fragment() {
 	private fun setupStatusInfo() {
 		certificatesViewModel.verifiedCertificates.observe(viewLifecycleOwner) { certificates ->
 			certificates.find { it.dccHolder == dccHolder }?.let {
-				//binding.certificateDetailButtonReverify.showAnimated()
 				updateStatusInfo(it.state)
 			}
 		}
@@ -191,12 +167,7 @@ class CertificateDetailFragment : Fragment() {
 		binding.certificateDetailValidityHintEt.visibility = View.GONE
 
 		val info = SpannableString(context.getString(R.string.wallet_certificate_verifying))
-		if (isForceValidate) {
-			showStatusInfoAndDescription(null, info, 0)
-			showForceValidation(R.color.grey, 0, 0, info)
-		} else {
-			showStatusInfoAndDescription(null, info, 0)
-		}
+		showStatusInfoAndDescription(null, info, 0)
 	}
 
 	private fun displaySuccessState(state: VerificationResultStatus.SUCCESS) {
@@ -377,7 +348,7 @@ class CertificateDetailFragment : Fragment() {
 			else -> DEFAULT_DISPLAY_DATE_FORMATTER
 		}
 
-		return validUntil?.let { formatter?.format(it) } ?: "-"
+		return validUntil?.let { formatter.format(it) } ?: "-"
 	}
 
 	/**
@@ -396,42 +367,11 @@ class CertificateDetailFragment : Fragment() {
 		val infoBubbleColor = ContextCompat.getColor(requireContext(), infoBubbleColorId)
 		val infoBubbleValidationColor = ContextCompat.getColor(requireContext(), infoBubbleValidationColorId)
 
-		if (isForceValidate) {
-			binding.certificateDetailInfo.animateBackgroundTintColor(infoBubbleColor)
-			binding.certificateDetailInfoVerificationStatus.animateBackgroundTintColor(infoBubbleValidationColor)
-			binding.certificateDetailInfoDescriptionGroup.animateBackgroundTintColor(infoBubbleValidationColor)
-		} else {
-			val infoBubbleColorTintList = ColorStateList.valueOf(infoBubbleColor)
-			binding.certificateDetailInfo.backgroundTintList = infoBubbleColorTintList
-			binding.certificateDetailInfoVerificationStatus.backgroundTintList = ColorStateList.valueOf(infoBubbleValidationColor)
-			binding.certificateDetailInfoDescriptionGroup.backgroundTintList = infoBubbleColorTintList
-		}
-	}
 
-	/**
-	 * Display the correct QR code background, icons and text when a force validation is running
-	 */
-	private fun showForceValidation(
-		@ColorRes solidValidationColorId: Int,
-		@DrawableRes validationIconId: Int,
-		@DrawableRes validationIconLargeId: Int,
-		info: SpannableString?,
-	) {
-		binding.certificateDetailQrCodeColor.animateBackgroundTintColor(
-			ContextCompat.getColor(
-				requireContext(),
-				solidValidationColorId
-			)
-		)
-		binding.certificateDetailQrCodeStatusIcon.setImageResource(validationIconLargeId)
-		binding.certificateDetailStatusIcon.setImageResource(validationIconId)
-
-		if (!binding.certificateDetailQrCodeStatusGroup.isVisible) binding.certificateDetailQrCodeStatusGroup.showAnimated()
-
-		binding.certificateDetailInfoVerificationStatus.apply {
-			text = info
-			if (!isVisible) showAnimated()
-		}
+		val infoBubbleColorTintList = ColorStateList.valueOf(infoBubbleColor)
+		binding.certificateDetailInfo.backgroundTintList = infoBubbleColorTintList
+		binding.certificateDetailInfoVerificationStatus.backgroundTintList = ColorStateList.valueOf(infoBubbleValidationColor)
+		binding.certificateDetailInfoDescriptionGroup.backgroundTintList = infoBubbleColorTintList
 	}
 
 	/**
@@ -443,38 +383,5 @@ class CertificateDetailFragment : Fragment() {
 		binding.certificateDetailStatusIcon.setImageResource(iconId)
 	}
 
-	/**
-	 * Reset the view after a delay from the force validation verification state to the regular verification state
-	 */
-	private fun readjustStatusDelayed(
-		@ColorRes infoBubbleColorId: Int,
-		@DrawableRes statusIconId: Int,
-		info: SpannableString?,
-	) {
-		hideDelayedJob?.cancel()
-		hideDelayedJob = viewLifecycleOwner.lifecycleScope.launch {
-			delay(STATUS_HIDE_DELAY)
-			if (!isActive || !isVisible) return@launch
-
-			val context = binding.root.context
-
-			binding.certificateDetailQrCodeStatusGroup.hideAnimated()
-			binding.certificateDetailQrCodeColor.animateBackgroundTintColor(
-				ContextCompat.getColor(context, android.R.color.transparent)
-			)
-
-			binding.certificateDetailInfo.text = info
-			binding.certificateDetailInfoDescriptionGroup.animateBackgroundTintColor(
-				ContextCompat.getColor(context, infoBubbleColorId)
-			)
-
-			binding.certificateDetailInfoVerificationStatus.hideAnimated()
-
-			binding.certificateDetailStatusIcon.setImageResource(statusIconId)
-
-			//binding.certificateDetailButtonReverify.showAnimated()
-			isForceValidate = false
-		}
-	}
 
 }

@@ -15,6 +15,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import at.gv.brz.common.qr.QrScanFragment
+import at.gv.brz.eval.data.state.DecodeState
+import at.gv.brz.eval.data.state.StateError
+import at.gv.brz.eval.decoder.CertificateDecoder
 import at.gv.brz.eval.models.DccHolder
 import at.gv.brz.wallet.R
 import at.gv.brz.wallet.add.CertificateAddFragment
@@ -39,6 +42,8 @@ class WalletQrScanFragment : QrScanFragment() {
 	override val viewFinderColor: Int = R.color.green_dark
 	override val torchOnDrawable: Int = R.drawable.ic_light_on
 	override val torchOffDrawable: Int = R.drawable.ic_light_off_blue
+	override val zoomOnDrawable: Int = R.drawable.ic_zoom_on
+	override val zoomOffDrawable: Int = R.drawable.ic_zoom_off
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 		super.onCreateView(inflater, container, savedInstanceState)
@@ -49,6 +54,8 @@ class WalletQrScanFragment : QrScanFragment() {
 		qrCodeScanner = binding.qrCodeScanner
 		flashButton = binding.fragmentQrScannerFlashButton
 		errorView = binding.fragmentQrScannerErrorView
+		errorCodeView = binding.qrCodeScannerErrorCode
+		zoomButton = binding.fragmentQrZoom
 
 		invalidCodeText = binding.qrCodeScannerInvalidCodeText
 		cutOut = binding.cameraPreviewContainer
@@ -63,10 +70,22 @@ class WalletQrScanFragment : QrScanFragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
+		qrCodeScanner.post {
+			activateCamera()
+		}
+
 		binding.qrCodeScannerButtonHow.setOnClickListener { showHowToScanFragment() }
 	}
 
-	override fun onDecodeSuccess(dccHolder: DccHolder) = showCertificationAddFragment(dccHolder)
+	override fun decodeQrCodeData(qrCodeData: String, onDecodeSuccess: () -> Unit, onDecodeError: (StateError) -> Unit) {
+		when (val decodeState = CertificateDecoder.decode(qrCodeData)) {
+			is DecodeState.SUCCESS -> {
+				onDecodeSuccess.invoke()
+				showCertificationAddFragment(decodeState.dccHolder)
+			}
+			is DecodeState.ERROR -> onDecodeError.invoke(decodeState.error)
+		}
+	}
 
 	override fun onDestroyView() {
 		super.onDestroyView()

@@ -39,8 +39,8 @@ android {
 		applicationId "at.gv.brz.wallet"
 		minSdkVersion 23
 		targetSdkVersion 30
-		versionCode 64
-		versionName "2.2.1"
+		versionCode 69
+		versionName "2.3.0"
 
 		buildConfigField "long", "BUILD_TIME", readPropertyWithDefault('buildTimestamp', System.currentTimeMillis()) + 'L'
 
@@ -128,6 +128,9 @@ dependencies {
 	implementation 'com.squareup.okhttp3:logging-interceptor:4.7.2'
 	implementation 'com.squareup.moshi:moshi:1.12.0'
 	kapt "com.squareup.moshi:moshi-kotlin-codegen:1.12.0"
+
+	implementation 'com.google.android.play:core:1.10.2'
+	implementation 'com.google.android.play:core-ktx:1.8.1'
 
 	testImplementation 'junit:junit:4.+'
 	androidTestImplementation 'androidx.test.ext:junit:1.1.2'

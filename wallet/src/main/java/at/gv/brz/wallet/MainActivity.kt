@@ -13,6 +13,8 @@ package at.gv.brz.wallet
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.activity.viewModels
@@ -31,6 +33,7 @@ import at.gv.brz.wallet.onboarding.FeatureIntroActivity
 import at.gv.brz.wallet.onboarding.OnboardingActivity
 import at.gv.brz.wallet.pdf.PdfViewModel
 import at.gv.brz.wallet.util.WalletAssetUtil
+import com.google.android.play.core.review.ReviewManagerFactory
 import java.lang.Integer.max
 
 class MainActivity : AppCompatActivity() {
@@ -91,6 +94,26 @@ class MainActivity : AppCompatActivity() {
 			} else if (!sameVersion && WalletAssetUtil.hasFeatureIntrosForLanguageAndVersion(this, getString(R.string.language_key), BuildConfig.VERSION_NAME)) {
 				onAndUpdateFeatureLauncher.launch(Intent(this, FeatureIntroActivity::class.java))
 			} else {
+				if (!sameVersion && secureStorage.getHasAskedForInAppReview() == false) {
+					secureStorage.setHasAskedForInAppReview(true)
+
+					if (PlatformUtil.getPlatformType(applicationContext) == PlatformUtil.PlatformType.GOOGLE_PLAY) {
+						val mainHandler = Handler(Looper.getMainLooper())
+						mainHandler.postDelayed({
+							val manager = ReviewManagerFactory.create(applicationContext)
+
+							val request = manager.requestReviewFlow()
+							request.addOnCompleteListener { task ->
+								if (task.isSuccessful) {
+									val reviewInfo = task.result
+									val flow = manager.launchReviewFlow(this, reviewInfo)
+									flow.addOnCompleteListener { _ ->
+									}
+								}
+							}
+						}, 500)
+					}
+				}
 				secureStorage.setLastInstalledVersion(BuildConfig.VERSION_NAME)
 				showHomeFragment()
 			}
@@ -150,7 +173,8 @@ class MainActivity : AppCompatActivity() {
 		certificateViewModel.loadConfig()
 		CovidCertificateSdk.getCertificateVerificationController().refreshTrustList(lifecycleScope, forceRefreshTrustlist, onCompletionCallback = {
 			forceRefreshTrustlist = false
-			if (it) {
+			certificateViewModel.setHasUpdatedTrustlistData()
+			if (it.refreshed) {
 				certificateViewModel.reverifyAllCertificates()
 			}
 		})
@@ -158,6 +182,7 @@ class MainActivity : AppCompatActivity() {
 
 	override fun onPause() {
 		super.onPause()
+		certificateViewModel.resetLoadingFlags()
 		forceUpdateDialog?.dismiss()
 		forceUpdateDialog = null
 		ignoreForcedUpdateBecauseOfPDFImport = false

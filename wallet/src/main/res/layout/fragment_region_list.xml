@@ -49,7 +49,7 @@
             app:layout_constraintTop_toBottomOf="@id/region_list_toolbar">
 
             <TextView
-                android:id="@+id/region_list__header_title"
+                android:id="@+id/region_list_header_title"
                 style="@style/CovidCertificate.Text.Bold.Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

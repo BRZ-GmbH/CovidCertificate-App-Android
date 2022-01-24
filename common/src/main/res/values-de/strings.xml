@@ -9,27 +9,6 @@
   -->
 <resources>
 
-    <!-- Android App Name -->
-    <string name="verifier_app_name">"Grüner Pass"</string>
-
-    <!-- Title for the qr scanning screen -->
-    <string name="verifier_title_qr_scan">"QR-Code scannen"</string>
-
-    <!-- Titel über dem Haupttitel -->
-    <string name="verifier_homescreen_header_title">"Grüner Pass"</string>
-
-    <!-- Homescreen App Name -->
-    <string name="verifier_homescreen_title">"Grüner Pass"</string>
-
-    <!-- Beschreibung für Pager Bild 1 -->
-    <string name="verifier_homescreen_pager_description_1">"EU-konformen QR-Code scannen"</string>
-
-
-    <!-- Homescreen Button für Scanning -->
-    <string name="verifier_homescreen_scan_button">"QR-Code scannen"</string>
-
-    <!-- Homescreen Button für Support -->
-    <string name="verifier_homescreen_support_button">"So funktioniert's"</string>
     <string name="error_network_title">"Netzwerkfehler"</string>
     <string name="error_network_text">"Überprüfen Sie Ihre Internet Verbindung."</string>
     <string name="error_action_retry">"Erneut versuchen"</string>
@@ -41,16 +20,9 @@
     <string name="ok_button">"OK"</string>
     <string name="camera_permission_dialog_text">"Die App benötigt Zugriff auf die Kamera, um den QR-Code scannen zu können."</string>
     <string name="camera_permission_dialog_action">"Zugriff auf Kamera erlauben"</string>
-    <string name="verifier_qr_scanner_scan_qr_text">"QR-Code scannen"</string>
 
     <!-- Titel auf dem Verifikations-Screen -->
     <string name="covid_certificate_title">"EU-konformes Zertifikat"</string>
-
-    <!-- Name des/der Zertifikatsinhabers/Zertifikatsinhaberin -->
-    <string name="verifier_covid_certificate_name">"Nachname"</string>
-
-    <!-- Geburtsdatum des/der Zertifikatsinhabers/Zertifikatsinhaberin -->
-    <string name="verifier_covid_certificate_birthdate">"Geburtsdatum"</string>
 
     <!-- Wallet: Zertifikat hinzufügen -->
     <string name="wallet_add_certificate">"Hinzufügen"</string>
@@ -65,31 +37,10 @@
     <string name="wallet_scanner_title">"Hinzufügen"</string>
 
     <!-- Titel bei erfolgreicher Prüfung -->
-    <string name="verifier_verify_success_title">"Prüfung erfolgreich"</string>
+    <string name="wallet_verify_success_title">"Prüfung erfolgreich"</string>
 
     <!-- Info Text bei erfolgreicher Prüfung -->
-    <string name="verifier_verify_success_info">"Nur mit einem amtlichen Lichtbildausweis gültig"</string>
-
-    <!-- Prüfung loading text -->
-    <string name="verifier_verify_loading_text">"Zertifikat wird geprüft"</string>
-
-    <!-- Fehler Title bei Prüfung -->
-    <string name="verifier_verify_error_title">"Covid-Zertifikat ungültig"</string>
-
-    <!-- Fehler Infotext bei Prüfung (Nationale Regeln) -->
-    <string name="verifier_verify_error_info_for_national_rules">"Das Zertifikat entspricht nicht den gesetzlichen Erfordernissen."</string>
-
-    <!-- Fehler Infotext bei Prüfung (Zertifikat Fehler) -->
-    <string name="verifier_verify_error_info_for_certificate_invalid">"Das Zertifikat hat keine gültige Signatur"</string>
-
-    <!-- Fehler Infotext bei Prüfung (Blacklist) -->
-    <string name="verifier_verify_error_info_for_blacklist">"Das Zertifikat wurde widerrufen"</string>
-
-    <!-- Fehler bei der geladen Liste -->
-    <string name="verifier_verify_error_list_title">"Prüfung fehlgeschlagen"</string>
-
-    <!-- Fehler Info bei laden der Liste -->
-    <string name="verifier_verify_error_list_info_text">"Ein unerwarteter Fehler ist aufgetreten."</string>
+    <string name="wallet_verify_success_info">"Nur mit einem amtlichen Lichtbildausweis gültig"</string>
 
     <!-- Wallet: Scanner Text unten -->
     <string name="wallet_scanner_explanation">"Scannen Sie den EU-konformen QR-Code auf dem Zertifikat."</string>
@@ -187,9 +138,6 @@ hinzufügen"</string>
     <!-- Antwort 1 im "So funktionierts" Screen beim Scannen -->
     <string name="wallet_scanner_howitworks_answer1">"Alle EU-konformen Zertifikate des Grünen Passes können mittels Handy-Signatur oder Bürgerkarte über gesundheit.gv.at abgerufen werden."</string>
 
-    <!-- Verifier: Detail Check Vorname -->
-    <string name="verifier_covid_certificate_prename">"Vorname"</string>
-
     <!-- Config: Titel wenn App muss geupdatet werden -->
     <string name="force_update_title">"Update benötigt"</string>
 
@@ -219,7 +167,7 @@ hinzufügen"</string>
     <string name="certificate_reason_vaccinated">"Impfung"</string>
 
     <!-- Wallet: Zertifikat Detail Genesen -->
-    <string name="certificate_reason_recovered">"Genesen"</string>
+    <string name="certificate_reason_recovered">"Genesung"</string>
 
     <!-- Wallet: Zertifikat Detail Getestet -->
     <string name="certificate_reason_tested">"Test"</string>
@@ -241,7 +189,7 @@ hinzufügen"</string>
     <string name="accessibility_of_text">" von "</string>
 
     <!-- Accessibility: Information -->
-    <string name="accessibility_info_button">"Impressum"</string>
+    <string name="accessibility_info_button">"Impressum / Information"</string>
 
     <!-- Accessibility: FAQ Button Titel -->
     <string name="accessibility_faq_button">"Häufige Fragen"</string>
@@ -262,22 +210,10 @@ hinzufügen"</string>
     <string name="accessibility_lamp_off_button">"Taschenlampe ausschalten"</string>
 
     <!-- Titel des Impressum-Screens -->
-    <string name="impressum_title">"Impressum"</string>
+    <string name="impressum_title">"Impressum / Information"</string>
 
     <!-- Unbekannter Fehler -->
     <string name="unknown_error">"Ein unbekannter Fehler ist aufgetreten."</string>
-
-    <!-- Verifier: Die Gültigkeit des Zertifikat ist abgelaufen -->
-    <string name="verifier_verifiy_error_expired">"Entspricht nicht den Gültigkeitskriterien Österreichs: Die Gültigkeit des Zertifikat ist abgelaufen."</string>
-
-    <!-- Verifier: Zertifikat ist erst gültig ab {DATE} -->
-    <string name="verifier_verifiy_error_notyetvalid">"Entspricht nicht den Gültigkeitskriterien Österreichs: Das Zertifikat ist noch nicht gültig."</string>
-
-    <!-- Verifier: Ein Netzwerkfehler ist aufgetreten. -->
-    <string name="verifier_retry_network_error">"Ein Netzwerkfehler ist aufgetreten."</string>
-
-    <!-- Verifier: Das Gerät befindet sich im Flugmodus. -->
-    <string name="verifier_retry_flightmode_error">"Das Gerät befindet sich im Flugmodus."</string>
 
     <!-- Wallet: Zertifikat gültig ab: {DATE} -->
     <string name="wallet_error_valid_from">"In Österreich gültig ab:
@@ -367,9 +303,7 @@ ungültiger Signatur"</string>
     <string name="wallet_certificate_test_sample_date_title">"Datum der Probenentnahme"</string>
     <string name="wallet_certificate_test_result_date_title">"Datum Resultat"</string>
 
-    <!-- Header im "So funktionierts" Screen der Verifier-App -->
-    <string name="verifier_support_header">"So funktioniert's"</string>
-
+    <string name="wallet_support_header">"So funktioniert's"</string>
     <!-- Text im Bestätigungs-Dialog beim Zertifikat löschen -->
     <string name="wallet_certificate_delete_confirm_text">"Wollen Sie das Zertifikat wirklich löschen?"</string>
 
@@ -381,9 +315,6 @@ ungültiger Signatur"</string>
 
     <!-- Wallet: Apple App Store URL -->
     <string name="wallet_apple_app_store_url">"http://itunes.apple.com/app/id1565917320"</string>
-
-    <!-- Verifier: Apple App Store URL -->
-    <string name="verifier_apple_app_store_url">"http://itunes.apple.com/app/id1565917510"</string>
 
     <!-- Wallet: Abkürzung "UVCI" (Unique Vaccination Certificate Identifier) -->
     <string name="wallet_certificate_identifier">"UVCI"</string>
@@ -411,10 +342,6 @@ Nutzungsbedingungen"</string>
     <!-- Wallet: Hinweis im Zertifikat Detail -->
     <string name="wallet_certificate_detail_note">"Dieses Zertifikat ist kein Reisedokument. \n\nDie wissenschaftlichen Erkenntnisse über Covid-19-Impfungen und -Tests sowie über die Genesung von einer Covid-19-Infektion entwickeln sich ständig weiter, auch im Hinblick auf neue besorgniserregende Virusvarianten. \n\nBitte informieren Sie sich vor der Reise über die am Zielort geltenden Gesundheitsmassnahmen und damit verbundenen Beschränkungen."</string>
     <string name="wallet_terms_privacy_link">"https://gruenerpass.gv.at/app/datenschutz"</string>
-    <string name="verifier_terms_privacy_link">"https://gruenerpass.gv.at/app/datenschutz"</string>
-
-    <!-- Verifier: Titel in der App (z.B. Impressum) -->
-    <string name="verifier_app_title">"COVID Certificate Check"</string>
 
     <!-- Wallet: Homescreen Was wollen sie machen? -->
     <string name="wallet_homescreen_what_to_do">"Nächsten Schritt wählen"</string>
@@ -433,7 +360,7 @@ ungültig"</string>
     <string name="wallet_error_invalid_format_bold">"ungültig"</string>
 
     <!-- Verifier: Error Ungültiges Format -->
-    <string name="verifier_error_invalid_format">"Das Format des EU-konformen Zertifikats ist ungültig."</string>
+    <string name="wallet_import_error_invalid_format">"Das Format des EU-konformen Zertifikats ist ungültig."</string>
 
     <!-- Homescreen Zertifikat: Offline Modus Text -->
     <string name="wallet_homescreen_offline">"Offline Modus"</string>
@@ -449,18 +376,6 @@ ungültig"</string>
 
     <!-- Wallet: Detail Netzwerkfehler Text -->
     <string name="wallet_detail_network_error_text">"Versuchen Sie es später erneut."</string>
-
-    <!-- Verifier: Titel Fehler wenn kein Internet -->
-    <string name="verifier_offline_error_title">"Offline-Prüfung nicht möglich"</string>
-
-    <!-- Verifier: Fehlertext wenn Offline bei Verifikation -->
-    <string name="verifier_offline_error_text">"Eine Internetverbindung wird benötigt, um die Prüflisten zu aktualisieren"</string>
-
-    <!-- Verifier: Fehler Titel bei Netzwerkfehler -->
-    <string name="verifier_network_error_title">"Prüfung fehlgeschlagen"</string>
-
-    <!-- Verifier: Fehler Text bei Netzwerkfehler -->
-    <string name="verifier_network_error_text">"Ein unerwarteter Fehler ist aufgetreten"</string>
 
     <!-- Wallet: Text auf Zertifikat auf Homescreen bei Netzwerkfehler -->
     <string name="wallet_homescreen_network_error">"Gültigkeit konnte nicht ermittelt werden"</string>
@@ -485,8 +400,8 @@ ungültig"</string>
     <string name="region_type_NG_validity">"Nachtgastronomie"</string>
 
     <!-- Warnung bei fehlender aktueller Zeit durch Timeserver -->
-    <string name="wallet_time_missing">"3-G Status nicht verfügbar, bitte aktivieren Sie die Internetverbindung"</string>
-    <string name="wallet_validation_data_expired">"3-G Status nicht verfügbar, bitte aktivieren Sie die Internetverbindung"</string>
+    <string name="wallet_time_missing">"3-G Status nicht verfügbar, bitte probieren Sie es zu einem späteren Zeitpunkt und überprüfen Sie Ihre Internetverbindung"</string>
+    <string name="wallet_validation_data_expired">"3-G Status nicht verfügbar, bitte probieren Sie es zu einem späteren Zeitpunkt und überprüfen Sie Ihre Internetverbindung"</string>
     <string name="wallet_3g_status_disclaimer">"Nur in Verbindung mit einem amtlichen Lichtbildausweis gültig. Zur Überprüfung verwenden Sie bitte GreenCheck."</string>
 
     <string name="wallet_region_selection_title">"Bundeslandauswahl"</string>
@@ -525,15 +440,17 @@ ungültig"</string>
     <string name="accessibility_certificate_list_valid">Gültig</string>
     <string name="accessibility_certificate_list_invalid">Ungültig</string>
 
-    <string name="wallet_notification_johnson_booster_message">"Achtung: Holen Sie sich ab 28 Tagen nach Ihrer Erstimpfung mit dem COVID-19 Vaccine Janssen (\"Johnson&amp;Johnson\") Ihre 2. Impfung!\nIhr Impfzertifikat für den Grünen Pass ist ab Montag, 03.01.2022, nur noch mit 2 Impfungen gültig."</string>
-    <string name="wallet_notification_johnson_booster_ok_button">"OK"</string>
-    <string name="wallet_notification_johnson_booster_info_button">"Termin"</string>
-    <string name="wallet_notification_johnson_booster_info_url">"https://www.oesterreich-impft.at/jetzt-impfen/"</string>
+    <string name="wallet_test_certificate_cleanup_message">"Sie haben %d abgelaufene Testzertifikate in der App. Wir empfehlen, diese zu entfernen, damit sie ihre noch gültigen Zertifikate schneller finden! Möchten Sie die abgelaufenen Zertifikate entfernen?"</string>
+    <string name="wallet_test_certificate_cleanup_no_button">"Nein"</string>
+    <string name="wallet_test_certificate_cleanup_never_button">"Nie nachfragen"</string>
+    <string name="wallet_test_certificate_cleanup_cleanup_button">"Ja, entfernen"</string>
 
-    <string name="wallet_notification_booster_title">"Achtung!"</string>
-    <string name="wallet_notification_booster_message">"Holen Sie sich ab 6 Monate nach Ihrer 2. Covid-19 Schutzimpfung Ihre 3. Impfung, um auch gegen die Delta-Variante geschützt zu bleiben!\nIhr Impfzertifikat für den Grünen Pass ist ab 06.12.2021 nur noch 9 Monate ab der 2. Impfung gültig und wird mit der 3. Impfung verlängert."</string>
-    <string name="wallet_notification_booster_ok_button">"Gelesen"</string>
-    <string name="wallet_notification_booster_later_button">"Erneut erinnern"</string>
-    <string name="wallet_notification_booster_info_button">"Termin"</string>
-    <string name="wallet_notification_booster_info_url">"https://www.oesterreich-impft.at/jetzt-impfen/"</string>
+    <string name="business_rule_update_progress">"Zugangsregeln werden aktualisiert"</string>
+    <string name="business_rule_update_failed_message">"Aktualisierung der Zugangsregeln fehlgeschlagen."</string>
+    <string name="business_rule_update_success_message">"Aktualisierung der Zugangsregeln erfolgreich abgeschlossen."</string>
+    <string name="business_rule_update_ok_button">"OK"</string>
+
+    <string name="campaigns_opt_out_action">"Hinweismeldungen deaktivieren"</string>
+    <string name="campaigns_opt_in_action">"Hinweismeldungen aktivieren"</string>
+
 </resources>

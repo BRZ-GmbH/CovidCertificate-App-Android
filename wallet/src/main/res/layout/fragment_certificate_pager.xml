@@ -164,7 +164,7 @@
                     android:paddingBottom="@dimen/spacing_medium"
                     android:screenReaderFocusable="true"
                     app:layout_constraintTop_toTopOf="@id/certificate_page_info_circle"
-                    tools:text="@string/verifier_verify_success_info" />
+                    tools:text="@string/wallet_verify_success_info" />
 
                 <LinearLayout
                     android:id="@+id/certificate_page_region_validity_container"
