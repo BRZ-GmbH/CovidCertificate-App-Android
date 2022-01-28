@@ -59,8 +59,7 @@ class NotificationUtil {
             }
         }
         val groupedCertificates = vaccinationCertificates.groupBy {
-            val name = "${it.euDGC.person.familyName} ${it.euDGC.person.givenName}"
-            "${name}_${it.euDGC.dateOfBirth}"
+            it.euDGC.comparableIdentifier()
         }
 
         val campaignsToDisplay: MutableList<QueuedCampaignNotification> = mutableListOf()
@@ -117,6 +116,20 @@ class NotificationUtil {
         }
         return CampaignNotificationCheckResult(hash, campaignsToDisplay)
     }
+}
+
+fun String.substringToFirstNonLetter(): String {
+    val firstNonLetterIndex = this.indexOfFirst { !it.isLetter() }
+    if (firstNonLetterIndex != -1) {
+        return this.substring(0, firstNonLetterIndex)
+    }
+    return this
+}
+
+fun Eudgc.comparableIdentifier(): String {
+    val familyName = person.standardizedFamilyName.lowercase().substringToFirstNonLetter()
+    val givenName = (person.standardizedGivenName?.lowercase() ?: "").substringToFirstNonLetter()
+    return "${familyName}_${givenName}_${dateOfBirth}"
 }
 
 fun CampaignModel.lastDisplayTimestampKeyForCertificate(certificate: Eudgc?): String? {
