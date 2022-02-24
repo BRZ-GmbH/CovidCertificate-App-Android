@@ -34,9 +34,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import at.gv.brz.common.config.CampaignButtonType
 import at.gv.brz.common.config.CampaignType
-import at.gv.brz.common.html.BuildInfo
-import at.gv.brz.wallet.html.HtmlFragment
-import at.gv.brz.common.util.AssetUtil
 import at.gv.brz.common.util.HorizontalMarginItemDecoration
 import at.gv.brz.common.util.UrlUtil
 import at.gv.brz.common.util.setSecureFlagToBlockScreenshots
@@ -60,6 +57,7 @@ import at.gv.brz.wallet.pdf.PdfImportState
 import at.gv.brz.wallet.pdf.PdfViewModel
 import at.gv.brz.wallet.qr.WalletQrScanFragment
 import at.gv.brz.wallet.regionlist.RegionListFragment
+import at.gv.brz.wallet.settings.SettingsFragment
 import at.gv.brz.wallet.util.NotificationUtil
 import at.gv.brz.wallet.util.QueuedCampaignNotification
 import at.gv.brz.wallet.util.lastDisplayTimestampKeyForCertificate
@@ -98,6 +96,7 @@ class HomeFragment : Fragment() {
 
 	private var currentPagerIndex: Int = -1
 	private var currentCertificateCount: Int = 0
+	private var currentCertificateOrderString: String = ""
 
 	private val filePickerLauncher =
 		registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult: ActivityResult ->
@@ -161,26 +160,13 @@ class HomeFragment : Fragment() {
 		}
 
 		val impressumClickListener = View.OnClickListener {
-			val buildInfo =
-				BuildInfo(
-					getString(R.string.wallet_onboarding_app_title),
-					BuildConfig.VERSION_NAME,
-					BuildConfig.BUILD_TIME,
-					BuildConfig.FLAVOR,
-					getString(R.string.wallet_terms_privacy_link)
-				)
+
 			parentFragmentManager.beginTransaction()
 				.setCustomAnimations(R.anim.slide_enter, R.anim.slide_exit, R.anim.slide_pop_enter, R.anim.slide_pop_exit)
 				.replace(
-					R.id.fragment_container, HtmlFragment.newInstance(
-						R.string.impressum_title,
-						buildInfo,
-						AssetUtil.getImpressumBaseUrl(it.context),
-						AssetUtil.getImpressumHtml(it.context, buildInfo),
-						R.id.fragment_container
-					)
+					R.id.fragment_container, SettingsFragment.newInstance()
 				)
-				.addToBackStack(HtmlFragment::class.java.canonicalName)
+				.addToBackStack(SettingsFragment::class.java.canonicalName)
 				.commit()
 		}
 
@@ -420,18 +406,34 @@ class HomeFragment : Fragment() {
 		binding.homescreenHeaderNotEmpty.root.isVisible = hasCertificates
 		binding.homescreenListButton.isVisible = dccHolders.size > 1
 		certificatesAdapter.setData(dccHolders)
+		val newCertificateOrderString = dccHolders.map { it.qrCodeData }.joinToString("__")
+
 		if (hasCertificates) {
-			if (currentPagerIndex != -1 && currentCertificateCount == dccHolders.count()) {
-				binding.homescreenCertificatesViewPager.setCurrentItem(
-					currentPagerIndex,
-					false
-				)
+			if (newCertificateOrderString == currentCertificateOrderString) {
+
+				if (currentPagerIndex != -1 && currentCertificateCount == dccHolders.count()) {
+					binding.homescreenCertificatesViewPager.setCurrentItem(
+						currentPagerIndex,
+						false
+					)
+				} else {
+					binding.homescreenCertificatesViewPager.postDelayed(250) {
+						if (isAdded) {
+							currentCertificateCount = dccHolders.count()
+							binding.homescreenCertificatesViewPager.setCurrentItem(
+								0,
+								true
+							)
+						}
+					}
+				}
 			} else {
-				binding.homescreenCertificatesViewPager.postDelayed(250) {
+				binding.homescreenCertificatesViewPager.postDelayed(100) {
 					if (isAdded) {
 						currentCertificateCount = dccHolders.count()
+						currentPagerIndex = 0
 						binding.homescreenCertificatesViewPager.setCurrentItem(
-							0,
+							currentPagerIndex,
 							true
 						)
 					}
@@ -460,6 +462,30 @@ class HomeFragment : Fragment() {
 						"\n${getString(R.string.accessibility_change_selected_region)}"
 			binding.homescreenHeaderNotEmpty.headerRegionText.contentDescription =
 				"\n${getString(R.string.accessibility_state_selector)}.\n" +
+						"\n${getString(R.string.accessibility_change_selected_region)}"
+		}
+		currentCertificateOrderString = newCertificateOrderString
+
+		val selectedRegion = Region.getRegionFromIdentifier(certificatesViewModel.secureStorage.getSelectedValidationRegion())
+		if (selectedRegion != null) {
+			binding.homescreenHeaderEmpty.headerRegionFlag.setImageResource(selectedRegion.getFlag())
+			binding.homescreenHeaderNotEmpty.headerRegionFlag.setImageResource(selectedRegion.getFlag())
+			binding.homescreenHeaderEmpty.headerRegionText.setText(selectedRegion.getName())
+			binding.homescreenHeaderNotEmpty.headerRegionText.setText(selectedRegion.getName())
+			binding.homescreenHeaderEmpty.headerRegionText.contentDescription =
+				"${getString(selectedRegion.getName())}.\n" +
+						"\n${getString(R.string.accessibility_state_selector)}.\n" +
+						"\n${getString(R.string.accessibility_change_selected_region)}"
+			binding.homescreenHeaderNotEmpty.headerRegionText.contentDescription =
+				"${getString(selectedRegion.getName())}.\n" +
+						"\n${getString(R.string.accessibility_state_selector)}.\n" +
+						"\n${getString(R.string.accessibility_change_selected_region)}"
+		} else {
+			binding.homescreenHeaderEmpty.headerRegionText.contentDescription =
+						"\n${getString(R.string.accessibility_state_selector)}.\n" +
+						"\n${getString(R.string.accessibility_change_selected_region)}"
+			binding.homescreenHeaderNotEmpty.headerRegionText.contentDescription =
+						"\n${getString(R.string.accessibility_state_selector)}.\n" +
 						"\n${getString(R.string.accessibility_change_selected_region)}"
 		}
 	}

@@ -39,8 +39,8 @@ android {
 		applicationId "at.gv.brz.wallet"
 		minSdkVersion 23
 		targetSdkVersion 30
-		versionCode 72
-		versionName "2.3.1"
+		versionCode 76
+		versionName "2.3.2"
 
 		buildConfigField "long", "BUILD_TIME", readPropertyWithDefault('buildTimestamp', System.currentTimeMillis()) + 'L'
 
@@ -131,6 +131,9 @@ dependencies {
 
 	implementation 'com.google.android.play:core:1.10.2'
 	implementation 'com.google.android.play:core-ktx:1.8.1'
+
+	implementation 'androidx.work:work-runtime-ktx:2.5.0'
+	implementation "androidx.concurrent:concurrent-futures-ktx:1.1.0"
 
 	testImplementation 'junit:junit:4.+'
 	androidTestImplementation 'androidx.test.ext:junit:1.1.2'

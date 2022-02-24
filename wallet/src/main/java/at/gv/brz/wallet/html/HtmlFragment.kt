@@ -23,25 +23,14 @@ import android.widget.TextView
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
-import at.gv.brz.common.R
-import at.gv.brz.common.util.AssetUtil.loadImpressumHtmlFile
 import at.gv.brz.common.util.UrlUtil
 import at.gv.brz.common.views.hideAnimated
-import androidx.lifecycle.lifecycleScope
-import at.gv.brz.common.BuildConfig
 import at.gv.brz.common.html.BuildInfo
-import at.gv.brz.common.util.setSecureFlagToBlockScreenshots
-import at.gv.brz.eval.CovidCertificateSdk
-import at.gv.brz.wallet.data.WalletSecureStorage
 import at.gv.brz.wallet.databinding.FragmentHtmlBinding
 
 class HtmlFragment : Fragment() {
 
 	companion object {
-		private const val COVID_CERT_IMPRESSUM_PREFIX = "ccert://"
-		private const val DATA_UPDATE_IMPRESSUM_PREFIX = "dataupdate://"
-		private const val TOGGLE_CAMPAIGN_OPT_OUT_IMPRESSUM_PREFIX = "togglecampaignoptout://"
-
 		private const val ARG_BASE_URL = "ARG_BASE_URL"
 		private const val ARG_BUILD_INFO = "ARG_BUILD_INFO"
 		private const val ARG_DATA = "ARG_DATA"
@@ -109,49 +98,6 @@ class HtmlFragment : Fragment() {
 
 			override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
 				if (baseUrl == url) return true
-				if (url.toLowerCase().startsWith(COVID_CERT_IMPRESSUM_PREFIX)) {
-					val buildInfo = buildInfo ?: throw IllegalStateException("No BuildInfo supplied for imprint")
-					val strippedUrl = url.substring(COVID_CERT_IMPRESSUM_PREFIX.length)
-					val htmlFragment = newInstance(
-						R.string.impressum_title,
-						buildInfo,
-						baseUrl,
-						loadImpressumHtmlFile(view.context, strippedUrl, buildInfo),
-						fragmentLayoutId
-					)
-					parentFragmentManager.beginTransaction()
-						.setCustomAnimations(
-							R.anim.slide_enter, R.anim.slide_exit, R.anim.slide_pop_enter,
-							R.anim.slide_pop_exit
-						)
-						.replace(fragmentLayoutId, htmlFragment)
-						.addToBackStack(HtmlFragment::class.java.canonicalName)
-						.commit()
-					return true
-				} else if (url.toLowerCase().startsWith(DATA_UPDATE_IMPRESSUM_PREFIX)) {
-					val alertDialog = getAlertDialog(requireContext(), R.layout.dialog_progress, true)
-					alertDialog.show()
-					alertDialog.findViewById<TextView>(R.id.text_progress_bar).setText(R.string.business_rule_update_progress)
-					CovidCertificateSdk.getCertificateVerificationController().refreshTrustList(lifecycleScope, true, onCompletionCallback = {
-						alertDialog.dismiss()
-						val message = if (it.failed) R.string.business_rule_update_failed_message else R.string.business_rule_update_success_message
-						androidx.appcompat.app.AlertDialog.Builder(requireContext(), R.style.CovidCertificate_AlertDialogStyle)
-							.setMessage(message)
-							.setPositiveButton(R.string.business_rule_update_ok_button) { dialog, _ ->
-								dialog.dismiss()
-							}
-							.setCancelable(true)
-							.create()
-							.apply { window?.setSecureFlagToBlockScreenshots(BuildConfig.FLAVOR) }
-							.show()
-					})
-					return true
-				} else if (url.toLowerCase().startsWith(TOGGLE_CAMPAIGN_OPT_OUT_IMPRESSUM_PREFIX)) {
-					val secureStorage = WalletSecureStorage.getInstance(requireContext())
-					secureStorage.setHasOptedOutOfNonImportantCampaigns(!secureStorage.getHasOptedOutOfNonImportantCampaigns())
-					updateCampaignOptOutElement()
-					return true
-				}
 				UrlUtil.openUrl(context, url)
 				return true
 			}

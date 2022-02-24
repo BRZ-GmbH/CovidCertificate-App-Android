@@ -450,7 +450,19 @@ ungültig"</string>
     <string name="business_rule_update_success_message">"Aktualisierung der Zugangsregeln erfolgreich abgeschlossen."</string>
     <string name="business_rule_update_ok_button">"OK"</string>
 
-    <string name="campaigns_opt_out_action">"Hinweismeldungen deaktivieren"</string>
-    <string name="campaigns_opt_in_action">"Hinweismeldungen aktivieren"</string>
+    <string name="settings_title">"Über die App"</string>
+    <string name="settings_row_imprint">"Impressum"</string>
+    <string name="settings_row_licenses">"Lizenzen"</string>
+    <string name="settings_row_faqs">"Häufig gestellte Fragen"</string>
+    <string name="settings_row_update_data">"Zugangsregeln aktualisieren"</string>
+    <string name="settings_row_campaign_notifications_title">"Hinweismeldungen"</string>
+    <string name="settings_row_campaign_notifications_message">"Sie erhalten vereinzelt wichtige Hinweismeldungen die für Sie relevante Informationen, wie zum Beispiel Erinnerungen an Auffrischungsimpfungen, Änderungen zu den aktuellen COVID-19 Maßnahmen oder Ähnliches, beinhalten."</string>
+    <string name="settings_row_campaign_notifications_toggle_label">"Hinweismeldungen anzeigen"</string>
+    <string name="licenses_title">"Lizenzen"</string>
+
+    <string name="accessibility_settings_row_campaign_notifications_toggle_active">"Hinweismeldungen sind aktiv"</string>
+    <string name="accessibility_settings_row_campaign_notifications_toggle_inactive">"Hinweismeldungen sind nicht aktiv"</string>
+
+    <string name="accessibility_change_campaign_notifications_toggle">"Zum Ändern Doppeltippen"</string>
 
 </resources>

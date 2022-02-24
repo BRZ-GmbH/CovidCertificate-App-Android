@@ -32,6 +32,7 @@ import at.gv.brz.wallet.homescreen.HomeFragment
 import at.gv.brz.wallet.onboarding.FeatureIntroActivity
 import at.gv.brz.wallet.onboarding.OnboardingActivity
 import at.gv.brz.wallet.pdf.PdfViewModel
+import at.gv.brz.wallet.util.DebugLogUtil
 import at.gv.brz.wallet.util.WalletAssetUtil
 import com.google.android.play.core.review.ReviewManagerFactory
 import java.lang.Integer.max
@@ -172,6 +173,15 @@ class MainActivity : AppCompatActivity() {
 		hasCheckedForcedUpdate = false
 		certificateViewModel.loadConfig()
 		CovidCertificateSdk.getCertificateVerificationController().refreshTrustList(lifecycleScope, forceRefreshTrustlist, onCompletionCallback = {
+			if (it.failed) {
+				DebugLogUtil.log("${if (forceRefreshTrustlist) "Forced " else ""}Data Update - Failed", this)
+			} else {
+				if (it.refreshed) {
+					DebugLogUtil.log("${if (forceRefreshTrustlist) "Forced " else ""}Data Update - New Data", this)
+				} else {
+					DebugLogUtil.log("${if (forceRefreshTrustlist) "Forced " else ""}Data Update - Unchanged", this)
+				}
+			}
 			forceRefreshTrustlist = false
 			certificateViewModel.setHasUpdatedTrustlistData()
 			if (it.refreshed) {
@@ -180,9 +190,14 @@ class MainActivity : AppCompatActivity() {
 		})
 	}
 
+	override fun onStop() {
+		super.onStop()
+
+		certificateViewModel.resetLoadingFlags()
+	}
+
 	override fun onPause() {
 		super.onPause()
-		certificateViewModel.resetLoadingFlags()
 		forceUpdateDialog?.dismiss()
 		forceUpdateDialog = null
 		ignoreForcedUpdateBecauseOfPDFImport = false

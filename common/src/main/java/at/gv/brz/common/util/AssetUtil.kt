@@ -26,6 +26,7 @@ object AssetUtil {
 	private const val PREFIX_ASSET_FILE = "file:///android_asset/"
 	private const val FOLDER_NAME_IMPRESSUM = "impressum/"
 	private const val FILE_NAME_IMPRESSUM = "impressum.html"
+	private const val FILE_NAME_LICENSE = "licence.html"
 	private const val FOLDER_NAME_DISCLAIMER = "disclaimer/";
 	private const val DISCLAIMER_FALLBACK_LANGUAGE = "de";
 	private const val FILE_NAME_DATA_PROTECTION_STATEMENT = "data_protection_statement.html";
@@ -68,6 +69,10 @@ object AssetUtil {
 
 	fun getImpressumHtml(context: Context, buildInfo: BuildInfo): String? {
 		return loadImpressumHtmlFile(context, FILE_NAME_IMPRESSUM, buildInfo)
+	}
+
+	fun getLicenseHtml(context: Context, buildInfo: BuildInfo): String? {
+		return loadImpressumHtmlFile(context, FILE_NAME_LICENSE, buildInfo)
 	}
 
 	fun loadImpressumHtmlFile(

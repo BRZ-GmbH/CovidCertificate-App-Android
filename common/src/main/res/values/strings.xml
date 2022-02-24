@@ -188,7 +188,7 @@ certificates"</string>
     <string name="accessibility_of_text">" of "</string>
 
     <!-- Accessibility: Information -->
-    <string name="accessibility_info_button">"Imprint / Information"</string>
+    <string name="accessibility_info_button">"Imprint"</string>
 
     <!-- Accessibility: FAQ Button Titel -->
     <string name="accessibility_faq_button">"Frequently Asked Questions"</string>
@@ -209,7 +209,7 @@ certificates"</string>
     <string name="accessibility_lamp_off_button">"Switch pocket lamp off"</string>
 
     <!-- Titel des Impressum-Screens -->
-    <string name="impressum_title">"Imprint / Information"</string>
+    <string name="impressum_title">"Imprint"</string>
 
     <!-- Unbekannter Fehler -->
     <string name="unknown_error">"An unknown error has occurred."</string>
@@ -446,12 +446,23 @@ invalid"</string>
     <string name="wallet_test_certificate_cleanup_no_button">"No"</string>
     <string name="wallet_test_certificate_cleanup_never_button">"Don't ask again"</string>
     <string name="wallet_test_certificate_cleanup_cleanup_button">"Yes, remove"</string>
-    <string name="business_rule_update_progress">"Updating entry rules"</string>
+    <string name="business_rule_update_progress">"Updating entry rules..."</string>
     <string name="business_rule_update_failed_message">"Update of entry rules failed."</string>
-    <string name="business_rule_update_success_message">"Update of entry rules successfully completed."</string>
+    <string name="business_rule_update_success_message">"Update of entry rules successfully finished."</string>
     <string name="business_rule_update_ok_button">"OK"</string>
 
-    <string name="campaigns_opt_out_action">"Disable notifications"</string>
-    <string name="campaigns_opt_in_action">"Enable notifications"</string>
+    <string name="settings_title">"About the app"</string>
+    <string name="settings_row_imprint">"Imprint"</string>
+    <string name="settings_row_licenses">"Licenses"</string>
+    <string name="settings_row_faqs">"Frequently Asked Questions"</string>
+    <string name="settings_row_update_data">"Update entry rules"</string>
+    <string name="settings_row_campaign_notifications_title">"Notifications"</string>
+    <string name="settings_row_campaign_notifications_message">"You will occasionally receive important notifications that contain information relevant to you, such as reminders about booster vaccinations, changes to the current COVID-19 measures or similar."</string>
+    <string name="settings_row_campaign_notifications_toggle_label">"Show Notifications"</string>
+    <string name="licenses_title">"Licenses"</string>
+
+    <string name="accessibility_settings_row_campaign_notifications_toggle_active">"Notifications are enabled"</string>
+    <string name="accessibility_settings_row_campaign_notifications_toggle_inactive">"Notifications are disabled"</string>
+    <string name="accessibility_change_campaign_notifications_toggle">"Double-tap to change"</string>
 
 </resources>

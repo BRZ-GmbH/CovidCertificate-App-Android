@@ -8,18 +8,20 @@
   ~ SPDX-License-Identifier: MPL-2.0
   -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_medium_small"
-        android:layout_marginTop="@dimen/header_top_padding">
+        android:layout_gravity="bottom"
+        android:paddingHorizontal="@dimen/spacing_medium_small"
+        android:paddingTop="@dimen/header_top_padding"
+        android:paddingBottom="@dimen/spacing_very_small">
 
         <ImageView
             android:id="@+id/bund_logo"
@@ -28,9 +30,10 @@
             android:layout_gravity="start|center_vertical"
             android:paddingStart="16dp"
             android:src="@drawable/ic_bundwappen_big"
-            android:importantForAccessibility="no"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:contentDescription="@string/accessibility_list_button"
+            android:importantForAccessibility="no"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
@@ -41,9 +44,9 @@
             android:background="@drawable/ripple_rounded"
             android:padding="@dimen/spacing_medium_large"
             android:src="@drawable/ic_gear_outline"
-            android:contentDescription="@string/settings_title"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:contentDescription="@string/settings_title"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -61,6 +64,7 @@
                 android:layout_height="18dp"
                 android:layout_marginStart="@dimen/spacing_medium_large"
                 android:scaleType="fitXY"
+                android:importantForAccessibility="no"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -95,4 +99,11 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</FrameLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_header_slim"
+        android:visibility="gone" />
+
+</LinearLayout>
