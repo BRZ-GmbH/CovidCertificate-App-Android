@@ -39,8 +39,8 @@ android {
 		applicationId "at.gv.brz.wallet"
 		minSdkVersion 23
 		targetSdkVersion 30
-		versionCode 76
-		versionName "2.3.2"
+		versionCode 91
+		versionName "2.3.3"
 
 		buildConfigField "long", "BUILD_TIME", readPropertyWithDefault('buildTimestamp', System.currentTimeMillis()) + 'L'
 
@@ -138,4 +138,5 @@ dependencies {
 	testImplementation 'junit:junit:4.+'
 	androidTestImplementation 'androidx.test.ext:junit:1.1.2'
 	androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+	implementation 'com.github.ehn-dcc-development.hcert-kotlin:hcert-kotlin-jvm:1.4.0'
 }

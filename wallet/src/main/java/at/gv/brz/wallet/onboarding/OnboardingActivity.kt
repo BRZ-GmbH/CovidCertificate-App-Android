@@ -13,6 +13,8 @@ package at.gv.brz.wallet.onboarding
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import at.gv.brz.common.util.setSecureFlagToBlockScreenshots
+import at.gv.brz.wallet.BuildConfig
 import at.gv.brz.wallet.R
 import at.gv.brz.wallet.databinding.ActivityOnboardingBinding
 
@@ -26,6 +28,8 @@ open class OnboardingActivity : AppCompatActivity() {
 
 		binding = ActivityOnboardingBinding.inflate(layoutInflater)
 		setContentView(binding.root)
+
+		window.setSecureFlagToBlockScreenshots(BuildConfig.FLAVOR)
 
 		binding.viewPager.isUserInputEnabled = false
 		pagerAdapter = createAdapter()

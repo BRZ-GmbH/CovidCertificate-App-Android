@@ -57,7 +57,7 @@
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:minLines="1"
-                        android:text="@string/covid_certificate_title"
+                        android:text="@string/wallet_certificate"
                         app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -156,12 +156,11 @@
                     android:background="@drawable/bg_certificate_bubble"
                     android:backgroundTint="@color/greenish"
                     android:breakStrategy="high_quality"
-                    android:gravity="center_horizontal"
+                    android:gravity="center"
                     android:hyphenationFrequency="full"
                     android:importantForAccessibility="yes"
                     android:minLines="2"
-                    android:paddingTop="@dimen/spacing_medium"
-                    android:paddingBottom="@dimen/spacing_medium"
+                    android:padding="@dimen/spacing_medium_large"
                     android:screenReaderFocusable="true"
                     app:layout_constraintTop_toTopOf="@id/certificate_page_info_circle"
                     tools:text="@string/wallet_verify_success_info" />
@@ -247,6 +246,56 @@
                             android:text="@string/region_type_NG"
                             android:textAlignment="center" />
                     </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/certificate_page_exemption_validity_container"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:orientation="horizontal"
+                    android:visibility="invisible"
+                    android:weightSum="1"
+                    app:layout_constraintBottom_toBottomOf="@id/certificate_page_info"
+                    app:layout_constraintEnd_toEndOf="@id/certificate_page_info"
+                    app:layout_constraintStart_toStartOf="@id/certificate_page_info"
+                    app:layout_constraintTop_toTopOf="@id/certificate_page_info">
+
+                    <LinearLayout
+                        android:id="@+id/certificate_page_exemption_container"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginEnd="4dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_certificate_bubble"
+                        android:importantForAccessibility="yes"
+                        android:orientation="vertical"
+                        android:paddingTop="8dp"
+                        android:screenReaderFocusable="true">
+
+                        <ImageView
+                            android:id="@+id/certificate_page_info_ve_icon"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/ic_minus_circle" />
+
+                        <TextView
+                            android:id="@+id/certificate_page_info_ve"
+                            style="@style/CovidCertificate.Text.WhiteBubble"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:breakStrategy="high_quality"
+                            android:ellipsize="end"
+                            android:gravity="center"
+                            android:hyphenationFrequency="full"
+                            android:maxLines="1"
+                            android:minLines="1"
+                            android:text="@string/covid_certificate_vaccination_exemption_title"
+                            android:textAlignment="center" />
+                    </LinearLayout>
+
 
                 </LinearLayout>
 

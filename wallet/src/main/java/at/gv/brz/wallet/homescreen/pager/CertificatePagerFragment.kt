@@ -26,6 +26,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import at.gv.brz.common.util.makeSubStringBold
+import at.gv.brz.eval.certificateType
 import at.gv.brz.eval.data.state.VerificationResultStatus
 import at.gv.brz.eval.models.DccHolder
 import at.gv.brz.eval.utils.DEFAULT_DISPLAY_DATE_FORMATTER
@@ -36,6 +37,7 @@ import at.gv.brz.wallet.databinding.FragmentCertificatePagerBinding
 import at.gv.brz.wallet.util.QrCode
 import at.gv.brz.wallet.util.getNameDobColor
 import at.gv.brz.wallet.util.getQrAlpha
+import dgca.verifier.app.engine.data.CertificateType
 
 class CertificatePagerFragment : Fragment() {
 
@@ -79,6 +81,12 @@ class CertificatePagerFragment : Fragment() {
 		binding.certificatePageName.text = name
 		val dateOfBirth = dccHolder.euDGC.dateOfBirth.prettyPrintIsoDateTime(DEFAULT_DISPLAY_DATE_FORMATTER)
 		binding.certificatePageBirthdate.text = dateOfBirth
+
+		if (dccHolder.certificateType() == CertificateType.VACCINATION_EXEMPTION) {
+			binding.certificatePageTitle.setText(R.string.wallet_certificate_vaccination_exemption)
+		} else {
+			binding.certificatePageTitle.setText(R.string.wallet_certificate)
+		}
 
 		setupStatusInfo()
 
@@ -173,6 +181,7 @@ class CertificatePagerFragment : Fragment() {
 		binding.certificatePageInfo.visibility = View.VISIBLE
 		binding.certificatePageInfoCircle.visibility = View.VISIBLE
 		binding.certificatePageRegionValidityContainer.visibility = View.INVISIBLE
+		binding.certificatePageExemptionValidityContainer.visibility = View.INVISIBLE
 		binding.certificatePageValidityHintEt.visibility = View.GONE
 	}
 
@@ -183,21 +192,80 @@ class CertificatePagerFragment : Fragment() {
 		binding.certificatePageStatusIcon.visibility = View.INVISIBLE
 		binding.certificatePageInfo.visibility = View.INVISIBLE
 		binding.certificatePageInfoCircle.visibility = View.INVISIBLE
-		binding.certificatePageRegionValidityContainer.visibility = View.VISIBLE
 		binding.certificatePageValidityHintEt.visibility = View.VISIBLE
 
 		binding.certificatePageInfo.updateLayoutParams {
 			(this as? ViewGroup.MarginLayoutParams)?.topMargin = resources.getDimensionPixelSize(R.dimen.home_certificate_info_top_padding_with_validity_hint)
 		}
 
-		binding.certificatePageRegionEtContainer.setBackgroundResource(if (state.results.first { it.region?.startsWith("ET") == true }.valid) { R.drawable.bg_certificate_bubble_valid} else { R.drawable.bg_certificate_bubble_invalid})
-		binding.certificatePageRegionNgContainer.setBackgroundResource(if (state.results.first { it.region?.startsWith("NG") == true }.valid) { R.drawable.bg_certificate_bubble_valid} else { R.drawable.bg_certificate_bubble_invalid})
+		if (dccHolder.certificateType() == CertificateType.VACCINATION_EXEMPTION) {
+			binding.certificatePageExemptionValidityContainer.visibility = View.VISIBLE
+			if (state.results.firstOrNull()?.valid == true) {
+				binding.certificatePageExemptionContainer.setBackgroundResource(R.drawable.bg_certificate_bubble_valid)
+				binding.certificatePageInfoVeIcon.setImageResource(R.drawable.ic_check_circle)
+				binding.certificatePageExemptionContainer.contentDescription = getString(R.string.region_type_valid_vaccination_exemption)
+			} else {
+				binding.certificatePageExemptionContainer.setBackgroundResource(R.drawable.bg_certificate_bubble_invalid)
+				binding.certificatePageInfoVeIcon.setImageResource(R.drawable.ic_minus_circle)
+				binding.certificatePageExemptionContainer.contentDescription = getString(R.string.region_type_invalid_vaccination_exemption)
+			}
+		} else {
+			binding.certificatePageRegionValidityContainer.visibility = View.VISIBLE
+			binding.certificatePageRegionEtContainer.setBackgroundResource(
+				if (state.results.firstOrNull {
+						it.region?.startsWith(
+							"ET"
+						) == true
+					}?.valid == true) {
+					R.drawable.bg_certificate_bubble_valid
+				} else {
+					R.drawable.bg_certificate_bubble_invalid
+				}
+			)
+			binding.certificatePageRegionNgContainer.setBackgroundResource(
+				if (state.results.firstOrNull {
+						it.region?.startsWith(
+							"NG"
+						) == true
+					}?.valid == true) {
+					R.drawable.bg_certificate_bubble_valid
+				} else {
+					R.drawable.bg_certificate_bubble_invalid
+				}
+			)
 
-		binding.certificatePageInfoEtIcon.setImageResource(if (state.results.first { it.region?.startsWith("ET") == true }.valid) { R.drawable.ic_check_circle} else { R.drawable.ic_minus_circle})
-		binding.certificatePageInfoNgIcon.setImageResource(if (state.results.first { it.region?.startsWith("NG") == true }.valid) { R.drawable.ic_check_circle} else { R.drawable.ic_minus_circle})
+			binding.certificatePageInfoEtIcon.setImageResource(
+				if (state.results.firstOrNull {
+						it.region?.startsWith(
+							"ET"
+						) == true
+					}?.valid == true) {
+					R.drawable.ic_check_circle
+				} else {
+					R.drawable.ic_minus_circle
+				}
+			)
+			binding.certificatePageInfoNgIcon.setImageResource(
+				if (state.results.firstOrNull {
+						it.region?.startsWith(
+							"NG"
+						) == true
+					}?.valid == true) {
+					R.drawable.ic_check_circle
+				} else {
+					R.drawable.ic_minus_circle
+				}
+			)
 
-		binding.certificatePageRegionEtContainer.contentDescription = if (state.results.first { it.region?.startsWith("ET") == true }.valid) getString(R.string.accessibility_valid_text) + getString(R.string.region_type_ET)  else getString(R.string.accessibility_invalid_text) + getString(R.string.region_type_ET)
-		binding.certificatePageRegionNgContainer.contentDescription = if (state.results.first { it.region?.startsWith("NG") == true }.valid) getString(R.string.accessibility_valid_text) + getString(R.string.region_type_NG) else getString(R.string.accessibility_invalid_text) + getString(R.string.region_type_NG)
+			binding.certificatePageRegionEtContainer.contentDescription =
+				if (state.results.firstOrNull { it.region?.startsWith("ET") == true }?.valid == true) getString(R.string.accessibility_valid_text) + getString(
+					R.string.region_type_ET
+				) else getString(R.string.accessibility_invalid_text) + getString(R.string.region_type_ET)
+			binding.certificatePageRegionNgContainer.contentDescription =
+				if (state.results.firstOrNull { it.region?.startsWith("NG") == true }?.valid == true) getString(R.string.accessibility_valid_text) + getString(
+					R.string.region_type_NG
+				) else getString(R.string.accessibility_invalid_text) + getString(R.string.region_type_NG)
+		}
 	}
 
 	private fun displayInvalidState(state: VerificationResultStatus.SIGNATURE_INVALID) {
@@ -216,6 +284,7 @@ class CertificatePagerFragment : Fragment() {
 		}
 		binding.certificatePageValidityHintEt.visibility = View.GONE
 		binding.certificatePageRegionValidityContainer.visibility = View.INVISIBLE
+		binding.certificatePageExemptionValidityContainer.visibility = View.INVISIBLE
 
 		binding.certificatePageStatusIcon.setImageResource(statusIconId)
 		binding.certificatePageInfo.text = context.getString(R.string.wallet_error_invalid_signature)
@@ -234,6 +303,7 @@ class CertificatePagerFragment : Fragment() {
 			(this as? ViewGroup.MarginLayoutParams)?.topMargin = resources.getDimensionPixelSize(R.dimen.home_certificate_info_top_padding_without_validity_hint)
 		}
 		binding.certificatePageRegionValidityContainer.visibility = View.INVISIBLE
+		binding.certificatePageExemptionValidityContainer.visibility = View.INVISIBLE
 		binding.certificatePageValidityHintEt.visibility = View.GONE
 
 		binding.certificatePageStatusIcon.setImageResource(R.drawable.ic_error)
@@ -253,6 +323,7 @@ class CertificatePagerFragment : Fragment() {
 			(this as? ViewGroup.MarginLayoutParams)?.topMargin = resources.getDimensionPixelSize(R.dimen.home_certificate_info_top_padding_without_validity_hint)
 		}
 		binding.certificatePageRegionValidityContainer.visibility = View.INVISIBLE
+		binding.certificatePageExemptionValidityContainer.visibility = View.INVISIBLE
 		binding.certificatePageValidityHintEt.visibility = View.GONE
 
 		binding.certificatePageStatusIcon.setImageResource(R.drawable.ic_info_orange)
@@ -271,6 +342,7 @@ class CertificatePagerFragment : Fragment() {
 			(this as? ViewGroup.MarginLayoutParams)?.topMargin = resources.getDimensionPixelSize(R.dimen.home_certificate_info_top_padding_without_validity_hint)
 		}
 		binding.certificatePageRegionValidityContainer.visibility = View.INVISIBLE
+		binding.certificatePageExemptionValidityContainer.visibility = View.INVISIBLE
 		binding.certificatePageValidityHintEt.visibility = View.GONE
 
 		binding.certificatePageStatusIcon.setImageResource(R.drawable.ic_no_connection)

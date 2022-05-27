@@ -13,7 +13,7 @@ package at.gv.brz.common.util
 import android.view.Window
 import android.view.WindowManager
 
-private val allowlistedFlavours = listOf("abn", "dev")
+private val allowlistedFlavours = listOf("abn", "dev", "prodtest")
 
 fun Window.setSecureFlagToBlockScreenshots(flavor: String) {
 	if (!allowlistedFlavours.contains(flavor)) {

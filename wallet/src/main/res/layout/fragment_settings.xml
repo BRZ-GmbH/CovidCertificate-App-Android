@@ -38,89 +38,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/settings_item_imprint"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ripple_rect"
-                    android:contentDescription="@string/settings_row_imprint"
-                    android:paddingTop="@dimen/spacing_larger"
-                    android:paddingBottom="@dimen/spacing_larger">
-
-                    <TextView
-                        android:id="@+id/settings_item_imprint_name"
-                        style="@style/CovidCertificate.Text.Bold.Emphasized"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/spacing_medium_large"
-                        android:layout_marginEnd="@dimen/spacing_medium_large"
-                        android:text="@string/settings_row_imprint"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/settings_item_imprint_chevron"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.5"
-                        app:layout_constraintVertical_chainStyle="packed" />
-
-                    <ImageView
-                        android:id="@+id/settings_item_imprint_chevron"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/spacing_medium_large"
-                        android:contentDescription="@string/accessibility_move_button"
-                        android:importantForAccessibility="no"
-                        android:src="@drawable/ic_arrow"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/dashed_line" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/settings_item_licenses"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ripple_rect"
-                    android:contentDescription="@string/settings_row_licenses"
-                    android:paddingTop="@dimen/spacing_larger"
-                    android:paddingBottom="@dimen/spacing_larger">
-
-                    <TextView
-                        android:id="@+id/settings_item_licenses_name"
-                        style="@style/CovidCertificate.Text.Bold.Emphasized"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/spacing_medium_large"
-                        android:layout_marginEnd="@dimen/spacing_medium_large"
-                        android:text="@string/settings_row_licenses"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/settings_item_licenses_chevron"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.5"
-                        app:layout_constraintVertical_chainStyle="packed" />
-
-                    <ImageView
-                        android:id="@+id/settings_item_licenses_chevron"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/spacing_medium_large"
-                        android:contentDescription="@string/accessibility_move_button"
-                        android:importantForAccessibility="no"
-                        android:src="@drawable/ic_arrow"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/dashed_line" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/settings_item_faq"
@@ -264,15 +181,100 @@
                     android:layout_height="1dp"
                     android:background="@color/dashed_line" />
 
+
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:visibility="gone"
+                    android:id="@+id/settings_item_imprint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ripple_rect"
+                    android:contentDescription="@string/settings_row_imprint"
+                    android:paddingTop="@dimen/spacing_larger"
+                    android:paddingBottom="@dimen/spacing_larger">
+
+                    <TextView
+                        android:id="@+id/settings_item_imprint_name"
+                        style="@style/CovidCertificate.Text.Bold.Emphasized"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_medium_large"
+                        android:layout_marginEnd="@dimen/spacing_medium_large"
+                        android:text="@string/settings_row_imprint"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/settings_item_imprint_chevron"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.5"
+                        app:layout_constraintVertical_chainStyle="packed" />
+
+                    <ImageView
+                        android:id="@+id/settings_item_imprint_chevron"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/spacing_medium_large"
+                        android:contentDescription="@string/accessibility_move_button"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_arrow"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/dashed_line" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/settings_item_licenses"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ripple_rect"
+                    android:contentDescription="@string/settings_row_licenses"
+                    android:paddingTop="@dimen/spacing_larger"
+                    android:paddingBottom="@dimen/spacing_larger">
+
+                    <TextView
+                        android:id="@+id/settings_item_licenses_name"
+                        style="@style/CovidCertificate.Text.Bold.Emphasized"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_medium_large"
+                        android:layout_marginEnd="@dimen/spacing_medium_large"
+                        android:text="@string/settings_row_licenses"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/settings_item_licenses_chevron"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.5"
+                        app:layout_constraintVertical_chainStyle="packed" />
+
+                    <ImageView
+                        android:id="@+id/settings_item_licenses_chevron"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/spacing_medium_large"
+                        android:contentDescription="@string/accessibility_move_button"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_arrow"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/dashed_line" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/settings_item_log"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ripple_rect"
                     android:contentDescription="Log anzeigen"
                     android:paddingTop="@dimen/spacing_larger"
-                    android:paddingBottom="@dimen/spacing_larger">
+                    android:paddingBottom="@dimen/spacing_larger"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/settings_item_log_name"

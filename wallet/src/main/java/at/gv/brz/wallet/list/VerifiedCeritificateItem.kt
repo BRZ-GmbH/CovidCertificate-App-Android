@@ -131,6 +131,7 @@ data class VerifiedCeritificateItem(val verifiedCertificate: CertificatesViewMod
 		val typeLabelRes: Int = when (certType) {
 			CertType.RECOVERY -> R.string.certificate_reason_recovered
 			CertType.TEST -> R.string.certificate_reason_tested
+			CertType.VACCINATION_EXEMPTION -> R.string.certificate_reason_vaccination_exemption
 			else -> R.string.certificate_reason_vaccinated
 		}
 		view.setText(typeLabelRes)

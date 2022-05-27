@@ -55,7 +55,7 @@
     <string name="wallet_add_certificate_button">"Hinzufügen"</string>
 
     <!-- Wallet: Titel der Liste Zertifikate -->
-    <string name="wallet_certificate_list_title">"EU-konforme Zertifikate"</string>
+    <string name="wallet_certificate_list_title">"Zertifikate"</string>
 
     <!-- Wallet: Löschen Button Titel -->
     <string name="delete_button">"Löschen"</string>
@@ -464,5 +464,17 @@ ungültig"</string>
     <string name="accessibility_settings_row_campaign_notifications_toggle_inactive">"Hinweismeldungen sind nicht aktiv"</string>
 
     <string name="accessibility_change_campaign_notifications_toggle">"Zum Ändern Doppeltippen"</string>
+
+    <!-- Impfausnahmen -->
+    <string name="wallet_certificate_vaccination_exemption_country_title">"Ausstellungsland"</string>
+    <string name="covid_certificate_vaccination_exemption_title">"Impfausnahme"</string>
+    <string name="wallet_certificate_vaccination_exemption_detail_note">"Eine Ausnahme von der Impfpflicht besteht bis zum letzten Tage des Folgemonats, in dem der medizinische Ausnahmegrund wegfällt. Dieses End-Datum der Ausnahme von der Impfpflicht wird am Zertifikat angegeben.\n\nDieses Zertifikat ist kein Reisedokument.\n"</string>
+    <string name="wallet_3g_status_validity_headline_vaccination_exemption">"Ausnahme gültig"</string>
+    <string name="wallet_certificate_vaccination_exemption">"AT-konformes Zertifikat"</string>
+    <string name="certificate_reason_vaccination_exemption">"Impfausnahme"</string>
+    <string name="region_type_valid_vaccination_exemption">"Gültig"</string>
+    <string name="region_type_invalid_vaccination_exemption">"Ungültig"</string>
+    <string name="wallet_certificate_exemption_reason_title">"Ausnahmegrund"</string>
+    <string name="wallet_certificate_exemption_reason_value">"Ausnahme COVID-19-Impfung"</string>
 
 </resources>

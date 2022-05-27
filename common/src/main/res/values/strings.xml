@@ -54,7 +54,7 @@
     <string name="wallet_add_certificate_button">"Add"</string>
 
     <!-- Wallet: Titel der Liste Zertifikate -->
-    <string name="wallet_certificate_list_title">"EU-compliant certificates"</string>
+    <string name="wallet_certificate_list_title">"Certificates"</string>
 
     <!-- Wallet: Löschen Button Titel -->
     <string name="delete_button">"Delete"</string>
@@ -464,5 +464,18 @@ invalid"</string>
     <string name="accessibility_settings_row_campaign_notifications_toggle_active">"Notifications are enabled"</string>
     <string name="accessibility_settings_row_campaign_notifications_toggle_inactive">"Notifications are disabled"</string>
     <string name="accessibility_change_campaign_notifications_toggle">"Double-tap to change"</string>
+
+    <!-- Vaccination Exemption -->
+
+    <string name="wallet_certificate_vaccination_exemption_country_title">"Country of Issue"</string>
+    <string name="covid_certificate_vaccination_exemption_title">"Vaccination Exemption"</string>
+    <string name="wallet_certificate_vaccination_exemption_detail_note">"An exemption from mandatory vaccination exists until the last day of the month following the month the medical reason for exemption discontinues. This end date of the exemption from mandatory vaccination is indicated on this certificate.\n\nThis certificate is not a travel document.\n"</string>
+    <string name="wallet_3g_status_validity_headline_vaccination_exemption">"Exemption valid"</string>
+    <string name="wallet_certificate_vaccination_exemption">"AT-compliant certificate"</string>
+    <string name="certificate_reason_vaccination_exemption">"Vaccination Exemption"</string>
+    <string name="region_type_valid_vaccination_exemption">"Valid"</string>
+    <string name="region_type_invalid_vaccination_exemption">"Invalid"</string>
+    <string name="wallet_certificate_exemption_reason_title">"Reason for exemption"</string>
+    <string name="wallet_certificate_exemption_reason_value">"Exemption from COVID-19 vaccination"</string>
 
 </resources>

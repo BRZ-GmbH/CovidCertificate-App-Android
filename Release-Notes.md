@@ -1,5 +1,10 @@
 # Grüner Pass - Release Notes
 
+## v2.3.3
+
+- Unterstützung für Impfausnahmen (EPIEMSCO-2561)
+- Anbindung von AT-Trustlist für Impfausnahmen (EPIEMSCO-2718)
+
 ## v2.3.2
 
 - Einführung Einstellungsmenü (EPIEMSCO-2244)

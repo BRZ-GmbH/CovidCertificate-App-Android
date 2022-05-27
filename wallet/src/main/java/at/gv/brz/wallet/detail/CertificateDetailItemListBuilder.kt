@@ -11,12 +11,15 @@
 package at.gv.brz.wallet.detail
 
 import android.content.Context
+import android.content.res.Configuration
 import at.gv.brz.common.util.LocaleUtil
 import at.gv.brz.eval.data.AcceptedTestProvider
 import at.gv.brz.eval.data.AcceptedVaccineProvider
 import at.gv.brz.eval.models.DccHolder
 import at.gv.brz.eval.utils.*
 import at.gv.brz.wallet.R
+import java.util.*
+import kotlin.collections.ArrayList
 
 class CertificateDetailItemListBuilder(val context: Context, val dccHolder: DccHolder, val showEnglishVersion: Boolean = true) {
 	private val showEnglishVersionForLabels = showEnglishVersion && LocaleUtil.isSystemLangNotEnglish(context)
@@ -26,6 +29,7 @@ class CertificateDetailItemListBuilder(val context: Context, val dccHolder: DccH
 		detailItems.addAll(buildVaccinationEntries())
 		detailItems.addAll(buildRecoveryEntries())
 		detailItems.addAll(buildTestEntries())
+		detailItems.addAll(buildVaccinationExemptionEntries())
 		return detailItems
 	}
 
@@ -242,4 +246,62 @@ class CertificateDetailItemListBuilder(val context: Context, val dccHolder: DccH
 		return detailItems
 	}
 
+	private fun buildVaccinationExemptionEntries(): List<CertificateDetailItem> {
+		val detailItems = ArrayList<CertificateDetailItem>()
+		val vaccinationExemptions = dccHolder.euDGC.vaccinationExemptions
+
+		if (vaccinationExemptions.isNullOrEmpty()) {
+			return detailItems
+		}
+
+		detailItems.add(DividerItem)
+		detailItems.add(TitleItem(R.string.covid_certificate_vaccination_exemption_title, showEnglishVersionForLabels))
+
+		for (exemptionEntry in vaccinationExemptions) {
+			detailItems.add(DividerItem)
+
+			var exemptionValue = context.getString(R.string.wallet_certificate_exemption_reason_value)
+			if (showEnglishVersionForLabels) {
+				val config = Configuration(context.resources.configuration)
+				config.setLocale(Locale.ENGLISH)
+				exemptionValue = "${exemptionValue} /\n${context.createConfigurationContext(config).getText(R.string.wallet_certificate_exemption_reason_value).toString()}"
+			}
+			detailItems.add(
+				ValueItem(R.string.wallet_certificate_exemption_reason_title,
+					exemptionValue,
+					showEnglishVersionForLabels)
+			)
+
+			// Test result
+			if (exemptionEntry.isTargetDiseaseCorrect()) {
+				detailItems.add(
+					ValueItem(R.string.wallet_certificate_target_disease_title,
+						context.getString(R.string.target_disease_name),
+						showEnglishVersionForLabels)
+				)
+			}
+
+			detailItems.add(ValueItem(R.string.wallet_certificate_vaccination_exemption_country_title,
+				exemptionEntry.getExemptionCountry(showEnglishVersionForLabels), showEnglishVersionForLabels))
+
+			// Issuer
+			detailItems.add(DividerItem)
+			detailItems.add(ValueItem(R.string.wallet_certificate_vaccination_issuer_title,
+				exemptionEntry.getIssuer(),
+				showEnglishVersionForLabels))
+			detailItems.add(ValueItem(R.string.wallet_certificate_identifier, exemptionEntry.getCertificateIdentifier(), false))
+
+			dccHolder.issuedAt?.prettyPrint(DEFAULT_DISPLAY_DATE_TIME_FORMATTER)?.let { dateString ->
+				val dateText = context.getString(R.string.wallet_certificate_date).replace("{DATE}", dateString)
+				detailItems.add(ValueItemWithoutLabel(dateText))
+				if (showEnglishVersionForLabels) {
+					val dateTextEnglish =
+						getEnglishTranslation(context, R.string.wallet_certificate_date).replace("{DATE}", dateString)
+					detailItems.add(ValueItemWithoutLabel(dateTextEnglish, true))
+				}
+			}
+		}
+
+		return detailItems
+	}
 }

@@ -175,8 +175,8 @@ class HomeFragment : Fragment() {
 		}
 		binding.homescreenHeaderEmpty.headerRegion.setOnClickListener(regionSelectionClickListener)
 		binding.homescreenHeaderNotEmpty.headerRegion.setOnClickListener(regionSelectionClickListener)
-		binding.homescreenHeaderEmpty.headerImpressum.setOnClickListener(impressumClickListener)
-		binding.homescreenHeaderNotEmpty.headerImpressum.setOnClickListener(impressumClickListener)
+		binding.homescreenHeaderEmpty.headerSettings.setOnClickListener(impressumClickListener)
+		binding.homescreenHeaderNotEmpty.headerSettings.setOnClickListener(impressumClickListener)
 
 		/**
 		 * In test builds (for Q as well as P environment) we support a double tap on the country flag to change the device time setting.
@@ -332,7 +332,7 @@ class HomeFragment : Fragment() {
 		if (show) {
 			binding.homescreenSupportButton.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
 			binding.backgroundDimmed.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
-			binding.homescreenHeaderNotEmpty.headerImpressum.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+			binding.homescreenHeaderNotEmpty.headerSettings.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
 			binding.homescreenHeaderNotEmpty.headerRegion.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
 			binding.homescreenEmptyContent.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
 			binding.homescreenCertificatesViewPager.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
@@ -351,7 +351,7 @@ class HomeFragment : Fragment() {
 			}, 500)
 		} else {
 			binding.homescreenSupportButton.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
-			binding.homescreenHeaderNotEmpty.headerImpressum.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
+			binding.homescreenHeaderNotEmpty.headerSettings.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
 			binding.homescreenHeaderNotEmpty.headerRegion.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
 			binding.homescreenEmptyContent.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
 			binding.homescreenOptionsOverlay.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
@@ -462,6 +462,30 @@ class HomeFragment : Fragment() {
 						"\n${getString(R.string.accessibility_change_selected_region)}"
 			binding.homescreenHeaderNotEmpty.headerRegionText.contentDescription =
 				"\n${getString(R.string.accessibility_state_selector)}.\n" +
+						"\n${getString(R.string.accessibility_change_selected_region)}"
+		}
+		currentCertificateOrderString = newCertificateOrderString
+
+		val selectedRegion = Region.getRegionFromIdentifier(certificatesViewModel.secureStorage.getSelectedValidationRegion())
+		if (selectedRegion != null) {
+			binding.homescreenHeaderEmpty.headerRegionFlag.setImageResource(selectedRegion.getFlag())
+			binding.homescreenHeaderNotEmpty.headerRegionFlag.setImageResource(selectedRegion.getFlag())
+			binding.homescreenHeaderEmpty.headerRegionText.setText(selectedRegion.getName())
+			binding.homescreenHeaderNotEmpty.headerRegionText.setText(selectedRegion.getName())
+			binding.homescreenHeaderEmpty.headerRegionText.contentDescription =
+				"${getString(selectedRegion.getName())}.\n" +
+						"\n${getString(R.string.accessibility_state_selector)}.\n" +
+						"\n${getString(R.string.accessibility_change_selected_region)}"
+			binding.homescreenHeaderNotEmpty.headerRegionText.contentDescription =
+				"${getString(selectedRegion.getName())}.\n" +
+						"\n${getString(R.string.accessibility_state_selector)}.\n" +
+						"\n${getString(R.string.accessibility_change_selected_region)}"
+		} else {
+			binding.homescreenHeaderEmpty.headerRegionText.contentDescription =
+						"\n${getString(R.string.accessibility_state_selector)}.\n" +
+						"\n${getString(R.string.accessibility_change_selected_region)}"
+			binding.homescreenHeaderNotEmpty.headerRegionText.contentDescription =
+						"\n${getString(R.string.accessibility_state_selector)}.\n" +
 						"\n${getString(R.string.accessibility_change_selected_region)}"
 		}
 		currentCertificateOrderString = newCertificateOrderString
