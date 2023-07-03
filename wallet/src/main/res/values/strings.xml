@@ -518,4 +518,6 @@ invalid"</string>
     <string name="wallet_certificate_exemption_reason_title">"Reason for exemption"</string>
     <string name="wallet_certificate_exemption_reason_value">"Exemption from COVID-19 vaccination"</string>
 
+    <string name="error_retrieve_certificate_no_code">Certificate could not be retrieved. Please try retrieving the certificate in your browser.</string>
+    <string name="open_browser_button">Open in Browser</string>
 </resources>

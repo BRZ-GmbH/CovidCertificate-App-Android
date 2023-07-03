@@ -62,7 +62,11 @@ class DirectLinkRepository private constructor(spec: DirectLinkRepositorySpec) {
             }
             when {
                 response.isSuccessful && response.code()==HttpURLConnection.HTTP_OK -> {
-                    DirectLinkResult.Valid(response.body()?.qr.toString())
+                    if (response.body()?.qr != null) {
+                        DirectLinkResult.Valid(response.body()?.qr.toString())
+                    } else {
+                        DirectLinkResult.MissingQrData
+                    }
                 }
                 response.code()==HttpURLConnection.HTTP_BAD_REQUEST -> {
                     DirectLinkResult.InvalidRequestData

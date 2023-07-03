@@ -32,5 +32,6 @@ data class DirectLinkResponse(
 sealed class DirectLinkResult {
      data class Valid(val qr: String): DirectLinkResult()
      object InvalidRequestData: DirectLinkResult()
+     object MissingQrData: DirectLinkResult()
      object NetworkError: DirectLinkResult()
 }

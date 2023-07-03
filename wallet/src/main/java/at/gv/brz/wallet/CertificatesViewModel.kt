@@ -224,45 +224,6 @@ class CertificatesViewModel(application: Application) : AndroidViewModel(applica
 		return CovidCertificateSdk.getValidationClock()
 	}
 
-	fun removeCertificates(certificates: List<String>) {
-		certificates.forEach {
-			certificateStorage.deleteCertificate(it)
-			(CertificateDecoder.decode(it) as? DecodeState.SUCCESS)?.dccHolder?.euDGC?.vaccinations?.firstOrNull()?.certificateIdentifier?.let {
-				notificationStorage.deleteCertificateIdentifier(it)
-			}
-		}
-		loadCertificates()
-	}
-
-	fun toggleDeviceTimeSetting(): Boolean {
-		/**
-		 * In test builds (for Q as well as P environment) we allow switching a setting for the app to either use the real time fetched from a time server (behaviour in the published app) or to use the current device time for validating the business rules.
-		 */
-		if (BuildConfig.FLAVOR == "abn" || BuildConfig.FLAVOR == "prodtest") {
-			val context: Context = getApplication()
-			val sharedPreferences = context.getSharedPreferences("wallet.test", Context.MODE_PRIVATE)
-			val newValue = !sharedPreferences.getBoolean("wallet.test.useDeviceTime", false)
-			sharedPreferences.edit().putBoolean("wallet.test.useDeviceTime", newValue).apply()
-			dccHolderCollectionLiveData.value?.forEach {
-				startVerification(it)
-			}
-			return newValue
-		}
-		return false
-	}
-
-	fun getValidationTime(): ZonedDateTime? {
-		if (BuildConfig.FLAVOR == "abn" || BuildConfig.FLAVOR == "prodtest") {
-			val context: Context = getApplication()
-			val sharedPreferences =
-				context.getSharedPreferences("wallet.test", Context.MODE_PRIVATE)
-			if (sharedPreferences.getBoolean("wallet.test.useDeviceTime", false)) {
-				return ZonedDateTime.now()
-			}
-		}
-		return CovidCertificateSdk.getValidationClock()
-	}
-
 	private val configMutableLiveData = MutableLiveData<ConfigModel>()
 	val configLiveData: LiveData<ConfigModel> = configMutableLiveData
 

@@ -10,20 +10,10 @@
 
 package at.gv.brz.wallet
 
+import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
-import android.app.Dialog
 import android.net.Uri
-import at.gv.brz.common.config.Birthdate
-import at.gv.brz.common.config.DirectLinkModel
-import at.gv.brz.sdk.data.state.DecodeState
-import at.gv.brz.sdk.data.state.StateError
-import at.gv.brz.sdk.decoder.CertificateDecoder
-import at.gv.brz.wallet.add.CertificateAddFragment
-import at.gv.brz.wallet.databinding.DialogDirectlinkDatepickerBinding
-import java.util.*
-import at.gv.brz.wallet.directlink.WalletDirectLinkViewModel
-import at.gv.brz.wallet.directlink.WalletDirectLinkViewModel.DirectLinkType.*
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -33,15 +23,25 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import at.gv.brz.common.config.Birthdate
 import at.gv.brz.common.config.ConfigModel
+import at.gv.brz.common.config.DirectLinkModel
 import at.gv.brz.common.config.DirectLinkResult
 import at.gv.brz.common.util.PlatformUtil
 import at.gv.brz.common.util.UrlUtil
 import at.gv.brz.common.util.setSecureFlagToBlockScreenshots
 import at.gv.brz.sdk.CovidCertificateSdk
+import at.gv.brz.sdk.data.state.DecodeState
+import at.gv.brz.sdk.data.state.StateError
+import at.gv.brz.sdk.decoder.CertificateDecoder
+import at.gv.brz.wallet.add.CertificateAddFragment
 import at.gv.brz.wallet.data.WalletSecureStorage
 import at.gv.brz.wallet.databinding.ActivityMainBinding
+import at.gv.brz.wallet.databinding.DialogDirectlinkDatepickerBinding
+import at.gv.brz.wallet.directlink.WalletDirectLinkViewModel
+import at.gv.brz.wallet.directlink.WalletDirectLinkViewModel.DirectLinkType.*
 import at.gv.brz.wallet.homescreen.HomeFragment
+import at.gv.brz.wallet.notification.NotificationHelper
 import at.gv.brz.wallet.onboarding.FeatureIntroActivity
 import at.gv.brz.wallet.onboarding.OnboardingActivity
 import at.gv.brz.wallet.pdf.PdfViewModel
@@ -49,7 +49,7 @@ import at.gv.brz.wallet.util.DebugLogUtil
 import at.gv.brz.wallet.util.WalletAssetUtil
 import com.google.android.play.core.review.ReviewManagerFactory
 import java.lang.Integer.max
-import at.gv.brz.wallet.notification.NotificationHelper
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -68,10 +68,6 @@ class MainActivity : AppCompatActivity() {
 	private var forceUpdateDialog: AlertDialog? = null
 	private var isIntentConsumed = false
 	private var isDirectLinkIntentConsumed = false
-
-	private var hasCheckedForcedUpdate = false
-	private var forceRefreshTrustlist = true
-	private var ignoreForcedUpdateBecauseOfPDFImport = false
 
 	private var hasCheckedForcedUpdate = false
 	private var forceRefreshTrustlist = true
@@ -169,13 +165,13 @@ class MainActivity : AppCompatActivity() {
 			isDirectLinkIntentConsumed = true
 			when (val it=directLinkViewModel.checkDirectLinkType(appLinkData)){
 				is SmsLink -> {
-					showDatePicker(it.secret, it.signature)
+					showDatePicker(it.secret, it.signature, appLinkData)
 				}
 				/*is WebLink -> {
 					decodeQrCodeData(String().decodeBase64QrData(it.base64EncodedQRCodeData), onDecodeSuccess = {}, onDecodeError = {showInvalidDirectLink()})
 				}*/
 				is BypassTokenLink -> {
-					addCertificateFromByPassToken(it.secret, it.signature, it.bypassToken)
+					addCertificateFromByPassToken(it.secret, it.signature, it.bypassToken, appLinkData)
 				}
 				else -> {
 					showInvalidDirectLink()
@@ -185,7 +181,7 @@ class MainActivity : AppCompatActivity() {
 	}
 
 
-	private fun addCertificateFromByPassToken(secret:String, signature:String, bypassToken: String?){
+	private fun addCertificateFromByPassToken(secret:String, signature:String, bypassToken: String?, originalLink: Uri){
 		val directLinkData = DirectLinkModel(
 			secret,
 			signature,
@@ -200,13 +196,16 @@ class MainActivity : AppCompatActivity() {
 		directLinkViewModel.directLinkResponseLiveData.observe(this@MainActivity) {
 			when (it){
 				is DirectLinkResult.Valid -> {
-					decodeQrCodeData(it.qr, onDecodeSuccess = {}, onDecodeError = {showErrorDialog(secret, signature = signature, bypassToken = bypassToken, title = getString(R.string.directlink_error_title), message = getString(R.string.directlink_error_message_forbypasstoken))})
+					decodeQrCodeData(it.qr, onDecodeSuccess = {}, onDecodeError = {showErrorDialog(secret, signature = signature, bypassToken = bypassToken, title = getString(R.string.directlink_error_title), message = getString(R.string.directlink_error_message_forbypasstoken), originalLink = originalLink)})
 				}
 				is DirectLinkResult.InvalidRequestData -> {
-					showErrorDialog(secret, signature, bypassToken = bypassToken, title = getString(R.string.directlink_error_title), message = getString(R.string.directlink_error_message_forbypasstoken))
+					showErrorDialog(secret, signature, bypassToken = bypassToken, title = getString(R.string.directlink_error_title), message = getString(R.string.directlink_error_message_forbypasstoken), originalLink = originalLink)
 				}
 				is DirectLinkResult.NetworkError -> {
-					showErrorDialog(secret, signature, bypassToken = bypassToken, title = getString(R.string.error_network_title), message = getString(R.string.error_network_text))
+					showErrorDialog(secret, signature, bypassToken = bypassToken, title = getString(R.string.error_network_title), message = getString(R.string.error_network_text), originalLink = originalLink)
+				}
+				is DirectLinkResult.MissingQrData -> {
+					showErrorDialogForMissingQRCodeData(originalLink)
 				}
 			}
 			directLinkViewModel.directLinkResponseLiveData.removeObservers(this@MainActivity)
@@ -214,7 +213,7 @@ class MainActivity : AppCompatActivity() {
 
 	}
 
-	private fun showDatePicker(secret:String, signature:String) {
+	private fun showDatePicker(secret:String, signature:String, originalLink: Uri) {
 
 		val currentCalendar = Calendar.getInstance()
 		val dialog = Dialog(this)
@@ -245,13 +244,16 @@ class MainActivity : AppCompatActivity() {
 				directLinkViewModel.directLinkResponseLiveData.observe(this@MainActivity) {
 					when (it){
 						is DirectLinkResult.Valid -> {
-							decodeQrCodeData(it.qr, onDecodeSuccess = {}, onDecodeError = {showErrorDialog(secret,  signature, title = getString(R.string.directlink_error_title), message = getString(R.string.directlink_error_message))})
+							decodeQrCodeData(it.qr, onDecodeSuccess = {}, onDecodeError = {showErrorDialog(secret,  signature, title = getString(R.string.directlink_error_title), message = getString(R.string.directlink_error_message), originalLink = originalLink)})
 						}
 						is DirectLinkResult.InvalidRequestData -> {
-							showErrorDialog(secret, signature, title = getString(R.string.directlink_error_title), message = getString(R.string.directlink_error_message))
+							showErrorDialog(secret, signature, title = getString(R.string.directlink_error_title), message = getString(R.string.directlink_error_message), originalLink = originalLink)
 						}
 						is DirectLinkResult.NetworkError -> {
-							showErrorDialog(secret, signature, title = getString(R.string.error_network_title), message = getString(R.string.error_network_text))
+							showErrorDialog(secret, signature, title = getString(R.string.error_network_title), message = getString(R.string.error_network_text), originalLink = originalLink)
+						}
+						is DirectLinkResult.MissingQrData -> {
+							showErrorDialogForMissingQRCodeData(originalLink)
 						}
 					}
 					dialog.dismiss()
@@ -292,17 +294,34 @@ class MainActivity : AppCompatActivity() {
 			.show()
 	}
 
-	private fun showErrorDialog(secret:String, signature:String, bypassToken: String?=null, title:String, message:String) {
+	private fun showErrorDialog(secret:String, signature:String, bypassToken: String?=null, title:String, message:String, originalLink: Uri) {
 		AlertDialog.Builder(this, R.style.CovidCertificate_AlertDialogStyle)
 			.setTitle(title)
 			.setMessage(message)
 			.setPositiveButton(R.string.directlink_error_button_tryagain) { dialog, _ ->
 				if(bypassToken==null){
-					showDatePicker(secret, signature)
+					showDatePicker(secret, signature, originalLink)
 				} else {
-					addCertificateFromByPassToken(secret, signature, bypassToken)
+					addCertificateFromByPassToken(secret, signature, bypassToken, originalLink)
 				}
 				dialog.dismiss()
+			}
+			.setNegativeButton(R.string.directlink_error_button_cancel)	{ dialog, _ ->
+				dialog.dismiss()
+			}
+			.setCancelable(true)
+			.create()
+			.apply { window?.setSecureFlagToBlockScreenshots(BuildConfig.FLAVOR) }
+			.show()
+	}
+
+	private fun showErrorDialogForMissingQRCodeData(link: Uri) {
+		AlertDialog.Builder(this, R.style.CovidCertificate_AlertDialogStyle)
+			.setTitle(R.string.directlink_error_title)
+			.setMessage(R.string.error_retrieve_certificate_no_code)
+			.setPositiveButton(R.string.open_browser_button) { dialog, _ ->
+				dialog.dismiss()
+				UrlUtil.openUrlInBrowserExcludingWalletApp(this, link)
 			}
 			.setNegativeButton(R.string.directlink_error_button_cancel)	{ dialog, _ ->
 				dialog.dismiss()

@@ -124,6 +124,8 @@ in der App"</string>
     <string name="wallet_scanner_howitworks_title">"Zertifikate
 hinzufügen"</string>
 
+    <string name="wallet_download_certificate_list_title">ZERTIFIKATE</string>
+
     <!-- Textblock 1 im "So funktionierts" Screen beim Scannen -->
     <string name="wallet_scanner_howitworks_text1">"Um ein Zertifikat zur App hinzufügen zu können, benötigen Sie das Originalzertifikat auf Papier oder als PDF."</string>
 
@@ -138,6 +140,7 @@ hinzufügen"</string>
     <!-- Textblock 4 im "So funktionierts" Screen beim Scannen -->
     <string name="wallet_scanner_howitworks_text4">"Es erscheint eine Vorschau des Zertifikats. Tippen Sie auf «Hinzufügen» um das Zertifikat sicher in der App zu speichern."</string>
     <string name="wallet_scanner_howitworks_text4_contentdesc">"Schritt 3: Es erscheint eine Vorschau des Zertifikats. Tippen Sie auf «Hinzufügen» um das Zertifikat sicher in der App zu speichern."</string>
+
 
     <!-- Frage 1 im "So funktionierts" Screen beim Scannen -->
     <string name="wallet_scanner_howitworks_question1">"Wie und wo erhalte ich ein EU-konformes Zertifikat?"</string>
@@ -356,6 +359,7 @@ ungültiger Signatur"</string>
     <string name="wallet_onboarding_external_privacy_button">"Datenschutzerklärung &amp;
 Nutzungsbedingungen"</string>
 
+
     <!-- Wallet: Hinweis im Zertifikat Detail -->
     <string name="wallet_certificate_detail_note">"Dieses Zertifikat ist kein Reisedokument. \n\nDie wissenschaftlichen Erkenntnisse über Covid-19-Impfungen und -Tests sowie über die Genesung von einer Covid-19-Infektion entwickeln sich ständig weiter, auch im Hinblick auf neue besorgniserregende Virusvarianten. \n\nBitte informieren Sie sich vor der Reise über die am Zielort geltenden Gesundheitsmassnahmen und damit verbundenen Beschränkungen."</string>
     <string name="wallet_terms_privacy_link">"https://gruenerpass.gv.at/app/datenschutz"</string>
@@ -409,6 +413,7 @@ ungültig"</string>
 
     <!-- Button zum PDF importieren -->
     <string name="wallet_homescreen_pdf_import">"PDF importieren"</string>
+
 
     <string name="region_type_ET">"Eintritt"</string>
     <string name="region_type_NG">"Nachtgastronomie"</string>
@@ -485,6 +490,21 @@ ungültig"</string>
 
     <string name="accessibility_change_campaign_notifications_toggle">"Zum Ändern Doppeltippen"</string>
 
+    <!-- Direct link : date picker -->
+    <string name="directlink_datepicker_title">Zertifikat hinzufügen</string>
+    <string name="directlink_datepicker_message">Bitte geben Sie Ihr Geburtsdatum ein, um Ihr Zertifikat zu erhalten.</string>
+    <string name="directlink_datepicker_button_cancel">Abbrechen</string>
+    <string name="directlink_datepicker_button_retrieve">Zertifikat abrufen</string>
+    <!-- Direct link : invalid certificate -->
+    <string name="directlink_invalidlink_title">Ungültiger Direktlink</string>
+    <string name="directlink_invalidlink_message">Zertifikat konnte nicht hinzugefügt werden</string>
+    <string name="directlink_invalidlink_button_ok">OK</string>
+    <!-- Direct link : link expired -->
+    <string name="directlink_error_title">Fehler</string>
+    <string name="directlink_error_message">Zertifikat konnte nicht abgerufen werden. Bitte vergewissern Sie sich, dass das Geburtsdatum korrekt ist und der Link noch nicht abgelaufen ist.</string>
+    <string name="directlink_error_message_forbypasstoken">Zertifikat konnte nicht abgerufen werden. Bitte vergewissern Sie sich, dass der Link noch nicht abgelaufen ist.</string>
+    <string name="directlink_error_button_cancel">Abbrechen</string>
+    <string name="directlink_error_button_tryagain">Erneut versuchen</string>
     <!-- Impfausnahmen -->
     <string name="wallet_certificate_vaccination_exemption_country_title">"Ausstellungsland"</string>
     <string name="covid_certificate_vaccination_exemption_title">"Impfausnahme"</string>
@@ -497,5 +517,6 @@ ungültig"</string>
     <string name="region_type_invalid_vaccination_exemption">"Ungültig"</string>
     <string name="wallet_certificate_exemption_reason_title">"Ausnahmegrund"</string>
     <string name="wallet_certificate_exemption_reason_value">"Ausnahme COVID-19-Impfung"</string>
-
+    <string name="error_retrieve_certificate_no_code">Zertifikat konnte nicht abgerufen werden. Bitte versuchen Sie den Abruf Ihres Zertifikates im Browser.</string>
+    <string name="open_browser_button">Im Browser öffnen</string>
 </resources>

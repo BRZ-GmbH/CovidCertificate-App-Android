@@ -16,6 +16,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.widget.Toast;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class UrlUtil {
 
 	public static void openUrl(Context context, String url) {
@@ -26,6 +29,23 @@ public class UrlUtil {
 		} catch (ActivityNotFoundException e) {
 			Toast.makeText(context, "No browser installed", Toast.LENGTH_LONG).show();
 		}
+	}
+
+	public static void openUrlInBrowserExcludingWalletApp(Context context, Uri url) {
+		List<String> availableBrowserPackages = Arrays.asList("com.android.browser", "com.android.chrome", "com.huawei.browser");
+		for (String browserPackage : availableBrowserPackages) {
+			try {
+				Intent intent = new Intent(Intent.ACTION_VIEW);
+				intent.setData(url);
+				intent.setPackage(browserPackage);
+				context.startActivity(intent);
+				return;
+			} catch (ActivityNotFoundException ignored) {
+
+			}
+		}
+
+		Toast.makeText(context, "No browser installed", Toast.LENGTH_LONG).show();
 	}
 
 	/**
