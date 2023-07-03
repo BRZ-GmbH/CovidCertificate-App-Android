@@ -1,5 +1,13 @@
 # Grüner Pass - Release Notes
 
+## v2.3.4
+
+- Integration neuer Business Rules Engine (EPIEMSCO-2225)
+- Unterstützung weiterer Kampagnen (EPIEMSCO-2486)
+- Anpassung FAQ für Impfausnahme (EPIEMSCO-2643)
+- Accessibility-Verbesserungen (EPIEMSCO-2252)
+- Vorbereitung neue Signer-Zertifikate (EPIEMSCO-2814)
+
 ## v2.3.3
 
 - Unterstützung für Impfausnahmen (EPIEMSCO-2561)

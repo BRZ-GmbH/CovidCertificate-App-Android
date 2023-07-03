@@ -88,6 +88,7 @@ class CertificateAddFragment : Fragment() {
 					certificatesViewModel.addCertificate(dccHolder.qrCodeData)
 					parentFragmentManager.popBackStack()
 					parentFragmentManager.popBackStack()
+					it.announceForAccessibility(getString(R.string.wallet_add_certificate_success_message))
 				}
 			}
 		}
@@ -110,6 +111,7 @@ class CertificateAddFragment : Fragment() {
 				binding.certificateAddDataRecyclerView.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
 			}, 500)
 		}
+		view.announceForAccessibility(getString(at.gv.brz.common.R.string.wallet_scanner_title_loaded))
 	}
 
 	override fun onDestroyView() {

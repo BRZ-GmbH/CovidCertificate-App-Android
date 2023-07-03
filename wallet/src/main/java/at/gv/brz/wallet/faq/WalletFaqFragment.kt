@@ -25,11 +25,10 @@ class WalletFaqFragment : FaqFragment() {
 	private val certificatesViewModel by activityViewModels<CertificatesViewModel>()
 
 	override fun setupFaqProvider() {
-		toolbar.setTitle(R.string.wallet_faq_header)
-		val languageKey = getString(R.string.language_key)
-		AssetUtil.loadDefaultConfig(requireContext())?.let {
-			setupFaqList(it.generateFaqItems(languageKey))
-		}
+		certificatesViewModel.configLiveData.observe(viewLifecycleOwner, { config ->
+			val languageKey = getString(R.string.language_key)
+			setupFaqList(config.generateFaqItems(languageKey))
+		})
 		certificatesViewModel.loadConfig()
 	}
 

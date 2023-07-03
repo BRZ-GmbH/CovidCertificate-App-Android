@@ -75,6 +75,7 @@ class WalletQrScanFragment : QrScanFragment() {
 		}
 
 		binding.qrCodeScannerButtonHow.setOnClickListener { showHowToScanFragment() }
+		view.announceForAccessibility(getString(at.gv.brz.common.R.string.wallet_scanner_title_loaded))
 	}
 
 	override fun decodeQrCodeData(qrCodeData: String, onDecodeSuccess: () -> Unit, onDecodeError: (StateError) -> Unit) {

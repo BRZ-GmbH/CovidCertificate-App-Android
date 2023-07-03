@@ -8,6 +8,9 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
+include ':dgc-businessrules-validation-core-android'
+project(':dgc-businessrules-validation-core-android').projectDir = new File('./sdk/dgc-businessrules-validation-core-android/brvc')
+
 include ':sdk'
 project(':sdk').projectDir = new File('./sdk/sdk')
 

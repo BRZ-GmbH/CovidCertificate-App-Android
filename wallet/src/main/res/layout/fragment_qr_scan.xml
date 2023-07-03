@@ -279,6 +279,8 @@
 		android:src="@drawable/ic_light_off_blue"
 		app:layout_constraintBottom_toTopOf="@id/qr_code_scanner_footer_group"
 		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintTop_toTopOf="@id/qr_code_scanner_footer_group" />
+		app:layout_constraintTop_toTopOf="@id/qr_code_scanner_footer_group"
+		android:accessibilityTraversalBefore="@id/qr_code_scanner_explanation"
+		android:contentDescription="@string/wallet_scanner_flashlight_hint"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

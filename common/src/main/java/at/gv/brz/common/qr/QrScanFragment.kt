@@ -356,6 +356,13 @@ abstract class QrScanFragment : Fragment() {
 		flashButton.setOnClickListener {
 			isTorchOn = !flashButton.isSelected
 			setFlashAndButtonStyle()
+			if (flashButton.isSelected) {
+				flashButton.announceForAccessibility(getString(R.string.wallet_scanner_flashlight_off))
+			}
+		}
+		zoomButton.setOnClickListener {
+			secureStorage.setZoomOn(!secureStorage.getZoomOn())
+			setupZoomButton()
 		}
 		zoomButton.setOnClickListener {
 			secureStorage.setZoomOn(!secureStorage.getZoomOn())

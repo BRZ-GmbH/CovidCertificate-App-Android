@@ -59,7 +59,8 @@ class SettingsFragment: Fragment() {
                         buildInfo,
                         AssetUtil.getImpressumBaseUrl(it.context),
                         AssetUtil.getImpressumHtml(it.context, buildInfo),
-                        at.gv.brz.wallet.R.id.fragment_container
+                        at.gv.brz.wallet.R.id.fragment_container,
+                        R.string.impressum_title_loaded
                     )
                 )
                 .addToBackStack(HtmlFragment::class.java.canonicalName)
@@ -82,7 +83,8 @@ class SettingsFragment: Fragment() {
                         buildInfo,
                         AssetUtil.getImpressumBaseUrl(it.context),
                         AssetUtil.getLicenseHtml(it.context, buildInfo),
-                        at.gv.brz.wallet.R.id.fragment_container
+                        at.gv.brz.wallet.R.id.fragment_container,
+                        R.string.licenses_title_loaded
                     )
                 )
                 .addToBackStack(HtmlFragment::class.java.canonicalName)
@@ -124,6 +126,7 @@ class SettingsFragment: Fragment() {
         }
 
         setContentDescriptionForCampaignNotifications()
+        view.announceForAccessibility(getString(R.string.settings_title_loaded))
     }
 
     private fun setContentDescriptionForCampaignNotifications() {

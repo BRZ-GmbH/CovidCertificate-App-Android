@@ -49,6 +49,7 @@ abstract class FaqFragment : Fragment() {
 
 		setupFaqProvider()
 		view.announceForAccessibility(getString(R.string.wallet_faq_loaded))
+		binding.certificatesOverviewToolbarFaq.text = getString(R.string.wallet_faq_header)
 	}
 
 	override fun onDestroyView() {

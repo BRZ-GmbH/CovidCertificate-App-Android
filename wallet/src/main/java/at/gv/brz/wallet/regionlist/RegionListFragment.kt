@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import at.gv.brz.wallet.R
 import at.gv.brz.wallet.data.Region
 import at.gv.brz.wallet.data.WalletSecureStorage
 import at.gv.brz.wallet.databinding.FragmentRegionListBinding
@@ -37,6 +38,7 @@ class RegionListFragment : Fragment() {
             }
         }
         setupRecyclerView()
+        view.announceForAccessibility(getString(R.string.wallet_region_selection_title_loaded))
     }
 
     override fun onDestroyView() {

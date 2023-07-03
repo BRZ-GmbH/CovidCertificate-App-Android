@@ -1,5 +1,7 @@
 package at.gv.brz.common.config
 
+import at.gv.brz.brvc.model.data.BusinessRuleCertificateType
+import at.gv.brz.eval.parsedCertificateType
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import java.time.Instant
@@ -22,7 +24,8 @@ data class CampaignModel(
     @Json(name = "repeat_interval") val repeatInterval: CampaignRepeatInterval?,
     @Json(name = "applies_to") val applicationType: CampaignApplicationType,
     val buttons: List<CampaignButton>?,
-    @Json(name = "conditions") val conditionGroups: List<List<String>>?
+    @Json(name = "conditions") val conditionGroups: List<List<String>>?,
+    @Json(name = "certificate_type") val certificateTypeString: String?
 ) {
     fun getTitle(languageKey: String): String? = title?.get(languageKey)
     fun getMessage(languageKey: String): String? = message?.get(languageKey)
@@ -57,6 +60,15 @@ data class CampaignModel(
         get() {
             return LocalDateTime.now().isAfter(validFrom) && LocalDateTime.now().isBefore(validUntil)
         }
+
+    val certificateType: BusinessRuleCertificateType?
+        get() {
+            if (certificateTypeString != null) {
+                return certificateTypeString.parsedCertificateType()
+            }
+            return BusinessRuleCertificateType.VACCINATION
+        }
+
 }
 
 /**

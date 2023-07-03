@@ -25,10 +25,13 @@ import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import at.gv.brz.brvc.model.ValidationResult
+import at.gv.brz.brvc.model.data.BusinessRuleCertificateType
 import at.gv.brz.common.util.makeSubStringBold
-import at.gv.brz.eval.certificateType
+import at.gv.brz.eval.businessRuleCertificateType
 import at.gv.brz.eval.data.state.VerificationResultStatus
 import at.gv.brz.eval.models.DccHolder
+import at.gv.brz.eval.models.ValidationProfile
 import at.gv.brz.eval.utils.DEFAULT_DISPLAY_DATE_FORMATTER
 import at.gv.brz.eval.utils.prettyPrintIsoDateTime
 import at.gv.brz.wallet.CertificatesViewModel
@@ -37,7 +40,6 @@ import at.gv.brz.wallet.databinding.FragmentCertificatePagerBinding
 import at.gv.brz.wallet.util.QrCode
 import at.gv.brz.wallet.util.getNameDobColor
 import at.gv.brz.wallet.util.getQrAlpha
-import dgca.verifier.app.engine.data.CertificateType
 
 class CertificatePagerFragment : Fragment() {
 
@@ -82,7 +84,7 @@ class CertificatePagerFragment : Fragment() {
 		val dateOfBirth = dccHolder.euDGC.dateOfBirth.prettyPrintIsoDateTime(DEFAULT_DISPLAY_DATE_FORMATTER)
 		binding.certificatePageBirthdate.text = dateOfBirth
 
-		if (dccHolder.certificateType() == CertificateType.VACCINATION_EXEMPTION) {
+		if (dccHolder.businessRuleCertificateType() == BusinessRuleCertificateType.VACCINATION_EXEMPTION) {
 			binding.certificatePageTitle.setText(R.string.wallet_certificate_vaccination_exemption)
 		} else {
 			binding.certificatePageTitle.setText(R.string.wallet_certificate)
@@ -198,9 +200,9 @@ class CertificatePagerFragment : Fragment() {
 			(this as? ViewGroup.MarginLayoutParams)?.topMargin = resources.getDimensionPixelSize(R.dimen.home_certificate_info_top_padding_with_validity_hint)
 		}
 
-		if (dccHolder.certificateType() == CertificateType.VACCINATION_EXEMPTION) {
+		if (dccHolder.businessRuleCertificateType() == BusinessRuleCertificateType.VACCINATION_EXEMPTION) {
 			binding.certificatePageExemptionValidityContainer.visibility = View.VISIBLE
-			if (state.results.firstOrNull()?.valid == true) {
+			if (state.results[ValidationProfile.ENTRY.profileName] is ValidationResult.Valid) {
 				binding.certificatePageExemptionContainer.setBackgroundResource(R.drawable.bg_certificate_bubble_valid)
 				binding.certificatePageInfoVeIcon.setImageResource(R.drawable.ic_check_circle)
 				binding.certificatePageExemptionContainer.contentDescription = getString(R.string.region_type_valid_vaccination_exemption)
@@ -211,23 +213,16 @@ class CertificatePagerFragment : Fragment() {
 			}
 		} else {
 			binding.certificatePageRegionValidityContainer.visibility = View.VISIBLE
+
 			binding.certificatePageRegionEtContainer.setBackgroundResource(
-				if (state.results.firstOrNull {
-						it.region?.startsWith(
-							"ET"
-						) == true
-					}?.valid == true) {
+				if (state.results[ValidationProfile.ENTRY.profileName] is ValidationResult.Valid) {
 					R.drawable.bg_certificate_bubble_valid
 				} else {
 					R.drawable.bg_certificate_bubble_invalid
 				}
 			)
 			binding.certificatePageRegionNgContainer.setBackgroundResource(
-				if (state.results.firstOrNull {
-						it.region?.startsWith(
-							"NG"
-						) == true
-					}?.valid == true) {
+				if (state.results[ValidationProfile.NIGHT_CLUB.profileName] is ValidationResult.Valid) {
 					R.drawable.bg_certificate_bubble_valid
 				} else {
 					R.drawable.bg_certificate_bubble_invalid
@@ -235,22 +230,14 @@ class CertificatePagerFragment : Fragment() {
 			)
 
 			binding.certificatePageInfoEtIcon.setImageResource(
-				if (state.results.firstOrNull {
-						it.region?.startsWith(
-							"ET"
-						) == true
-					}?.valid == true) {
+				if (state.results[ValidationProfile.ENTRY.profileName] is ValidationResult.Valid) {
 					R.drawable.ic_check_circle
 				} else {
 					R.drawable.ic_minus_circle
 				}
 			)
 			binding.certificatePageInfoNgIcon.setImageResource(
-				if (state.results.firstOrNull {
-						it.region?.startsWith(
-							"NG"
-						) == true
-					}?.valid == true) {
+				if (state.results[ValidationProfile.NIGHT_CLUB.profileName] is ValidationResult.Valid) {
 					R.drawable.ic_check_circle
 				} else {
 					R.drawable.ic_minus_circle
@@ -258,11 +245,11 @@ class CertificatePagerFragment : Fragment() {
 			)
 
 			binding.certificatePageRegionEtContainer.contentDescription =
-				if (state.results.firstOrNull { it.region?.startsWith("ET") == true }?.valid == true) getString(R.string.accessibility_valid_text) + getString(
+				if (state.results[ValidationProfile.ENTRY.profileName] is ValidationResult.Valid) getString(R.string.accessibility_valid_text) + getString(
 					R.string.region_type_ET
 				) else getString(R.string.accessibility_invalid_text) + getString(R.string.region_type_ET)
 			binding.certificatePageRegionNgContainer.contentDescription =
-				if (state.results.firstOrNull { it.region?.startsWith("NG") == true }?.valid == true) getString(R.string.accessibility_valid_text) + getString(
+				if (state.results[ValidationProfile.NIGHT_CLUB.profileName] is ValidationResult.Valid) getString(R.string.accessibility_valid_text) + getString(
 					R.string.region_type_NG
 				) else getString(R.string.accessibility_invalid_text) + getString(R.string.region_type_NG)
 		}

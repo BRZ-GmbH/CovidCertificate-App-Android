@@ -46,6 +46,7 @@ class HowToScanFragment : Fragment() {
 			R.string.wallet_scanner_howitworks_question1,
 			R.string.wallet_scanner_howitworks_answer1
 		)
+		view.announceForAccessibility(getString(R.string.wallet_scanner_howitworks_header_loaded))
 	}
 
 	override fun onDestroyView() {

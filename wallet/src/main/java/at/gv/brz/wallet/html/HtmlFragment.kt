@@ -35,14 +35,16 @@ class HtmlFragment : Fragment() {
 		private const val ARG_BUILD_INFO = "ARG_BUILD_INFO"
 		private const val ARG_DATA = "ARG_DATA"
 		private const val ARG_TITLE = "ARG_TITLE"
+		private const val ARG_TITLE_LOADED = "ARG_TITLE_LOADED"
 		private const val ARG_FRAGMENT_LAYOUT_ID = "ARG_FRAGMENT_LAYOUT_ID"
-		fun newInstance(titleRes: Int, buildInfo: BuildInfo, baseUrl: String, data: String?, fragmentLayoutId: Int): HtmlFragment {
+		fun newInstance(titleRes: Int, buildInfo: BuildInfo, baseUrl: String, data: String?, fragmentLayoutId: Int, titleLoaded: Int): HtmlFragment {
 			val args = Bundle()
 			args.putString(ARG_BASE_URL, baseUrl)
 			args.putSerializable(ARG_BUILD_INFO, buildInfo)
 			args.putString(ARG_DATA, data)
 			args.putInt(ARG_TITLE, titleRes)
 			args.putInt(ARG_FRAGMENT_LAYOUT_ID, fragmentLayoutId)
+			args.putInt(ARG_TITLE_LOADED, titleLoaded)
 			val fragment = HtmlFragment()
 			fragment.arguments = args
 			return fragment
@@ -59,6 +61,9 @@ class HtmlFragment : Fragment() {
 	@StringRes
 	private var titleRes = 0
 
+	@StringRes
+	private var titleLoadedRes = 0
+
 	@IdRes
 	private var fragmentLayoutId = 0
 
@@ -70,6 +75,7 @@ class HtmlFragment : Fragment() {
 			data = getString(ARG_DATA)
 			titleRes = getInt(ARG_TITLE)
 			fragmentLayoutId = getInt(ARG_FRAGMENT_LAYOUT_ID)
+			titleLoadedRes = getInt(ARG_TITLE_LOADED)
 		}
 
 	}
@@ -85,6 +91,7 @@ class HtmlFragment : Fragment() {
 		val toolbar = binding.htmlToolbar
 		toolbar.setTitle(titleRes)
 		toolbar.setNavigationOnClickListener { parentFragmentManager.popBackStack() }
+		view.announceForAccessibility(getString(titleLoadedRes))
 
 		val web = binding.htmlWebview
 		val loadingSpinner = binding.loadingSpinner

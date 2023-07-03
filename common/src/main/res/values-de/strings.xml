@@ -29,12 +29,14 @@
 
     <!-- Wallet: Homescreen Covid-Zertifikat -->
     <string name="wallet_certificate">"EU-konformes Zertifikat"</string>
+    <string name="wallet_certificate_loaded">"EU-konformes Zertifikat, Seite"</string>
 
     <!-- Wallet: Homescreen Erklärung -->
     <string name="wallet_homescreen_explanation">"Scannen Sie den EU-konformen QR-Code auf dem Zertifikat, um es zur App hinzuzufügen."</string>
 
     <!-- Wallet: Scanner Titel -->
     <string name="wallet_scanner_title">"Hinzufügen"</string>
+    <string name="wallet_scanner_title_loaded">"Hinzufügen, Seite"</string>
 
     <!-- Titel bei erfolgreicher Prüfung -->
     <string name="wallet_verify_success_title">"Prüfung erfolgreich"</string>
@@ -45,6 +47,12 @@
     <!-- Wallet: Scanner Text unten -->
     <string name="wallet_scanner_explanation">"Scannen Sie den EU-konformen QR-Code auf dem Zertifikat."</string>
 
+    <!-- Wallet: Flashlight off text -->
+    <string name="wallet_scanner_flashlight_off">"die Taschenlampe ausgeschaltet"</string>
+
+    <!-- Wallet: Flashlight hint text -->
+    <string name="wallet_scanner_flashlight_hint">"die Taschenlampe"</string>
+
     <!-- Wallet: Scanner Info Button unten -->
     <string name="wallet_scanner_info_button">"So funktioniert's"</string>
 
@@ -54,8 +62,12 @@
     <!-- Wallet: Hinzufügen von Zertifikat Button -->
     <string name="wallet_add_certificate_button">"Hinzufügen"</string>
 
+    <!-- Wallet: Hinzufügen von Zertifikat Button -->
+    <string name="wallet_add_certificate_success_message">"Zertifikat erfolgreich hinzugefügt"</string>
+
     <!-- Wallet: Titel der Liste Zertifikate -->
     <string name="wallet_certificate_list_title">"Zertifikate"</string>
+    <string name="wallet_certificate_list_title_loaded">"Zertifikate, Seite"</string>
 
     <!-- Wallet: Löschen Button Titel -->
     <string name="delete_button">"Löschen"</string>
@@ -106,6 +118,7 @@ in der App"</string>
 
     <!-- Header im "So funktionierts" Screen beim Scannen -->
     <string name="wallet_scanner_howitworks_header">"So funktioniert's"</string>
+    <string name="wallet_scanner_howitworks_header_loaded">"So funktioniert's, Seite"</string>
 
     <!-- Titel im "So funktionierts" Screen beim Scannen -->
     <string name="wallet_scanner_howitworks_title">"Zertifikate
@@ -116,12 +129,15 @@ hinzufügen"</string>
 
     <!-- Textblock 2 im "So funktionierts" Screen beim Scannen -->
     <string name="wallet_scanner_howitworks_text2">"Tippen Sie in der App auf «Hinzufügen», um ein neues Zertifikat zur App hinzuzufügen."</string>
+    <string name="wallet_scanner_howitworks_text2_contentdesc">"Schritt 1: Tippen Sie in der App auf «Hinzufügen», um ein neues Zertifikat zur App hinzuzufügen."</string>
 
     <!-- Textblock 3 im "So funktionierts" Screen beim Scannen -->
     <string name="wallet_scanner_howitworks_text3">"Halten Sie nun die Kamera des Smartphones über den EU-konformen QR-Code auf dem Zertifikat, um diesen zu scannen."</string>
+    <string name="wallet_scanner_howitworks_text3_contentdesc">"Schritt 2: Halten Sie nun die Kamera des Smartphones über den EU-konformen QR-Code auf dem Zertifikat, um diesen zu scannen."</string>
 
     <!-- Textblock 4 im "So funktionierts" Screen beim Scannen -->
     <string name="wallet_scanner_howitworks_text4">"Es erscheint eine Vorschau des Zertifikats. Tippen Sie auf «Hinzufügen» um das Zertifikat sicher in der App zu speichern."</string>
+    <string name="wallet_scanner_howitworks_text4_contentdesc">"Schritt 3: Es erscheint eine Vorschau des Zertifikats. Tippen Sie auf «Hinzufügen» um das Zertifikat sicher in der App zu speichern."</string>
 
     <!-- Frage 1 im "So funktionierts" Screen beim Scannen -->
     <string name="wallet_scanner_howitworks_question1">"Wie und wo erhalte ich ein EU-konformes Zertifikat?"</string>
@@ -212,6 +228,7 @@ hinzufügen"</string>
     <!-- Titel des Impressum-Screens -->
     <string name="impressum_title">"Impressum / Information"</string>
 
+    <string name="impressum_title_loaded">"Impressum / Information, Seite"</string>
     <!-- Unbekannter Fehler -->
     <string name="unknown_error">"Ein unbekannter Fehler ist aufgetreten."</string>
 
@@ -404,7 +421,8 @@ ungültig"</string>
     <string name="wallet_validation_data_expired">"3-G Status nicht verfügbar, bitte probieren Sie es zu einem späteren Zeitpunkt und überprüfen Sie Ihre Internetverbindung"</string>
     <string name="wallet_3g_status_disclaimer">"Nur in Verbindung mit einem amtlichen Lichtbildausweis gültig. Zur Überprüfung verwenden Sie bitte GreenCheck."</string>
 
-    <string name="wallet_region_selection_title">"Bundeslandauswahl"</string>
+    <string name="wallet_region_selection_title">"Bundesland&#xfeff;auswahl"</string>
+    <string name="wallet_region_selection_title_loaded">"Bundesland&#xfeff;auswahl, Seite"</string>
 
     <string name="wallet_region_selection_header_title">"Bundesland wählen"</string>
     <string name="wallet_region_selection_header_message">"Je nach Bundesland können andere Zutrittsregeln gelten. Sie können das Bundesland jederzeit ändern."</string>
@@ -440,7 +458,7 @@ ungültig"</string>
     <string name="accessibility_certificate_list_valid">Gültig</string>
     <string name="accessibility_certificate_list_invalid">Ungültig</string>
 
-    <string name="wallet_test_certificate_cleanup_message">"Sie haben %d abgelaufene Testzertifikate in der App. Wir empfehlen, diese zu entfernen, damit sie ihre noch gültigen Zertifikate schneller finden! Möchten Sie die abgelaufenen Zertifikate entfernen?"</string>
+    <string name="wallet_test_certificate_cleanup_message">"Sie haben %d abgelaufene Testzertifikate in der App. Wir empfehlen, diese zu entfernen, damit Sie Ihre noch gültigen Zertifikate schneller finden! Möchten Sie die abgelaufenen Zertifikate entfernen?"</string>
     <string name="wallet_test_certificate_cleanup_no_button">"Nein"</string>
     <string name="wallet_test_certificate_cleanup_never_button">"Nie nachfragen"</string>
     <string name="wallet_test_certificate_cleanup_cleanup_button">"Ja, entfernen"</string>
@@ -451,6 +469,7 @@ ungültig"</string>
     <string name="business_rule_update_ok_button">"OK"</string>
 
     <string name="settings_title">"Über die App"</string>
+    <string name="settings_title_loaded">"Über die App, Seite"</string>
     <string name="settings_row_imprint">"Impressum"</string>
     <string name="settings_row_licenses">"Lizenzen"</string>
     <string name="settings_row_faqs">"Häufig gestellte Fragen"</string>
@@ -459,6 +478,7 @@ ungültig"</string>
     <string name="settings_row_campaign_notifications_message">"Sie erhalten vereinzelt wichtige Hinweismeldungen die für Sie relevante Informationen, wie zum Beispiel Erinnerungen an Auffrischungsimpfungen, Änderungen zu den aktuellen COVID-19 Maßnahmen oder Ähnliches, beinhalten."</string>
     <string name="settings_row_campaign_notifications_toggle_label">"Hinweismeldungen anzeigen"</string>
     <string name="licenses_title">"Lizenzen"</string>
+    <string name="licenses_title_loaded">"Lizenzen, Seite"</string>
 
     <string name="accessibility_settings_row_campaign_notifications_toggle_active">"Hinweismeldungen sind aktiv"</string>
     <string name="accessibility_settings_row_campaign_notifications_toggle_inactive">"Hinweismeldungen sind nicht aktiv"</string>
@@ -471,6 +491,7 @@ ungültig"</string>
     <string name="wallet_certificate_vaccination_exemption_detail_note">"Eine Ausnahme von der Impfpflicht besteht bis zum letzten Tage des Folgemonats, in dem der medizinische Ausnahmegrund wegfällt. Dieses End-Datum der Ausnahme von der Impfpflicht wird am Zertifikat angegeben.\n\nDieses Zertifikat ist kein Reisedokument.\n"</string>
     <string name="wallet_3g_status_validity_headline_vaccination_exemption">"Ausnahme gültig"</string>
     <string name="wallet_certificate_vaccination_exemption">"AT-konformes Zertifikat"</string>
+    <string name="wallet_certificate_vaccination_exemption_loaded">"AT-konformes Zertifikat, Seite"</string>
     <string name="certificate_reason_vaccination_exemption">"Impfausnahme"</string>
     <string name="region_type_valid_vaccination_exemption">"Gültig"</string>
     <string name="region_type_invalid_vaccination_exemption">"Ungültig"</string>

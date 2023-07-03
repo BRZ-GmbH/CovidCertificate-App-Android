@@ -79,5 +79,7 @@ data class QuestionItem(
 
 		view.findViewById<ImageView>(R.id.item_faq_question_chevron)
 			.setImageResource(if (question.isSelected) R.drawable.ic_arrow_contract else R.drawable.ic_arrow_expand)
+
+		view.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
 	}
 }

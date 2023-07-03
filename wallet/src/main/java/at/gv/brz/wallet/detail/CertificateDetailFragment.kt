@@ -26,20 +26,25 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import at.gv.brz.brvc.model.BusinessRuleValidationResult
+import at.gv.brz.brvc.model.ValidationResult
+import at.gv.brz.brvc.model.ValidityTimeFormat
+import at.gv.brz.brvc.model.ValidityTimeResult
+import at.gv.brz.brvc.model.data.BusinessRuleCertificateType
 import at.gv.brz.common.util.setSecureFlagToBlockScreenshots
 import at.gv.brz.eval.models.CertType
 import at.gv.brz.eval.models.DccHolder
 import at.gv.brz.eval.utils.*
 import at.gv.brz.common.util.makeSubStringBold
-import at.gv.brz.eval.certificateType
+import at.gv.brz.eval.businessRuleCertificateType
 import at.gv.brz.eval.data.state.*
+import at.gv.brz.eval.models.ValidationProfile
 import at.gv.brz.wallet.BuildConfig
 import at.gv.brz.wallet.CertificatesViewModel
 import at.gv.brz.wallet.R
 import at.gv.brz.wallet.data.Region
 import at.gv.brz.wallet.databinding.FragmentCertificateDetailBinding
 import at.gv.brz.wallet.util.*
-import dgca.verifier.app.engine.data.CertificateType
 import java.time.OffsetDateTime
 
 class CertificateDetailFragment : Fragment() {
@@ -72,7 +77,7 @@ class CertificateDetailFragment : Fragment() {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		displayQrCode()
-		setupCertificateDetails()
+		setupCertificateDetails(view)
 		setupStatusInfo()
 
 		binding.certificateDetailToolbar.setNavigationOnClickListener { v: View? ->
@@ -108,7 +113,7 @@ class CertificateDetailFragment : Fragment() {
 		binding.certificateDetailQrCode.setImageDrawable(qrCodeDrawable)
 	}
 
-	private fun setupCertificateDetails() {
+	private fun setupCertificateDetails(view:View) {
 		val recyclerView = binding.certificateDetailDataRecyclerView
 		val layoutManager = LinearLayoutManager(recyclerView.context, LinearLayoutManager.VERTICAL, false)
 		recyclerView.layoutManager = layoutManager
@@ -122,13 +127,15 @@ class CertificateDetailFragment : Fragment() {
 
 		binding.certificateDetailInfo.setText(R.string.wallet_verify_success_info)
 
-		if (dccHolder.certificateType() == CertificateType.VACCINATION_EXEMPTION) {
+		if (dccHolder.businessRuleCertificateType() == BusinessRuleCertificateType.VACCINATION_EXEMPTION) {
 			binding.certificateDetailToolbar.setTitle(R.string.wallet_certificate_vaccination_exemption)
+			view.announceForAccessibility(getString(at.gv.brz.common.R.string.wallet_certificate_vaccination_exemption_loaded))
 		} else {
 			binding.certificateDetailToolbar.setTitle(R.string.wallet_certificate)
+			view.announceForAccessibility(getString(at.gv.brz.common.R.string.wallet_certificate_loaded))
 		}
 
-		if (dccHolder.certificateType() == CertificateType.VACCINATION_EXEMPTION) {
+		if (dccHolder.businessRuleCertificateType() == BusinessRuleCertificateType.VACCINATION_EXEMPTION) {
 			binding.certificateDetailNote.setText(R.string.wallet_certificate_vaccination_exemption_detail_note)
 		} else {
 			binding.certificateDetailNote.setText(R.string.wallet_certificate_detail_note)
@@ -196,11 +203,9 @@ class CertificateDetailFragment : Fragment() {
 		binding.certificateDetailInfo.visibility = View.INVISIBLE
 		binding.certificateDetailInfoCircle.visibility = View.INVISIBLE
 
-		binding.certificateDetailValidityHintEt.visibility = View.VISIBLE
-
-		if (dccHolder.certificateType() == CertificateType.VACCINATION_EXEMPTION) {
+		if (dccHolder.businessRuleCertificateType() == BusinessRuleCertificateType.VACCINATION_EXEMPTION) {
 			binding.certificateDetailExemptionValidityContainer.visibility = View.VISIBLE
-			if (state.results.firstOrNull()?.valid == true) {
+			if (state.results[ValidationProfile.ENTRY.profileName] is ValidationResult.Valid) {
 				binding.certificateDetailExemptionContainer.setBackgroundResource(R.drawable.bg_certificate_bubble_valid)
 				binding.certificateDetailInfoVeIcon.setImageResource(R.drawable.ic_check_circle)
 				binding.certificateDetailExemptionContainer.contentDescription = getString(R.string.region_type_valid_vaccination_exemption)
@@ -217,76 +222,42 @@ class CertificateDetailFragment : Fragment() {
 		} else {
 			binding.certificateDetailRegionValidityContainer.visibility = View.VISIBLE
 
-			val etResult = state.results.first { it.region?.startsWith("ET") == true }
-			val ngResult = state.results.first { it.region?.startsWith("NG") == true }
+			val etResult = state.results[ValidationProfile.ENTRY.profileName]
+			val ngResult = state.results[ValidationProfile.NIGHT_CLUB.profileName]
 
-			binding.certificateDetailRegionEtContainer.setBackgroundResource(
-				if (etResult.valid) {
-					R.drawable.bg_certificate_bubble_valid
-				} else {
-					R.drawable.bg_certificate_bubble_invalid
-				}
-			)
-			binding.certificateDetailRegionNgContainer.setBackgroundResource(
-				if (ngResult.valid) {
-					R.drawable.bg_certificate_bubble_valid
-				} else {
-					R.drawable.bg_certificate_bubble_invalid
-				}
-			)
+			binding.certificateDetailRegionEtContainer.setBackgroundResource(if (etResult is ValidationResult.Valid) { R.drawable.bg_certificate_bubble_valid} else { R.drawable.bg_certificate_bubble_invalid})
+			binding.certificateDetailRegionNgContainer.setBackgroundResource(if (ngResult is ValidationResult.Valid) { R.drawable.bg_certificate_bubble_valid} else { R.drawable.bg_certificate_bubble_invalid})
 
-			binding.certificateDetailInfoEtIcon.setImageResource(
-				if (etResult.valid) {
-					R.drawable.ic_check_circle
-				} else {
-					R.drawable.ic_minus_circle
-				}
-			)
-			binding.certificateDetailInfoNgIcon.setImageResource(
-				if (ngResult.valid) {
-					R.drawable.ic_check_circle
-				} else {
-					R.drawable.ic_minus_circle
-				}
-			)
+			binding.certificateDetailInfoEtIcon.setImageResource(if (etResult is ValidationResult.Valid) { R.drawable.ic_check_circle} else { R.drawable.ic_minus_circle})
+			binding.certificateDetailInfoNgIcon.setImageResource(if (ngResult is ValidationResult.Valid) { R.drawable.ic_check_circle} else { R.drawable.ic_minus_circle})
 
 			binding.certificateDetailRegionEtContainer.importantForAccessibility = 1
-			binding.certificateDetailRegionEtContainer.contentDescription =
-				if (etResult.valid) getString(R.string.accessibility_valid_text) + getString(R.string.region_type_ET) else getString(
-					R.string.accessibility_invalid_text
-				) + getString(R.string.region_type_ET)
+			binding.certificateDetailRegionEtContainer.contentDescription = if (etResult is ValidationResult.Valid) getString(R.string.accessibility_valid_text) + getString(R.string.region_type_ET)  else getString(R.string.accessibility_invalid_text) + getString(R.string.region_type_ET)
 			binding.certificateDetailRegionNgContainer.importantForAccessibility = 1
-			binding.certificateDetailRegionNgContainer.contentDescription =
-				if (ngResult.valid) getString(R.string.accessibility_valid_text) + getString(R.string.region_type_NG) else getString(
-					R.string.accessibility_invalid_text
-				) + getString(R.string.region_type_NG)
+			binding.certificateDetailRegionNgContainer.contentDescription = if (ngResult is ValidationResult.Valid) getString(R.string.accessibility_valid_text) + getString(R.string.region_type_NG) else getString(R.string.accessibility_invalid_text) + getString(R.string.region_type_NG)
 
-			binding.certificateDetailInfoEtValidityGroup.isVisible = etResult.valid
-			binding.certificateDetailInfoNgValidityGroup.isVisible = ngResult.valid
-			binding.certificateDetailInfoValidityHeadline.isVisible =
-				etResult.valid || ngResult.valid
+			binding.certificateDetailInfoEtValidityGroup.isVisible = etResult is ValidationResult.Valid
+			binding.certificateDetailInfoNgValidityGroup.isVisible = ngResult is ValidationResult.Valid
+			binding.certificateDetailInfoValidityHeadline.isVisible = etResult is ValidationResult.Valid || ngResult is ValidationResult.Valid
 
-			val selectedRegion =
-				Region.getRegionFromIdentifier(certificatesViewModel.secureStorage.getSelectedValidationRegion())
+			val selectedRegion = Region.getRegionFromIdentifier(certificatesViewModel.secureStorage.getSelectedValidationRegion())
 
 			if (selectedRegion != null) {
-				if (etResult.valid) {
+				if (etResult is ValidationResult.Valid) {
 					binding.certificateDetailInfoEtValidityDateDisclaimer.text = getString(
 						R.string.wallet_certificate_validity,
 						getString(R.string.region_type_ET_validity),
 						getString(selectedRegion.getName())
 					)
-					binding.certificateDetailInfoEtValidityDate.text =
-						getValidityDate(etResult.validUntil, dccHolder.certType)
+					binding.certificateDetailInfoEtValidityDate.text = etResult.result.formattedValidUntil()
 				}
-				if (ngResult.valid) {
+				if (ngResult is ValidationResult.Valid) {
 					binding.certificateDetailInfoNgValidityDateDisclaimer.text = getString(
 						R.string.wallet_certificate_validity,
 						getString(R.string.region_type_NG_validity),
 						getString(selectedRegion.getName())
 					)
-					binding.certificateDetailInfoNgValidityDate.text =
-						getValidityDate(ngResult.validUntil, dccHolder.certType)
+					binding.certificateDetailInfoNgValidityDate.text = ngResult.result.formattedValidUntil()
 				}
 			}
 		}
@@ -460,4 +431,24 @@ class CertificateDetailFragment : Fragment() {
 	}
 
 
+}
+
+fun BusinessRuleValidationResult.formattedValidFrom(): String? {
+	val validFrom = validFrom.firstOrNull() ?: return null
+
+	when (validFrom.format) {
+		ValidityTimeFormat.DATE_TIME -> return DEFAULT_DISPLAY_DATE_TIME_FORMATTER.format(validFrom.time)
+		ValidityTimeFormat.DATE -> return DEFAULT_DISPLAY_DATE_FORMATTER.format(validFrom.time)
+	}
+}
+
+fun ValidityTimeResult.formattedString(): String {
+	when (format) {
+		ValidityTimeFormat.DATE_TIME -> return DEFAULT_DISPLAY_DATE_TIME_FORMATTER.format(time)
+		ValidityTimeFormat.DATE -> return DEFAULT_DISPLAY_DATE_FORMATTER.format(time)
+	}
+}
+
+fun BusinessRuleValidationResult.formattedValidUntil(): String? {
+	return validUntil.firstOrNull()?.formattedString()
 }

@@ -89,7 +89,8 @@
 				android:layout_height="wrap_content"
 				android:layout_marginHorizontal="@dimen/spacing_very_large"
 				android:layout_marginTop="@dimen/spacing_very_large"
-				android:orientation="horizontal">
+				android:orientation="horizontal"
+				android:contentDescription="@string/wallet_scanner_howitworks_text2_contentdesc">
 
 				<ImageView
 					android:importantForAccessibility="no"
@@ -111,7 +112,8 @@
 				android:layout_height="wrap_content"
 				android:layout_marginHorizontal="@dimen/spacing_very_large"
 				android:layout_marginTop="@dimen/spacing_very_large"
-				android:orientation="horizontal">
+				android:orientation="horizontal"
+				android:contentDescription="@string/wallet_scanner_howitworks_text3_contentdesc">
 
 				<ImageView
 					android:importantForAccessibility="no"
@@ -133,7 +135,8 @@
 				android:layout_height="wrap_content"
 				android:layout_marginHorizontal="@dimen/spacing_very_large"
 				android:layout_marginTop="@dimen/spacing_very_large"
-				android:orientation="horizontal">
+				android:orientation="horizontal"
+				android:contentDescription="@string/wallet_scanner_howitworks_text4_contentdesc">
 
 				<ImageView
 					android:importantForAccessibility="no"

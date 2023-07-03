@@ -36,10 +36,14 @@
 			app:layout_constraintTop_toTopOf="parent"
 			app:navigationIcon="@drawable/ic_close_red"
 			app:navigationContentDescription="@string/accessibility_close_button"
-			android:elevation="@dimen/toolbar_elevation"
-			app:title="@string/wallet_support_header"
-			app:titleTextAppearance="@style/CovidCertificate.ToolbarTitle"
-			app:titleTextColor="@color/grey" />
+			android:elevation="@dimen/toolbar_elevation">
+			<TextView
+				android:id="@+id/certificates_overview_toolbar_faq"
+				android:text="@string/wallet_support_header"
+				style="@style/CovidCertificate.ToolbarTitle.Faq"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		</androidx.appcompat.widget.Toolbar>
 
 		<androidx.recyclerview.widget.RecyclerView
 			android:id="@+id/faq_recycler_view"

@@ -439,54 +439,6 @@ class HomeFragment : Fragment() {
 					}
 				}
 			}
-
-		}
-		val selectedRegion =
-			Region.getRegionFromIdentifier(certificatesViewModel.secureStorage.getSelectedValidationRegion())
-		if (selectedRegion != null) {
-			binding.homescreenHeaderEmpty.headerRegionFlag.setImageResource(selectedRegion.getFlag())
-			binding.homescreenHeaderNotEmpty.headerRegionFlag.setImageResource(selectedRegion.getFlag())
-			binding.homescreenHeaderEmpty.headerRegionText.setText(selectedRegion.getName())
-			binding.homescreenHeaderNotEmpty.headerRegionText.setText(selectedRegion.getName())
-			binding.homescreenHeaderEmpty.headerRegionText.contentDescription =
-				"${getString(selectedRegion.getName())}.\n" +
-						"\n${getString(R.string.accessibility_state_selector)}.\n" +
-						"\n${getString(R.string.accessibility_change_selected_region)}"
-			binding.homescreenHeaderNotEmpty.headerRegionText.contentDescription =
-				"${getString(selectedRegion.getName())}.\n" +
-						"\n${getString(R.string.accessibility_state_selector)}.\n" +
-						"\n${getString(R.string.accessibility_change_selected_region)}"
-		} else {
-			binding.homescreenHeaderEmpty.headerRegionText.contentDescription =
-				"\n${getString(R.string.accessibility_state_selector)}.\n" +
-						"\n${getString(R.string.accessibility_change_selected_region)}"
-			binding.homescreenHeaderNotEmpty.headerRegionText.contentDescription =
-				"\n${getString(R.string.accessibility_state_selector)}.\n" +
-						"\n${getString(R.string.accessibility_change_selected_region)}"
-		}
-		currentCertificateOrderString = newCertificateOrderString
-
-		val selectedRegion = Region.getRegionFromIdentifier(certificatesViewModel.secureStorage.getSelectedValidationRegion())
-		if (selectedRegion != null) {
-			binding.homescreenHeaderEmpty.headerRegionFlag.setImageResource(selectedRegion.getFlag())
-			binding.homescreenHeaderNotEmpty.headerRegionFlag.setImageResource(selectedRegion.getFlag())
-			binding.homescreenHeaderEmpty.headerRegionText.setText(selectedRegion.getName())
-			binding.homescreenHeaderNotEmpty.headerRegionText.setText(selectedRegion.getName())
-			binding.homescreenHeaderEmpty.headerRegionText.contentDescription =
-				"${getString(selectedRegion.getName())}.\n" +
-						"\n${getString(R.string.accessibility_state_selector)}.\n" +
-						"\n${getString(R.string.accessibility_change_selected_region)}"
-			binding.homescreenHeaderNotEmpty.headerRegionText.contentDescription =
-				"${getString(selectedRegion.getName())}.\n" +
-						"\n${getString(R.string.accessibility_state_selector)}.\n" +
-						"\n${getString(R.string.accessibility_change_selected_region)}"
-		} else {
-			binding.homescreenHeaderEmpty.headerRegionText.contentDescription =
-						"\n${getString(R.string.accessibility_state_selector)}.\n" +
-						"\n${getString(R.string.accessibility_change_selected_region)}"
-			binding.homescreenHeaderNotEmpty.headerRegionText.contentDescription =
-						"\n${getString(R.string.accessibility_state_selector)}.\n" +
-						"\n${getString(R.string.accessibility_change_selected_region)}"
 		}
 		currentCertificateOrderString = newCertificateOrderString
 
