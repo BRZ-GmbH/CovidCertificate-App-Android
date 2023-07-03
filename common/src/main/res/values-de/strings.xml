@@ -362,7 +362,7 @@ Nutzungsbedingungen"</string>
 
     <!-- Wallet: Hinweis im Zertifikat Detail -->
     <string name="wallet_certificate_detail_note">"Dieses Zertifikat ist kein Reisedokument. \n\nDie wissenschaftlichen Erkenntnisse über Covid-19-Impfungen und -Tests sowie über die Genesung von einer Covid-19-Infektion entwickeln sich ständig weiter, auch im Hinblick auf neue besorgniserregende Virusvarianten. \n\nBitte informieren Sie sich vor der Reise über die am Zielort geltenden Gesundheitsmassnahmen und damit verbundenen Beschränkungen."</string>
-    <string name="wallet_terms_privacy_link">"https://gruenerpass.gv.at/app/datenschutz"</string>
+    <string name="wallet_terms_privacy_link">"https://www.sozialministerium.at/gruener-pass-datenschutz"</string>
 
     <!-- Wallet: Homescreen Was wollen sie machen? -->
     <string name="wallet_homescreen_what_to_do">"Nächsten Schritt wählen"</string>
@@ -489,6 +489,7 @@ ungültig"</string>
     <string name="accessibility_settings_row_campaign_notifications_toggle_inactive">"Hinweismeldungen sind nicht aktiv"</string>
 
     <string name="accessibility_change_campaign_notifications_toggle">"Zum Ändern Doppeltippen"</string>
+    <string name="wallet_app_notification_permission_denied">"Kein Zugang zur Anzeige von Benachrichtigungen"</string>
 
     <!-- Direct link : date picker -->
     <string name="directlink_datepicker_title">Zertifikat hinzufügen</string>
@@ -506,6 +507,11 @@ ungültig"</string>
     <string name="directlink_error_button_cancel">Abbrechen</string>
     <string name="directlink_error_button_tryagain">Erneut versuchen</string>
     <!-- Impfausnahmen -->
+    <string name="wallet_app_read_files_permission_denied">"Kein Zugriff auf Gerätespeicher gewährt."</string>
+    <string name="wallet_app_no_file_picker_found">"Keine Dateiauswahl gefunden"</string>
+    <string name="wallet_app_file_permission_dialog_text">"Die %1$s App benötigt zum Importieren Ihrer Covid-Zertifikate, die Sie auf Ihr Mobilgerät geladen haben, die erforderliche Berechtigung für den Zugriff darauf. Diese Berechtigung können Sie im nächsten Schritt gewähren. Wenn Sie diese Berechtigung nicht gewähren, können Sie über die App nur bereits importierte Covid-Zertifikate zur Voransicht nutzen."</string>
+    <string name="wallet_app_file_permission_dialog_action">"Zugriff erlauben"</string>
+
     <string name="wallet_certificate_vaccination_exemption_country_title">"Ausstellungsland"</string>
     <string name="covid_certificate_vaccination_exemption_title">"Impfausnahme"</string>
     <string name="wallet_certificate_vaccination_exemption_detail_note">"Eine Ausnahme von der Impfpflicht besteht bis zum letzten Tage des Folgemonats, in dem der medizinische Ausnahmegrund wegfällt. Dieses End-Datum der Ausnahme von der Impfpflicht wird am Zertifikat angegeben.\n\nDieses Zertifikat ist kein Reisedokument.\n"</string>
