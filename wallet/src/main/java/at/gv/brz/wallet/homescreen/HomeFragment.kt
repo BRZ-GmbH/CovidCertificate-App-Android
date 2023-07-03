@@ -10,9 +10,14 @@
 
 package at.gv.brz.wallet.homescreen
 
+import android.Manifest
+import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Paint
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -25,6 +30,8 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
 import androidx.fragment.app.Fragment
@@ -49,6 +56,7 @@ import at.gv.brz.wallet.CertificatesViewModel
 import at.gv.brz.wallet.R
 import at.gv.brz.wallet.add.CertificateAddFragment
 import at.gv.brz.wallet.data.Region
+import at.gv.brz.wallet.databinding.DialogFilePermissionExplanationBinding
 import at.gv.brz.wallet.databinding.FragmentHomeBinding
 import at.gv.brz.wallet.detail.CertificateDetailFragment
 import at.gv.brz.wallet.faq.WalletFaqFragment
@@ -63,6 +71,7 @@ import at.gv.brz.wallet.settings.SettingsFragment
 import at.gv.brz.wallet.util.NotificationUtil
 import at.gv.brz.wallet.util.QueuedCampaignNotification
 import at.gv.brz.wallet.util.lastDisplayTimestampKeyForCertificate
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -110,6 +119,27 @@ class HomeFragment : Fragment() {
 			}
 		}
 
+	private val requestFilePermissionLauncher =
+		registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+			if (isGranted) {
+				launchPdfFilePicker()
+			} else {
+				Snackbar.make(binding.homescreenConstraintLayout,
+					getString(R.string.wallet_app_read_files_permission_denied),
+					Snackbar.LENGTH_SHORT).show()
+			}
+		}
+
+	private val requestPermissionLauncher = registerForActivityResult(
+		ActivityResultContracts.RequestPermission()
+	) { isGranted: Boolean ->
+		when (isGranted) {
+			false -> Snackbar.make(binding.homescreenConstraintLayout,
+				getString(R.string.wallet_app_notification_permission_denied),
+				Snackbar.LENGTH_SHORT).show()
+		}
+	}
+
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 		_binding = FragmentHomeBinding.inflate(inflater, container, false)
 		return binding.root
@@ -121,6 +151,19 @@ class HomeFragment : Fragment() {
 		setupImportObservers()
 		view.announceForAccessibility(getString(R.string.wallet_main_loaded))
 		handleTapOnCampaignNotification()
+		checkPermissionAndHandleNotifications()
+	}
+
+	private fun checkPermissionAndHandleNotifications() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+			val permission =
+				ContextCompat.checkSelfPermission(requireContext(),
+					Manifest.permission.POST_NOTIFICATIONS)
+			if (permission != PackageManager.PERMISSION_GRANTED && !certificatesViewModel.secureStorage.getIsNotificationPermissionLaunched()) {
+				requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+				certificatesViewModel.secureStorage.setIsNotificationPermissionLaunched(true)
+			}
+		}
 	}
 
 	private fun handleTapOnCampaignNotification() {
@@ -322,9 +365,62 @@ class HomeFragment : Fragment() {
 			showQrScanFragment()
 		}
 
-		binding.homescreenAddCertificateOptionsEmpty.optionImportPdf.setOnClickListener { launchPdfFilePicker() }
+		binding.homescreenAddCertificateOptionsEmpty.optionImportPdf.setOnClickListener {
+			checkFilePermissions()
+		}
 		binding.homescreenAddCertificateOptionsNotEmpty.optionImportPdf.setOnClickListener {
 			isAddOptionsShowing = false
+			checkFilePermissions()
+		}
+
+
+	}
+
+	private fun permissionRequestingDialog() {
+		val dialogBinding: DialogFilePermissionExplanationBinding =
+			DialogFilePermissionExplanationBinding.inflate(LayoutInflater.from(requireContext()));
+		val dialog = Dialog(requireContext())
+		dialog.setContentView(dialogBinding.root)
+		dialog.window?.apply {
+			setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+			setBackgroundDrawableResource(R.drawable.bg_dialog)
+		}
+		dialog.setCancelable(false)
+		dialogBinding.filePermissionDialogOkButton.apply {
+			paintFlags = paintFlags or Paint.UNDERLINE_TEXT_FLAG
+		}
+		dialogBinding.filePermissionDialogText.text =
+			String.format(getString(R.string.wallet_app_file_permission_dialog_text, getString(R.string.wallet_app_name)))
+		dialogBinding.filePermissionDialogCloseButton.setOnClickListener {
+			dialog.dismiss()
+		}
+
+		dialogBinding.filePermissionDialogOkButton.setOnClickListener {
+			dialog.dismiss()
+			requestFilePermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+		}
+		dialog.show()
+	}
+
+
+	/**
+	 * Android behaviour change
+	 * From Android API 19 to 29 make sure to request the runtime permission.
+	 * From Android API 30+ will use the storage access framework.
+	 */
+	private fun checkFilePermissions() {
+		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
+			if (ContextCompat.checkSelfPermission(
+					requireActivity(),
+					Manifest.permission.READ_EXTERNAL_STORAGE
+				)
+				!= PackageManager.PERMISSION_GRANTED
+			) {
+				permissionRequestingDialog()
+			} else {
+				launchPdfFilePicker()
+			}
+		} else {
 			launchPdfFilePicker()
 		}
 
@@ -346,7 +442,7 @@ class HomeFragment : Fragment() {
 		try {
 			filePickerLauncher.launch(intent)
 		} catch (e: ActivityNotFoundException) {
-			Toast.makeText(context, "No file picker found", Toast.LENGTH_LONG).show()
+			Toast.makeText(context, getString(R.string.wallet_app_no_file_picker_found), Toast.LENGTH_LONG).show()
 		}
 	}
 

@@ -23,6 +23,7 @@
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:minHeight="@dimen/spacing_min_height"
 		android:paddingBottom="@dimen/spacing_medium_small"
 		android:layout_marginHorizontal="@dimen/spacing_medium_large">
 
@@ -32,7 +33,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			tools:text="@string/wallet_faq_questions_question_1" />
+			tools:text="@string/wallet_faq_header" />
 
 		<ImageView
 			android:id="@+id/item_faq_question_chevron"
@@ -63,12 +64,13 @@
 			android:importantForAccessibility="yes"
 			android:focusableInTouchMode="true"
 			android:focusedByDefault="true"
-			tools:text="@string/wallet_faq_questions_answer_1" />
+			tools:text="@string/wallet_faq_loaded" />
 
 		<LinearLayout
 			android:id="@+id/item_faq_question_link"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:minHeight="@dimen/spacing_min_height"
 			android:layout_marginHorizontal="@dimen/spacing_medium_small"
 			android:layout_marginTop="@dimen/spacing_medium_large"
 			android:background="@drawable/ripple_rounded_rect"

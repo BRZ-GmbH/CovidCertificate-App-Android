@@ -34,6 +34,7 @@ class WalletSecureStorage private constructor(context: Context) {
 		private const val KEY_NOTIFICATION_CAMPAIGN_MESSAGE = "notification_campaign_message"
 		private const val KEY_NOTIFICATION_CAMPAIGN_LAST_TIMESTAMP = "notification_campaign_last_timestamp_key"
 		private const val KEY_HAS_MODIFIED_CERTIFICATES_IN_SESSION = "has_modified_certificates_in_session"
+		private const val KEY_IS_NOTIFICATION_PERMISSION_LAUNCHED = "is_notification_permission_launched"
 	}
 
 	private val prefs: SharedPreferences
@@ -111,5 +112,11 @@ class WalletSecureStorage private constructor(context: Context) {
 	fun getNotificationCampaignMessage(): String? = prefs.getString(KEY_NOTIFICATION_CAMPAIGN_MESSAGE, null)
 
 	fun setNotificationCampaignMessage(campaignMessage: String?) = prefs.edit().putString(KEY_NOTIFICATION_CAMPAIGN_MESSAGE, campaignMessage).apply()
+
+	fun getIsNotificationPermissionLaunched(): Boolean = prefs.getBoolean(
+		KEY_IS_NOTIFICATION_PERMISSION_LAUNCHED, false)
+
+	fun setIsNotificationPermissionLaunched(status: Boolean) =
+		prefs.edit().putBoolean(KEY_IS_NOTIFICATION_PERMISSION_LAUNCHED, status).apply()
 
 }

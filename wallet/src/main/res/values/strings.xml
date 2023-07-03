@@ -362,7 +362,7 @@ Terms and conditions of use"</string>
 
     <!-- Wallet: Hinweis im Zertifikat Detail -->
     <string name="wallet_certificate_detail_note">"This certificate is no travel document. \n\nThe scientific findings about Covid-19 vaccinations and tests and about recovery from Covid-19 infection continue to evolve, also with regard to worrying new coronavirus variants. \n\nPlease make sure you have the latest information about the health measures and any associated restrictions in place at your destination before starting your trip."</string>
-    <string name="wallet_terms_privacy_link">"https://gruenerpass.gv.at/app/datenschutz"</string>
+    <string name="wallet_terms_privacy_link">"https://www.sozialministerium.at/gruener-pass-datenschutz"</string>
 
 
     <!-- Wallet: Homescreen Was wollen sie machen? -->
@@ -488,6 +488,7 @@ invalid"</string>
     <string name="accessibility_settings_row_campaign_notifications_toggle_active">"Notifications are enabled"</string>
     <string name="accessibility_settings_row_campaign_notifications_toggle_inactive">"Notifications are disabled"</string>
     <string name="accessibility_change_campaign_notifications_toggle">"Double-tap to change"</string>
+    <string name="wallet_app_notification_permission_denied">"No access to show notifications"</string>
 
     <!-- Direct link : date picker -->
     <string name="directlink_datepicker_title">Add certificate</string>
@@ -505,6 +506,10 @@ invalid"</string>
     <string name="directlink_error_button_cancel">Cancel</string>
     <string name="directlink_error_button_tryagain">Try again</string>
     <!-- Vaccination Exemption -->
+    <string name="wallet_app_read_files_permission_denied">"No access for the device storage granted."</string>
+    <string name="wallet_app_no_file_picker_found">"No file picker found"</string>
+    <string name="wallet_app_file_permission_dialog_text">"The %1$s App requires the necessary permission to access your Covid certificates that you have downloaded to your mobile device in order to import them. You can grant this permission in the next step. If you don't want to grant this permission and decline, you are only able the use the App with previously imported Covid-Certificates."</string>
+    <string name="wallet_app_file_permission_dialog_action">"Allow access"</string>
 
     <string name="wallet_certificate_vaccination_exemption_country_title">"Country of Issue"</string>
     <string name="covid_certificate_vaccination_exemption_title">"Vaccination Exemption"</string>

@@ -13,6 +13,8 @@ package at.gv.brz.wallet.notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_IMMUTABLE
+import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
@@ -93,7 +95,13 @@ class NotificationHelper {
         }
         intent.putExtras(bundle)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val notifyPendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        val pendingIntentFlags = when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> FLAG_IMMUTABLE
+            else -> FLAG_UPDATE_CURRENT
+        }
+
+        val notifyPendingIntent = PendingIntent.getActivity(context, 0, intent, pendingIntentFlags)
 
         val notificationBuilder = NotificationCompat
             .Builder(context, CHANNEL_ID)
@@ -150,7 +158,21 @@ class NotificationHelper {
         /**
          * Create notifications for new campaigns
          */
-        campaignsToAdd.map { queuedCampaignNotification -> createNotification(queuedCampaignNotification, context) }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (NotificationManagerCompat.from(context)
+                    .areNotificationsEnabled()
+            ) {
+                campaignsToAdd.map { queuedCampaignNotification ->
+                    createNotification(queuedCampaignNotification,
+                        context)
+                }
+            }
+        } else {
+            campaignsToAdd.map { queuedCampaignNotification ->
+                createNotification(queuedCampaignNotification,
+                    context)
+            }
+        }
 
     }
 

@@ -33,16 +33,15 @@ ext.readPropertyWithDefault = { paramName, defaultValue ->
 }
 
 android {
-	compileSdkVersion 30
-	buildToolsVersion "30.0.3"
+	compileSdkVersion 33
+	buildToolsVersion "33.0.0"
 
 	defaultConfig {
 		applicationId "at.gv.brz.wallet"
 		minSdkVersion 23
-		targetSdkVersion 30
-		versionCode 109
-		versionName "2.3.7"
-
+		targetSdkVersion 33
+		versionCode 119
+		versionName "2.3.8"
 		buildConfigField "long", "BUILD_TIME", readPropertyWithDefault('buildTimestamp', System.currentTimeMillis()) + 'L'
 
 		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -185,12 +184,15 @@ dependencies {
 	implementation 'com.google.android.play:core:1.10.2'
 	implementation 'com.google.android.play:core-ktx:1.8.1'
 
-	implementation 'androidx.work:work-runtime-ktx:2.5.0'
+	// required to avoid crash on Android 12 API 32
+	implementation 'androidx.work:work-runtime-ktx:2.7.1'
 	implementation "androidx.concurrent:concurrent-futures-ktx:1.1.0"
 
-	testImplementation 'junit:junit:4.+'
-	androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-	androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+	testImplementation 'androidx.test:core-ktx:1.4.0'
+	testImplementation 'androidx.test.ext:junit-ktx:1.1.3'
+	testImplementation 'junit:junit:4.13.2'
+	androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+	androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 	implementation 'com.github.ehn-dcc-development.hcert-kotlin:hcert-kotlin-jvm:1.4.0'
 
 	androidTestImplementation "com.google.code.gson:gson:2.8.6"

@@ -249,6 +249,7 @@
 			style="@style/CovidCertificate.Text.Blue"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:minHeight="@dimen/spacing_min_height"
 			android:layout_marginTop="@dimen/spacing_medium"
 			android:background="@drawable/ripple_rounded_rect"
 			android:gravity="center"

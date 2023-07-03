@@ -27,7 +27,7 @@ class DataSyncWorker(context: Context, params: WorkerParameters): ListenableWork
                 refreshTrustListJob=launch {
                     CovidCertificateSdk.getCertificateVerificationController().refreshTrustList(this, false)
                 }
-                updateConfigJob=launch {
+                updateConfigJob = launch {
                     NotificationHelper().updateConfigForLocalNotification(applicationContext)
                 }
                 updateDataSyncWorkerStatus(completer)

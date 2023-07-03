@@ -11,6 +11,8 @@ import com.squareup.moshi.JsonClass
 data class DirectLinkModel(
     val secret: String,
     val secretSignature: String,
+    val clientId: String? = null,
+    val clientIdSignature: String? = null,
     val birthdate: Birthdate? = null,
     val bypassToken: String? = null,
     val request: List<String> = listOf()

@@ -58,7 +58,7 @@ fun View.hideAnimated(
 		.translationY(translationYby)
 		.setInterpolator(AccelerateInterpolator())
 		.setListener(object : AnimatorListenerAdapter() {
-			override fun onAnimationEnd(animation: Animator?) {
+			override fun onAnimationEnd(animation: Animator) {
 				visibility = View.GONE
 			}
 		})
@@ -76,7 +76,7 @@ fun View.rotate(
 		.rotation(toDegrees)
 		.setInterpolator(AccelerateDecelerateInterpolator())
 		.setListener(object : AnimatorListenerAdapter() {
-			override fun onAnimationEnd(animation: Animator?) {
+			override fun onAnimationEnd(animation: Animator) {
 				resetToDegrees?.let { rotation = it }
 			}
 		})

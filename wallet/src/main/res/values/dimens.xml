@@ -23,6 +23,8 @@
 	<dimen name="spacing_huger">50dp</dimen>
 	<dimen name="spacing_enormous">100dp</dimen>
 
+	<dimen name="spacing_min_height">48dp</dimen>
+
 	<dimen name="text_size_small">12sp</dimen>
 	<dimen name="text_size_smaller">14sp</dimen>
 	<dimen name="text_size_type_bubble">13sp</dimen>

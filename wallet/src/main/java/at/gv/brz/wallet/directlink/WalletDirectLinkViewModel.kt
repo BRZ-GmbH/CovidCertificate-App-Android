@@ -28,10 +28,11 @@ import kotlinx.coroutines.launch
 class WalletDirectLinkViewModel(application: Application) : AndroidViewModel(application) {
 
     private val bypassTokenQueryKey = "bpt"
+    private val pathParameter = "result"
     sealed class DirectLinkType {
-        data class SmsLink(val secret: String, val signature: String): DirectLinkType()
+        data class SmsLink(val secret: String, val signature: String, val clientId: String?=null, val clientIdSignature: String?=null): DirectLinkType()
         data class WebLink(val base64EncodedQRCodeData: String): DirectLinkType()
-        data class BypassTokenLink(val secret: String, val signature: String, val bypassToken:String): DirectLinkType()
+        data class BypassTokenLink(val secret: String, val signature: String, val bypassToken:String, val clientId: String?=null, val clientIdSignature: String?=null): DirectLinkType()
     }
 
     private val directLinkResponseMutableLiveData = SingleLiveEvent<DirectLinkResult>()
@@ -57,13 +58,30 @@ class WalletDirectLinkViewModel(application: Application) : AndroidViewModel(app
     fun checkDirectLinkType(appLinkData: Uri): DirectLinkType? {
         when ("${appLinkData.scheme}://${appLinkData.host}") {
             BuildConfig.smsImportLinkHost -> {
-                if (appLinkData.pathSegments.size != 3) {
-                    return null
-                } else if(appLinkData.pathSegments[0].equals("result")) {
-                    return if(appLinkData.query!=null)
-                        DirectLinkType.BypassTokenLink(appLinkData.pathSegments[1], appLinkData.pathSegments[2], appLinkData.getQueryParameter(bypassTokenQueryKey)!!)
+                if (appLinkData.pathSegments.size == 3 && appLinkData.pathSegments[0].equals(
+                        pathParameter)
+                ) {
+                    return if (appLinkData.query != null)
+                        DirectLinkType.BypassTokenLink(appLinkData.pathSegments[1],
+                            appLinkData.pathSegments[2],
+                            appLinkData.getQueryParameter(bypassTokenQueryKey)!!)
                     else
-                        DirectLinkType.SmsLink(appLinkData.pathSegments[1], appLinkData.pathSegments[2])
+                        DirectLinkType.SmsLink(appLinkData.pathSegments[1],
+                            appLinkData.pathSegments[2])
+                } else if (appLinkData.pathSegments.size == 5 && appLinkData.pathSegments[0].equals(
+                        pathParameter)
+                ) {
+                    return if (appLinkData.query != null)
+                        DirectLinkType.BypassTokenLink(appLinkData.pathSegments[1],
+                            appLinkData.pathSegments[2],
+                            appLinkData.getQueryParameter(bypassTokenQueryKey)!!,
+                            appLinkData.pathSegments[3],
+                            appLinkData.pathSegments[4])
+                    else
+                        DirectLinkType.SmsLink(appLinkData.pathSegments[1],
+                            appLinkData.pathSegments[2],
+                            appLinkData.pathSegments[3],
+                            appLinkData.pathSegments[4])
                 }
             }
             BuildConfig.websiteImportLinkHost -> {
