@@ -12,6 +12,7 @@ plugins {
 	id 'com.android.application'
 	id 'kotlin-android'
 	id 'kotlin-kapt'
+	id 'kotlinx-serialization'
 }
 
 ext.readProperty = { paramName -> readPropertyWithDefault(paramName, null) }
@@ -39,8 +40,8 @@ android {
 		applicationId "at.gv.brz.wallet"
 		minSdkVersion 23
 		targetSdkVersion 30
-		versionCode 93
-		versionName "2.3.4"
+		versionCode 106
+		versionName "2.3.5"
 
 		buildConfigField "long", "BUILD_TIME", readPropertyWithDefault('buildTimestamp', System.currentTimeMillis()) + 'L'
 
@@ -48,6 +49,15 @@ android {
 	}
 
 	productFlavors {
+
+		def smsImportLinkHostName_Abn = 'nachweistest.gesundheit.gv.at'
+		def smsImportLinkHostName = 'nachweis.gesundheit.gv.at'
+		def websiteImportLinkHostName_Abn = 'secure2.gesundheit.gv.at'
+		def websiteImportLinkHostName = 'secure.gesundheit.gv.at'
+		def ConfigSpecMinLoadWaitTime_Abn = 8 * 60 * 60 * 1000L
+		def ConfigSpecMinLoadWaitTime = 8 * 60 * 60 * 8000L
+		def DataSyncWorker_Abn = 15
+		def DataSyncWorker = 8
 		// These app tokens are reserved for the official COVID Certificate and COVID Certificate Check app.
         // If you intend to integrate the CovidCertificate-SDK into your app, please read
 		// https://github.com/Federal-Ministry-of-Health-AT/green-pass-overview#getting-access-to-trust-list-business-rules-and-value-sets
@@ -55,20 +65,60 @@ android {
 			buildConfigField "String", "BASE_URL", '"https://dgc-trusttest.qr.gv.at"'
 			buildConfigField "String", "SDK_API_TOKEN", '""'
 			applicationIdSuffix '.dev'
+			buildConfigField "String", "smsImportLinkHost", "\"https://$smsImportLinkHostName_Abn\""
+			buildConfigField "String", "websiteImportLinkHost", "\"https://$websiteImportLinkHostName_Abn\""
+			manifestPlaceholders["smsImportLinkHost"] = "$smsImportLinkHostName_Abn"
+			manifestPlaceholders["websiteImportLinkHost"] = "$websiteImportLinkHostName_Abn"
+			buildConfigField "String", "BASE_URL_TRUST_LIST", '"https://dgc.a-sit.at"'
+			buildConfigField "String", "TRUST_ANCHOR_CERTIFICATE", '"-----BEGIN CERTIFICATE-----\\nMIIBJTCBy6ADAgECAgUAwvEVkzAKBggqhkjOPQQDAjAQMQ4wDAYDVQQDDAVFQy1N\\nZTAeFw0yMTA0MjMxMTI3NDhaFw0yMTA1MjMxMTI3NDhaMBAxDjAMBgNVBAMMBUVD\\nLU1lMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE/OV5UfYrtE140ztF9jOgnux1\\noyNO8Bss4377E/kDhp9EzFZdsgaztfT+wvA29b7rSb2EsHJrr8aQdn3/1ynte6MS\\nMBAwDgYDVR0PAQH/BAQDAgWgMAoGCCqGSM49BAMCA0kAMEYCIQC51XwstjIBH10S\\nN701EnxWGK3gIgPaUgBN+ljZAs76zQIhAODq4TJ2qAPpFc1FIUOvvlycGJ6QVxNX\\nEkhRcgdlVfUb\\n-----END CERTIFICATE-----"'
+			buildConfigField "String", "ALT_TRUST_ANCHOR_CERTIFICATE", '"-----BEGIN CERTIFICATE-----\\nMIIBJTCBy6ADAgECAgUAwvEVkzAKBggqhkjOPQQDAjAQMQ4wDAYDVQQDDAVFQy1N\\nZTAeFw0yMTA0MjMxMTI3NDhaFw0yMTA1MjMxMTI3NDhaMBAxDjAMBgNVBAMMBUVD\\nLU1lMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE/OV5UfYrtE140ztF9jOgnux1\\noyNO8Bss4377E/kDhp9EzFZdsgaztfT+wvA29b7rSb2EsHJrr8aQdn3/1ynte6MS\\nMBAwDgYDVR0PAQH/BAQDAgWgMAoGCCqGSM49BAMCA0kAMEYCIQC51XwstjIBH10S\\nN701EnxWGK3gIgPaUgBN+ljZAs76zQIhAODq4TJ2qAPpFc1FIUOvvlycGJ6QVxNX\\nEkhRcgdlVfUb\\n-----END CERTIFICATE-----"'
+			buildConfigField "String", "LEAF_CERT_CN", '""'
+			buildConfigField "long", "CONFIGSPEC_MIN_LOAD_WAIT_TIME", "$ConfigSpecMinLoadWaitTime_Abn"
+			buildConfigField "long", "DATASYNCH_WORKER_INTERVAL", "$DataSyncWorker_Abn"
 		}
 		abn {
 			applicationId "at.gv.brz.wallet.abn"
 			buildConfigField "String", "BASE_URL", '"https://dgc-trusttest.qr.gv.at"'
 			buildConfigField "String", "SDK_API_TOKEN", "$System.env.WALLET_APP_SDK_API_TOKEN_ABN"
+			buildConfigField "String", "smsImportLinkHost", "\"https://$smsImportLinkHostName_Abn\""
+			buildConfigField "String", "websiteImportLinkHost", "\"https://$websiteImportLinkHostName_Abn\""
+			manifestPlaceholders["smsImportLinkHost"] = "$smsImportLinkHostName_Abn"
+			manifestPlaceholders["websiteImportLinkHost"] = "$websiteImportLinkHostName_Abn"
+			buildConfigField "String", "BASE_URL_TRUST_LIST", '"https://dgc-trusttest.qr.gv.at"'
+			buildConfigField "String", "TRUST_ANCHOR_CERTIFICATE", '"-----BEGIN CERTIFICATE-----\\nMIIB6zCCAZGgAwIBAgIKAXmEuohlRbR2qzAKBggqhkjOPQQDAjBQMQswCQYDVQQG\\nEwJBVDEPMA0GA1UECgwGQk1TR1BLMQowCAYDVQQLDAFRMQwwCgYDVQQFEwMwMDEx\\nFjAUBgNVBAMMDUFUIERHQyBDU0NBIDEwHhcNMjEwNTE5MTMwNDQ3WhcNMjIwNjE5\\nMTMwNDQ3WjBRMQswCQYDVQQGEwJBVDEPMA0GA1UECgwGQk1TR1BLMQowCAYDVQQL\\nDAFRMQ8wDQYDVQQFEwYwMDEwMDExFDASBgNVBAMMC0FUIERHQyBUTCAxMFkwEwYH\\nKoZIzj0CAQYIKoZIzj0DAQcDQgAE29KpT1eIKsy5Jx3J0xpPLW+fEBF7ma9943/j\\n4Z+o1TytLVok9cWjsdasWCS/zcRyAh7HBL+oyMWdFBOWENCQ76NSMFAwDgYDVR0P\\nAQH/BAQDAgeAMB0GA1UdDgQWBBQYmsL5sXTdMCyW4UtP5BMxq+UAVzAfBgNVHSME\\nGDAWgBR2sKi2xkUpGC1Cr5ehwL0hniIsJzAKBggqhkjOPQQDAgNIADBFAiBse17k\\nF5F43q9mRGettRDLprASrxsDO9XxUUp3ObjcWQIhALfUWnserGEPiD7Pa25tg9lj\\nwkrqDrMdZHZ39qb+Jf/E\\n-----END CERTIFICATE-----"'
+			buildConfigField "String", "ALT_TRUST_ANCHOR_CERTIFICATE", '"-----BEGIN CERTIFICATE-----\\nMIIB6zCCAZGgAwIBAgIKAYDM2HHZBVwwtTAKBggqhkjOPQQDAjBQMQswCQYDVQQG\\nEwJBVDEPMA0GA1UECgwGQk1TR1BLMQowCAYDVQQLDAFRMQwwCgYDVQQFEwMwMDIx\\nFjAUBgNVBAMMDUFUIERHQyBDU0NBIDIwHhcNMjIwNTE2MTIyOTM4WhcNMjMwNjE2\\nMTIyOTM4WjBRMQswCQYDVQQGEwJBVDEPMA0GA1UECgwGQk1TR1BLMQowCAYDVQQL\\nDAFRMQ8wDQYDVQQFEwYwMDIwMDIxFDASBgNVBAMMC0FUIERHQyBUTCAyMFkwEwYH\\nKoZIzj0CAQYIKoZIzj0DAQcDQgAE29KpT1eIKsy5Jx3J0xpPLW+fEBF7ma9943/j\\n4Z+o1TytLVok9cWjsdasWCS/zcRyAh7HBL+oyMWdFBOWENCQ76NSMFAwDgYDVR0P\\nAQH/BAQDAgeAMB0GA1UdDgQWBBQYmsL5sXTdMCyW4UtP5BMxq+UAVzAfBgNVHSME\\nGDAWgBRsSZFrO9SANI2CSK201pEayDltvTAKBggqhkjOPQQDAgNIADBFAiBToWg7\\naGFDKcahC/dT/y5Fq1AQjQ0MyR5eZfydwzayNAIhAJwIWbWaF8bz6nIkoRrVgdf1\\nrgURIBDJ4WO02mZCVfLu\\n-----END CERTIFICATE-----"'
+			buildConfigField "String", "LEAF_CERT_CN", '""'
+			buildConfigField "long", "CONFIGSPEC_MIN_LOAD_WAIT_TIME", "$ConfigSpecMinLoadWaitTime_Abn"
+			buildConfigField "long", "DATASYNCH_WORKER_INTERVAL", "$DataSyncWorker_Abn"
 		}
 		prodtest {
 			applicationId "at.gv.brz.wallet.ptest"
 			buildConfigField "String", "BASE_URL", '"https://dgc-trust.qr.gv.at"'
 			buildConfigField "String", "SDK_API_TOKEN", "$System.env.WALLET_APP_SDK_API_TOKEN_PROD"
+			buildConfigField "String", "smsImportLinkHost", "\"https://$smsImportLinkHostName\""
+			buildConfigField "String", "websiteImportLinkHost", "\"https://$websiteImportLinkHostName\""
+			manifestPlaceholders["smsImportLinkHost"] = "$smsImportLinkHostName"
+			manifestPlaceholders["websiteImportLinkHost"] = "$websiteImportLinkHostName"
+			buildConfigField "String", "BASE_URL_TRUST_LIST", '"https://dgc-trust.qr.gv.at"'
+			buildConfigField "String", "TRUST_ANCHOR_CERTIFICATE", '"-----BEGIN CERTIFICATE-----\\nMIIB1DCCAXmgAwIBAgIKAXnM+Z3eG2QgVzAKBggqhkjOPQQDAjBEMQswCQYDVQQG\\nEwJBVDEPMA0GA1UECgwGQk1TR1BLMQwwCgYDVQQFEwMwMDExFjAUBgNVBAMMDUFU\\nIERHQyBDU0NBIDEwHhcNMjEwNjAyMTM0NjIxWhcNMjIwNzAyMTM0NjIxWjBFMQsw\\nCQYDVQQGEwJBVDEPMA0GA1UECgwGQk1TR1BLMQ8wDQYDVQQFEwYwMDEwMDExFDAS\\nBgNVBAMMC0FUIERHQyBUTCAxMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEl2tm\\nd16CBHXwcBN0r1Uy+CmNW/b2V0BNP85y5N3JZeo/8l9ey/jIe5mol9fFcGTk9bCk\\n8zphVo0SreHa5aWrQKNSMFAwDgYDVR0PAQH/BAQDAgeAMB0GA1UdDgQWBBRTwp6d\\ncDGcPUB6IwdDja/a3ncM0TAfBgNVHSMEGDAWgBQfIqwcZRYptMGYs2Nvv90Jnbt7\\nezAKBggqhkjOPQQDAgNJADBGAiEAlR0x3CRuQV/zwHTd2R9WNqZMabXv5XqwHt72\\nqtgnjRgCIQCZHIHbCvlgg5uL8ZJQzAxLavqF2w6uUxYVrvYDj2Cqjw==\\n-----END CERTIFICATE-----"'
+			buildConfigField "String", "ALT_TRUST_ANCHOR_CERTIFICATE", '"-----BEGIN CERTIFICATE-----\\nMIIB1DCCAXmgAwIBAgIKAYDcOWBmNxlPgDAKBggqhkjOPQQDAjBEMQswCQYDVQQG\\nEwJBVDEPMA0GA1UECgwGQk1TR1BLMQwwCgYDVQQFEwMwMDIxFjAUBgNVBAMMDUFU\\nIERHQyBDU0NBIDIwHhcNMjIwNTE5MTIwOTQ5WhcNMjMwNjE5MTIwOTQ5WjBFMQsw\\nCQYDVQQGEwJBVDEPMA0GA1UECgwGQk1TR1BLMQ8wDQYDVQQFEwYwMDIwMDIxFDAS\\nBgNVBAMMC0FUIERHQyBUTCAyMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEl2tm\\nd16CBHXwcBN0r1Uy+CmNW/b2V0BNP85y5N3JZeo/8l9ey/jIe5mol9fFcGTk9bCk\\n8zphVo0SreHa5aWrQKNSMFAwDgYDVR0PAQH/BAQDAgeAMB0GA1UdDgQWBBRTwp6d\\ncDGcPUB6IwdDja/a3ncM0TAfBgNVHSMEGDAWgBQvWRbxO3tS9HatiMTvp8sD9Rwy\\nwTAKBggqhkjOPQQDAgNJADBGAiEAleZ8CcLG4FK4kty+sN0APZmT6LfEE2kzznyV\\nyEepU0gCIQCGaqJpOwPXBmgoOsehnJkA0+TZX8V2p1Bg/nqnuYqXFg==\\n-----END CERTIFICATE-----"'
+			buildConfigField "String", "LEAF_CERT_CN", '""'
+			buildConfigField "long", "CONFIGSPEC_MIN_LOAD_WAIT_TIME", "$ConfigSpecMinLoadWaitTime"
+			buildConfigField "long", "DATASYNCH_WORKER_INTERVAL", "$DataSyncWorker"
 		}
 		prod {
 			buildConfigField "String", "BASE_URL", '"https://dgc-trust.qr.gv.at"'
 			buildConfigField "String", "SDK_API_TOKEN", "$System.env.WALLET_APP_SDK_API_TOKEN_PROD"
+			buildConfigField "String", "smsImportLinkHost", "\"https://$smsImportLinkHostName\""
+			buildConfigField "String", "websiteImportLinkHost", "\"https://$websiteImportLinkHostName\""
+			manifestPlaceholders["smsImportLinkHost"] = "$smsImportLinkHostName"
+			manifestPlaceholders["websiteImportLinkHost"] = "$websiteImportLinkHostName"
+			buildConfigField "String", "BASE_URL_TRUST_LIST", '"https://dgc-trust.qr.gv.at"'
+			buildConfigField "String", "TRUST_ANCHOR_CERTIFICATE", '"-----BEGIN CERTIFICATE-----\\nMIIB1DCCAXmgAwIBAgIKAXnM+Z3eG2QgVzAKBggqhkjOPQQDAjBEMQswCQYDVQQG\\nEwJBVDEPMA0GA1UECgwGQk1TR1BLMQwwCgYDVQQFEwMwMDExFjAUBgNVBAMMDUFU\\nIERHQyBDU0NBIDEwHhcNMjEwNjAyMTM0NjIxWhcNMjIwNzAyMTM0NjIxWjBFMQsw\\nCQYDVQQGEwJBVDEPMA0GA1UECgwGQk1TR1BLMQ8wDQYDVQQFEwYwMDEwMDExFDAS\\nBgNVBAMMC0FUIERHQyBUTCAxMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEl2tm\\nd16CBHXwcBN0r1Uy+CmNW/b2V0BNP85y5N3JZeo/8l9ey/jIe5mol9fFcGTk9bCk\\n8zphVo0SreHa5aWrQKNSMFAwDgYDVR0PAQH/BAQDAgeAMB0GA1UdDgQWBBRTwp6d\\ncDGcPUB6IwdDja/a3ncM0TAfBgNVHSMEGDAWgBQfIqwcZRYptMGYs2Nvv90Jnbt7\\nezAKBggqhkjOPQQDAgNJADBGAiEAlR0x3CRuQV/zwHTd2R9WNqZMabXv5XqwHt72\\nqtgnjRgCIQCZHIHbCvlgg5uL8ZJQzAxLavqF2w6uUxYVrvYDj2Cqjw==\\n-----END CERTIFICATE-----"'
+			buildConfigField "String", "ALT_TRUST_ANCHOR_CERTIFICATE", '"-----BEGIN CERTIFICATE-----\\nMIIB1DCCAXmgAwIBAgIKAYDcOWBmNxlPgDAKBggqhkjOPQQDAjBEMQswCQYDVQQG\\nEwJBVDEPMA0GA1UECgwGQk1TR1BLMQwwCgYDVQQFEwMwMDIxFjAUBgNVBAMMDUFU\\nIERHQyBDU0NBIDIwHhcNMjIwNTE5MTIwOTQ5WhcNMjMwNjE5MTIwOTQ5WjBFMQsw\\nCQYDVQQGEwJBVDEPMA0GA1UECgwGQk1TR1BLMQ8wDQYDVQQFEwYwMDIwMDIxFDAS\\nBgNVBAMMC0FUIERHQyBUTCAyMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEl2tm\\nd16CBHXwcBN0r1Uy+CmNW/b2V0BNP85y5N3JZeo/8l9ey/jIe5mol9fFcGTk9bCk\\n8zphVo0SreHa5aWrQKNSMFAwDgYDVR0PAQH/BAQDAgeAMB0GA1UdDgQWBBRTwp6d\\ncDGcPUB6IwdDja/a3ncM0TAfBgNVHSMEGDAWgBQvWRbxO3tS9HatiMTvp8sD9Rwy\\nwTAKBggqhkjOPQQDAgNJADBGAiEAleZ8CcLG4FK4kty+sN0APZmT6LfEE2kzznyV\\nyEepU0gCIQCGaqJpOwPXBmgoOsehnJkA0+TZX8V2p1Bg/nqnuYqXFg==\\n-----END CERTIFICATE-----"'
+			buildConfigField "String", "LEAF_CERT_CN", '""'
+			buildConfigField "long", "CONFIGSPEC_MIN_LOAD_WAIT_TIME", "$ConfigSpecMinLoadWaitTime"
+			buildConfigField "long", "DATASYNCH_WORKER_INTERVAL", "$DataSyncWorker"
 		}
 
 	}
@@ -103,16 +153,20 @@ android {
 		viewBinding true
 	}
 
-
+	packagingOptions {
+		exclude 'META-INF/LICENSE.md'
+		exclude 'META-INF/LICENSE-notice.md'
+	}
 }
 
 dependencies {
+	api project(':dgc-businessrules-validation-core-android')
+	implementation fileTree(dir: 'libs', include: ['*.jar'])
 	coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 	implementation 'org.jetbrains.kotlinx:kotlinx-datetime:0.2.1'
 
 	implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 	implementation 'com.google.android.material:material:1.3.0'
-	implementation project(':common')
 
 	implementation 'androidx.core:core-ktx:1.3.2'
 	implementation 'androidx.appcompat:appcompat:1.2.0'
@@ -125,7 +179,6 @@ dependencies {
 
 	implementation 'com.squareup.retrofit2:retrofit:2.9.0'
 	implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
-	implementation 'com.squareup.okhttp3:logging-interceptor:4.7.2'
 	implementation 'com.squareup.moshi:moshi:1.12.0'
 	kapt "com.squareup.moshi:moshi-kotlin-codegen:1.12.0"
 
@@ -139,4 +192,57 @@ dependencies {
 	androidTestImplementation 'androidx.test.ext:junit:1.1.2'
 	androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 	implementation 'com.github.ehn-dcc-development.hcert-kotlin:hcert-kotlin-jvm:1.4.0'
+
+	androidTestImplementation "com.google.code.gson:gson:2.8.6"
+	implementation 'com.github.ehn-dcc-development.hcert-kotlin:hcert-kotlin-jvm:1.4.0'
+
+	api 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
+	implementation 'androidx.fragment:fragment-ktx:1.3.3'
+
+	api 'androidx.camera:camera-camera2:1.0.0'
+	api 'androidx.camera:camera-view:1.0.0-alpha25'
+	api 'androidx.camera:camera-lifecycle:1.0.0'
+
+	// QR code scanning
+	api 'com.google.zxing:core:3.4.1'
+
+	// SDK
+
+	implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0'
+	implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.0"
+
+	implementation "org.jetbrains.kotlin:kotlin-reflect:1.5.20"
+	implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.12.3"
+	implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.12.3"
+	implementation "androidx.room:room-ktx:2.4.0-alpha04"
+	implementation "com.fasterxml.jackson.core:jackson-databind:2.12.3"
+
+	implementation "androidx.room:room-runtime:2.3.0"
+	kapt "androidx.room:room-compiler:2.4.0-alpha04"
+	implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
+	kapt 'androidx.lifecycle:lifecycle-compiler:2.3.1'
+
+	// Crypto
+	implementation "com.augustcellars.cose:cose-java:1.1.0"
+	implementation 'androidx.security:security-crypto:1.0.0'
+
+	// Networking
+	api 'com.squareup.retrofit2:converter-scalars:2.9.0'
+	api 'com.squareup.okhttp3:logging-interceptor:4.9.0'
+	api 'com.squareup.moshi:moshi:1.12.0'
+	api 'com.squareup.moshi:moshi-adapters:1.12.0'
+	implementation("com.squareup.moshi:moshi-kotlin:1.12.0")
+	kapt "com.squareup.moshi:moshi-kotlin-codegen:1.12.0"
+
+	// JWS
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+	api 'io.jsonwebtoken:jjwt-impl:0.11.2'
+	api 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+
+	// National rules
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
+
+	implementation "com.lyft.kronos:kronos-android:0.0.1-alpha11"
+
+
 }

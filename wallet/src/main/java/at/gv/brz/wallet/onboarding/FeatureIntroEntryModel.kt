@@ -23,3 +23,4 @@ data class FeatureIntroEntryModel(
     val alignment: String?,
     val textGroups: List<FeatureIntroTextGroupModel>
 )
+

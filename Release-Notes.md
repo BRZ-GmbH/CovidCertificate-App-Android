@@ -1,5 +1,11 @@
 # Grüner Pass - Release Notes
 
+## v2.3.5
+- Kampagnen - lokale Notification (EPIEMSCO-2891)
+- Einbettung von SDK-Code in Wallet-Projekt (EPIEMSCO-2843)
+- Wallet-App Integration of Direktlink from SMS/Email (EPIEMSCO-1270, EPIEMSCO-1898)
+- Wallet-App Integration of Directlink from Bypasstoken (EPIEMSCO-2752, EPIEMSCO-2812)
+
 ## v2.3.4
 
 - Integration neuer Business Rules Engine (EPIEMSCO-2225)

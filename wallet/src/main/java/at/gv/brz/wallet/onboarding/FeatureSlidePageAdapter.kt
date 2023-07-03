@@ -32,8 +32,7 @@ class FeatureSlidePageAdapter(val fragmentActivity: FragmentActivity?, private v
 				entry.textGroups.firstOrNull()?.text,
 				drawableResourceIdForName(entry.textGroups.firstOrNull()?.image),
 				entry.textGroups.getOrNull(1)?.text,
-				drawableResourceIdForName(entry.textGroups.getOrNull(1)?.image),
-				entry.textAlignment()
+				drawableResourceIdForName(entry.textGroups.getOrNull(1)?.image)
 			)
 		} catch (e: java.io.IOException) {
 			throw IllegalArgumentException("There is no fragment for view pager position $position")

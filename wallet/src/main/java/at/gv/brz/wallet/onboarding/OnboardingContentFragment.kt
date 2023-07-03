@@ -14,9 +14,11 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.fragment.app.Fragment
+import at.gv.brz.common.util.UrlUtil
 import at.gv.brz.wallet.R
 
 class OnboardingContentFragment : Fragment(R.layout.fragment_onboarding_content) {
@@ -35,7 +37,7 @@ class OnboardingContentFragment : Fragment(R.layout.fragment_onboarding_content)
 			title: String?, subtitle: String?,
 			@DrawableRes illustration: Int, description1: String?, @DrawableRes iconDescription1: Int,
 			description2: String?, @DrawableRes iconDescription2: Int,
-			textAlignment: Int = TextView.TEXT_ALIGNMENT_VIEW_START
+			textAlignment: Int = TextView.TEXT_ALIGNMENT_VIEW_START,
 		): OnboardingContentFragment {
 			val args = Bundle()
 			args.putString(ARG_RES_TITLE, title)
@@ -46,7 +48,6 @@ class OnboardingContentFragment : Fragment(R.layout.fragment_onboarding_content)
 			args.putInt(ARG_RES_DESCR_ICON_2, iconDescription2)
 			args.putString(ARG_RES_DESCRIPTION_2, description2)
 			args.putInt(ARG_RES_TEXT_ALIGNMENT, textAlignment)
-
 			val fragment = OnboardingContentFragment()
 			fragment.arguments = args
 			return fragment
@@ -92,5 +93,7 @@ class OnboardingContentFragment : Fragment(R.layout.fragment_onboarding_content)
 		description2.textAlignment = args.getInt(ARG_RES_TEXT_ALIGNMENT)
 		val continueButton = view.findViewById<Button>(R.id.onboarding_continue_button)
 		continueButton.setOnClickListener { v: View? -> (activity as OnboardingActivity?)!!.continueToNextPage() }
+
+
 	}
 }

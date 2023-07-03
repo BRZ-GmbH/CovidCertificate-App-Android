@@ -94,7 +94,7 @@
                 },
                 {
                     "title": "Sehe ich, ob mein EU-konformes Zertifikat gültig ist?",
-                    "text": "In der Grüner Pass App wird die Vertrauenswürdigkeit der importierten Zertifikate geprüft. Weiters enthält die App eine Voransicht der Gültigkeit des jeweiligen Zertifikats im Sinne der 3-G-Regeln (grün = gültig, rot = ungültig). Diese Voransicht berücksichtigt auch bundeslandspezifische Regelungen - aktuell etwa die abweichende Gültigkeitsdauer von 3-G-Nachweisen in Wien für Eintrittstests und Nachtgastronomie. Wählen Sie dazu bitte rechts oben das richtige Bundesland aus. Diese Voransicht ersetzt jedoch nicht die Prüfung, etwa in Hotels oder Kulturinstitutionen, durch einen Scan des QR-Codes unter qr.gv.at oder greencheck.gv.at. In bestimmten Fällen ist die Voransicht des 3-G-Status nicht verfügbar (z.b. wenn das Endgerät längere Zeit offline ist), aktivieren Sie dann bitte die Internetverbindung.",
+                    "text": "In der Grüner Pass App wird die Vertrauenswürdigkeit der importierten Zertifikate geprüft. Weiters enthält die App eine Voransicht der Gültigkeit des jeweiligen Zertifikats im Sinne der 3-G-Regeln (grün = gültig, rot = ungültig). Diese Voransicht berücksichtigt auch bundeslandspezifische Regelungen - aktuell etwa die abweichende Gültigkeitsdauer von 3-G-Nachweisen in Wien für Eintrittstests und Nachtgastronomie. Wählen Sie dazu bitte rechts oben das richtige Bundesland aus. Diese Voransicht ersetzt jedoch nicht die Prüfung, etwa in Hotels oder Kulturinstitutionen, durch einen Scan des QR-Codes unter greencheck.gv.at. In bestimmten Fällen ist die Voransicht des 3-G-Status nicht verfügbar (z.b. wenn das Endgerät längere Zeit offline ist), aktivieren Sie dann bitte die Internetverbindung.",
                     "iconAndroid": null,
                     "iconIos": null,
                     "linkTitle": null,
@@ -132,7 +132,6 @@
                     "linkTitle": null,
                     "linkUrl": null
                 }
-
             ]
         },
         "en": {
@@ -196,7 +195,6 @@
                     "linkTitle": null,
                     "linkUrl": null
                 }
-
             ]
         }
     }

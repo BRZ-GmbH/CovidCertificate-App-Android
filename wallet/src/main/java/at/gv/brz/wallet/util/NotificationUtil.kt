@@ -5,11 +5,11 @@ import at.gv.brz.brvc.BusinessRulesCoreHelper
 import at.gv.brz.brvc.util.externalConditionNameAndArguments
 import at.gv.brz.brvc.util.isExternalCondition
 import at.gv.brz.common.config.*
-import at.gv.brz.eval.ExternalConditionVerifier
-import at.gv.brz.eval.businessRuleCertificateType
-import at.gv.brz.eval.euhealthcert.Eudgc
-import at.gv.brz.eval.models.CertType
-import at.gv.brz.eval.models.DccHolder
+import at.gv.brz.sdk.ExternalConditionVerifier
+import at.gv.brz.sdk.businessRuleCertificateType
+import at.gv.brz.sdk.euhealthcert.Eudgc
+import at.gv.brz.sdk.models.CertType
+import at.gv.brz.sdk.models.DccHolder
 import at.gv.brz.wallet.BuildConfig
 import at.gv.brz.wallet.R
 import at.gv.brz.wallet.data.NotificationSecureStorage
@@ -20,7 +20,7 @@ import java.time.*
 
 data class QueuedCampaignNotification(val certificate: Eudgc?, val campaign: CampaignModel, val title: String?, val message: String?)
 
-data class CampaignNotificationCheckResult(val certificateCombinationHash: Int, val queuedNotifications: List<QueuedCampaignNotification>)
+data class CampaignNotificationCheckResult(val certificateCombinationHash: Int, val queuedNotifications: List<QueuedCampaignNotification>, val notApplicableCampaignIds: List<String>, val allCampaignIds: List<String>)
 
 /**
  * Handles determining eligibility for Vaccination booster reminders
@@ -66,6 +66,7 @@ class NotificationUtil {
         }
 
         val campaignsToDisplay: MutableList<QueuedCampaignNotification> = mutableListOf()
+        val notApplicationCampaignIds: MutableList<String> = mutableListOf()
 
         val objectMapper = ObjectMapper().apply {
             this.findAndRegisterModules()
@@ -78,15 +79,17 @@ class NotificationUtil {
                 return@forEach
             }
             if (!campaign.isActive) {
+                notApplicationCampaignIds.add(campaign.id)
                 return@forEach
             }
             if (!campaign.important && hasOptedOutOfNonImportantCampaigns) {
+                notApplicationCampaignIds.add(campaign.id)
                 return@forEach
             }
 
             if (campaign.campaignType == CampaignType.SINGLE || campaign.campaignType == CampaignType.REPEATING) {
-                if (campaign.shouldBeDisplayed(certificateCampaignLastDisplayTimestamps)) {
-                    if (campaign.appliesToConditionsWithCertificates(certificates, validationClock)) {
+                if (campaign.appliesToConditionsWithCertificates(certificates, validationClock)) {
+                    if (campaign.shouldBeDisplayed(certificateCampaignLastDisplayTimestamps)) {
                         campaignsToDisplay.add(
                             QueuedCampaignNotification(
                                 null,
@@ -96,6 +99,9 @@ class NotificationUtil {
                             )
                         )
                     }
+                }
+                else {
+                    notApplicationCampaignIds.add(campaign.id)
                 }
             } else {
                 var hasAddedCampaign = false
@@ -152,12 +158,30 @@ class NotificationUtil {
                                     )
                                 )
                             }
+                        } else {
+                            notApplicationCampaignIds.add(campaign.id)
                         }
                     }
                 }
             }
         }
-        return CampaignNotificationCheckResult(hash, campaignsToDisplay)
+        return CampaignNotificationCheckResult(hash, campaignsToDisplay, notApplicationCampaignIds,config.campaigns?.map { it.id } ?: listOf())
+    }
+
+    /**
+     * Get the certificate identifier of the first certificate depending on the type of certificates
+     */
+    fun firstCertificateIdentifier(certificate: Eudgc?): String {
+        var certificateId = String()
+        if(certificate!=null) {
+            when {
+                certificate.vaccinations?.isNotEmpty() == true -> certificate.vaccinations.first().certificateIdentifier.also { certificateId = it }
+                certificate.vaccinationExemptions?.isNotEmpty() == true -> certificate.vaccinationExemptions.first().certificateIdentifier.also { certificateId = it }
+                certificate.pastInfections?.isNotEmpty() == true -> certificate.pastInfections.first().certificateIdentifier.also { certificateId = it }
+                certificate.tests?.isNotEmpty() == true -> certificate.tests.first().certificateIdentifier.also { certificateId = it }
+            }
+        }
+       return certificateId
     }
 }
 
@@ -178,7 +202,7 @@ fun Eudgc.comparableIdentifier(): String {
 fun CampaignModel.lastDisplayTimestampKeyForCertificate(certificate: Eudgc?): String? {
     when (campaignType) {
         CampaignType.SINGLE_EACH_CERTIFICATE, CampaignType.REPEATING_EACH_CERTIFICATE -> {
-            val certificateIdentifier = certificate?.vaccinations?.firstOrNull()?.certificateIdentifier
+            val certificateIdentifier = NotificationUtil().firstCertificateIdentifier(certificate)
                 ?: return null
             return "${id}_${certificateIdentifier}"
         }

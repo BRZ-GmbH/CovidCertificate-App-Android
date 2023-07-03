@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
-import at.gv.brz.eval.utils.SingletonHolder
+import at.gv.brz.sdk.utils.SingletonHolder
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import java.io.IOException

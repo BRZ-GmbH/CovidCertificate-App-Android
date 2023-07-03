@@ -15,7 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import at.gv.brz.common.R
+import at.gv.brz.wallet.R
 import at.gv.brz.common.util.UrlUtil
 import at.gv.brz.wallet.databinding.FragmentHomeBinding
 import at.gv.brz.wallet.databinding.FragmentOnboardingAgbBinding

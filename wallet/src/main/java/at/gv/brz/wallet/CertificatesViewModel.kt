@@ -22,12 +22,12 @@ import at.gv.brz.common.config.ConfigModel
 import at.gv.brz.common.net.ConfigRepository
 import at.gv.brz.common.net.ConfigSpec
 import at.gv.brz.common.util.SingleLiveEvent
-import at.gv.brz.eval.CovidCertificateSdk
-import at.gv.brz.eval.data.state.DecodeState
-import at.gv.brz.eval.data.state.VerificationResultStatus
-import at.gv.brz.eval.decoder.CertificateDecoder
-import at.gv.brz.eval.models.DccHolder
-import at.gv.brz.eval.verification.CertificateVerificationTask
+import at.gv.brz.sdk.CovidCertificateSdk
+import at.gv.brz.sdk.data.state.DecodeState
+import at.gv.brz.sdk.data.state.VerificationResultStatus
+import at.gv.brz.sdk.decoder.CertificateDecoder
+import at.gv.brz.sdk.models.DccHolder
+import at.gv.brz.sdk.verification.CertificateVerificationTask
 import at.gv.brz.wallet.data.CertificateStorage
 import at.gv.brz.wallet.data.NotificationSecureStorage
 import at.gv.brz.wallet.data.WalletSecureStorage
@@ -168,6 +168,7 @@ class CertificatesViewModel(application: Application) : AndroidViewModel(applica
 
 	fun addCertificate(certificate: String) {
 		certificateStorage.saveCertificate(certificate)
+		secureStorage.setHasModifiedCertificatesInSession(true)
 	}
 
 	fun moveCertificate(from: Int, to: Int) {
@@ -180,6 +181,47 @@ class CertificatesViewModel(application: Application) : AndroidViewModel(applica
 			notificationStorage.deleteCertificateIdentifier(it)
 		}
 		loadCertificates()
+		secureStorage.setHasModifiedCertificatesInSession(true)
+	}
+
+	fun removeCertificates(certificates: List<String>) {
+		certificates.forEach {
+			certificateStorage.deleteCertificate(it)
+			(CertificateDecoder.decode(it) as? DecodeState.SUCCESS)?.dccHolder?.euDGC?.vaccinations?.firstOrNull()?.certificateIdentifier?.let {
+				notificationStorage.deleteCertificateIdentifier(it)
+			}
+		}
+		loadCertificates()
+		secureStorage.setHasModifiedCertificatesInSession(true)
+	}
+
+	fun toggleDeviceTimeSetting(): Boolean {
+		/**
+		 * In test builds (for Q as well as P environment) we allow switching a setting for the app to either use the real time fetched from a time server (behaviour in the published app) or to use the current device time for validating the business rules.
+		 */
+		if (BuildConfig.FLAVOR == "abn" || BuildConfig.FLAVOR == "prodtest") {
+			val context: Context = getApplication()
+			val sharedPreferences = context.getSharedPreferences("wallet.test", Context.MODE_PRIVATE)
+			val newValue = !sharedPreferences.getBoolean("wallet.test.useDeviceTime", false)
+			sharedPreferences.edit().putBoolean("wallet.test.useDeviceTime", newValue).apply()
+			dccHolderCollectionLiveData.value?.forEach {
+				startVerification(it)
+			}
+			return newValue
+		}
+		return false
+	}
+
+	fun getValidationTime(): ZonedDateTime? {
+		if (BuildConfig.FLAVOR == "abn" || BuildConfig.FLAVOR == "prodtest") {
+			val context: Context = getApplication()
+			val sharedPreferences =
+				context.getSharedPreferences("wallet.test", Context.MODE_PRIVATE)
+			if (sharedPreferences.getBoolean("wallet.test.useDeviceTime", false)) {
+				return ZonedDateTime.now()
+			}
+		}
+		return CovidCertificateSdk.getValidationClock()
 	}
 
 	fun removeCertificates(certificates: List<String>) {

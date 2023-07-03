@@ -15,10 +15,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import at.gv.brz.common.qr.QrScanFragment
-import at.gv.brz.eval.data.state.DecodeState
-import at.gv.brz.eval.data.state.StateError
-import at.gv.brz.eval.decoder.CertificateDecoder
-import at.gv.brz.eval.models.DccHolder
+import at.gv.brz.sdk.data.state.DecodeState
+import at.gv.brz.sdk.data.state.StateError
+import at.gv.brz.sdk.decoder.CertificateDecoder
+import at.gv.brz.sdk.models.DccHolder
 import at.gv.brz.wallet.R
 import at.gv.brz.wallet.add.CertificateAddFragment
 import at.gv.brz.wallet.databinding.FragmentQrScanBinding
@@ -75,7 +75,7 @@ class WalletQrScanFragment : QrScanFragment() {
 		}
 
 		binding.qrCodeScannerButtonHow.setOnClickListener { showHowToScanFragment() }
-		view.announceForAccessibility(getString(at.gv.brz.common.R.string.wallet_scanner_title_loaded))
+		view.announceForAccessibility(getString(R.string.wallet_scanner_title_loaded))
 	}
 
 	override fun decodeQrCodeData(qrCodeData: String, onDecodeSuccess: () -> Unit, onDecodeError: (StateError) -> Unit) {

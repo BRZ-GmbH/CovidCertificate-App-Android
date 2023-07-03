@@ -13,7 +13,7 @@ package at.gv.brz.wallet.list
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import at.gv.brz.eval.models.DccHolder
+import at.gv.brz.sdk.models.DccHolder
 
 class CertificatesListAdapter(
 	private val onCertificateClickListener: ((DccHolder) -> Unit)? = null,

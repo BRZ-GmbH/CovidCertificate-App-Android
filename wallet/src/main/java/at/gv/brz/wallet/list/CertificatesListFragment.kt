@@ -45,7 +45,7 @@ class CertificatesListFragment : Fragment() {
 			parentFragmentManager.popBackStack()
 		}
 		setupRecyclerView()
-		view.announceForAccessibility(getString(at.gv.brz.common.R.string.wallet_certificate_list_title_loaded))
+		view.announceForAccessibility(getString(R.string.wallet_certificate_list_title_loaded))
 	}
 
 	override fun onDestroyView() {

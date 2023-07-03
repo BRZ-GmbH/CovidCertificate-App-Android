@@ -13,7 +13,7 @@ package at.gv.brz.wallet.homescreen.pager
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import at.gv.brz.eval.models.DccHolder
+import at.gv.brz.sdk.models.DccHolder
 
 class CertificatesPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 

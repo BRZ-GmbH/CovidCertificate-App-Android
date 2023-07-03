@@ -4,11 +4,12 @@ import android.content.Context
 import androidx.concurrent.futures.CallbackToFutureAdapter
 import androidx.work.ListenableWorker
 import androidx.work.WorkerParameters
+import at.gv.brz.sdk.CovidCertificateSdk
+import at.gv.brz.wallet.notification.NotificationHelper
 import com.google.common.util.concurrent.ListenableFuture
-import at.gv.brz.eval.CovidCertificateSdk
-import at.gv.brz.wallet.util.DebugLogUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Default
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 /**
@@ -16,23 +17,36 @@ import kotlinx.coroutines.launch
  */
 class DataSyncWorker(context: Context, params: WorkerParameters): ListenableWorker(context, params) {
 
+    private var refreshTrustListJob: Job? = null
+    private var updateConfigJob: Job? = null
+
     override fun startWork(): ListenableFuture<Result> {
         return CallbackToFutureAdapter.getFuture { completer ->
+
             CoroutineScope(Default).launch {
-                CovidCertificateSdk.getCertificateVerificationController().refreshTrustList(this, false, onCompletionCallback = {
-                    if (it.failed) {
-                        DebugLogUtil.log("Background Data Update - Failed", applicationContext)
-                        completer.set(Result.failure())
-                    } else {
-                        if (it.refreshed) {
-                            DebugLogUtil.log("Background Data Update - New Data", applicationContext)
-                        } else {
-                            DebugLogUtil.log("Background Data Update - Unchanged", applicationContext)
-                        }
-                        completer.set(Result.success())
-                    }
-                })
+                refreshTrustListJob=launch {
+                    CovidCertificateSdk.getCertificateVerificationController().refreshTrustList(this, false)
+                }
+                updateConfigJob=launch {
+                    NotificationHelper().updateConfigForLocalNotification(applicationContext)
+                }
+                updateDataSyncWorkerStatus(completer)
             }
+
         }
+    }
+
+    private suspend fun updateDataSyncWorkerStatus(
+        completer: CallbackToFutureAdapter.Completer<Result>
+    ) {
+        this.refreshTrustListJob?.join()
+        this.updateConfigJob?.join()
+
+        if(this.refreshTrustListJob?.isCompleted == true && this.updateConfigJob?.isCompleted == true) {
+            completer.set(Result.success())
+        }else {
+            completer.set(Result.failure())
+        }
+
     }
 }

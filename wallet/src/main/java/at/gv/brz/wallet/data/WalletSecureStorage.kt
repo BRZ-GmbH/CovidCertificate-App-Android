@@ -14,7 +14,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
-import at.gv.brz.eval.utils.SingletonHolder
+import at.gv.brz.sdk.utils.SingletonHolder
 import at.gv.brz.wallet.BuildConfig
 import java.io.IOException
 import java.security.GeneralSecurityException
@@ -29,6 +29,11 @@ class WalletSecureStorage private constructor(context: Context) {
 		private const val KEY_SELECTED_VALIDATION_REGION = "selected_validation_region"
 		private const val KEY_HAS_ASKED_FOR_INAPP_REVIEW = "has_asked_for_inapp_review"
 		private const val KEY_HAS_OPTED_OUT_OF_NON_IMPORTANT_CAMPAIGNS = "has_opted_out_of_non_important_campaigns"
+		private const val KEY_NOTIFICATION_CAMPAIGN_ID = "notification_campaign_id"
+		private const val KEY_NOTIFICATION_CAMPAIGN_TITLE = "notification_campaign_title"
+		private const val KEY_NOTIFICATION_CAMPAIGN_MESSAGE = "notification_campaign_message"
+		private const val KEY_NOTIFICATION_CAMPAIGN_LAST_TIMESTAMP = "notification_campaign_last_timestamp_key"
+		private const val KEY_HAS_MODIFIED_CERTIFICATES_IN_SESSION = "has_modified_certificates_in_session"
 	}
 
 	private val prefs: SharedPreferences
@@ -86,5 +91,25 @@ class WalletSecureStorage private constructor(context: Context) {
 
 	fun setHasOptedOutOfNonImportantCampaigns(optedOut: Boolean) = prefs.edit().putBoolean(
 		KEY_HAS_OPTED_OUT_OF_NON_IMPORTANT_CAMPAIGNS, optedOut).apply()
+
+	fun getNotificationCampaignID(): String? = prefs.getString(KEY_NOTIFICATION_CAMPAIGN_ID, null)
+
+	fun setNotificationCampaignID(campaignId: String?) = prefs.edit().putString(KEY_NOTIFICATION_CAMPAIGN_ID, campaignId).apply()
+
+	fun getNotificationCampaignLastTimeStampKey(): String? = prefs.getString(KEY_NOTIFICATION_CAMPAIGN_LAST_TIMESTAMP, null)
+
+	fun setNotificationCampaignLastTimeStampKey(lastTimeStampKey:String?) = prefs.edit().putString(KEY_NOTIFICATION_CAMPAIGN_LAST_TIMESTAMP, lastTimeStampKey).apply()
+
+	fun getHasModifiedCertificatesInSession(): Boolean = prefs.getBoolean(KEY_HAS_MODIFIED_CERTIFICATES_IN_SESSION, false)
+
+	fun setHasModifiedCertificatesInSession(status: Boolean) = prefs.edit().putBoolean(KEY_HAS_MODIFIED_CERTIFICATES_IN_SESSION, status).apply()
+
+	fun getNotificationCampaignTitle(): String? = prefs.getString(KEY_NOTIFICATION_CAMPAIGN_TITLE, null)
+
+	fun setNotificationCampaignTitle(campaignTitle: String?) = prefs.edit().putString(KEY_NOTIFICATION_CAMPAIGN_TITLE, campaignTitle).apply()
+
+	fun getNotificationCampaignMessage(): String? = prefs.getString(KEY_NOTIFICATION_CAMPAIGN_MESSAGE, null)
+
+	fun setNotificationCampaignMessage(campaignMessage: String?) = prefs.edit().putString(KEY_NOTIFICATION_CAMPAIGN_MESSAGE, campaignMessage).apply()
 
 }

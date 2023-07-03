@@ -22,9 +22,9 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import at.gv.brz.eval.models.DccHolder
-import at.gv.brz.eval.utils.DEFAULT_DISPLAY_DATE_FORMATTER
-import at.gv.brz.eval.utils.prettyPrintIsoDateTime
+import at.gv.brz.sdk.models.DccHolder
+import at.gv.brz.sdk.utils.DEFAULT_DISPLAY_DATE_FORMATTER
+import at.gv.brz.sdk.utils.prettyPrintIsoDateTime
 import at.gv.brz.wallet.CertificatesViewModel
 import at.gv.brz.wallet.R
 import at.gv.brz.wallet.databinding.FragmentCertificateAddBinding
@@ -111,7 +111,7 @@ class CertificateAddFragment : Fragment() {
 				binding.certificateAddDataRecyclerView.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
 			}, 500)
 		}
-		view.announceForAccessibility(getString(at.gv.brz.common.R.string.wallet_scanner_title_loaded))
+		view.announceForAccessibility(getString(R.string.wallet_scanner_title_loaded))
 	}
 
 	override fun onDestroyView() {

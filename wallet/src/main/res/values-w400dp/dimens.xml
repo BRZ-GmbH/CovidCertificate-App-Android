@@ -1,0 +1,20 @@
+<resources>
+    <dimen name="header_top_padding">20dp</dimen>
+    <dimen name="certificate_details_side_padding">30dp</dimen>
+    <dimen name="certificates_padding">30dp</dimen>
+    <dimen name="home_bottom_padding">25dp</dimen>
+    <dimen name="home_side_padding">25dp</dimen>
+    <dimen name="home_button_side_padding">12dp</dimen>
+    <dimen name="home_bubble_size">110dp</dimen>
+    <dimen name="home_vertical_padding_huge">40dp</dimen>
+    <dimen name="home_empty_scroll_top_padding">100dp</dimen>
+    <dimen name="home_empty_scroll_bottom_padding">110dp</dimen>
+
+    <dimen name="home_viewpager_top_padding">90dp</dimen>
+    <dimen name="home_viewpager_bottom_padding">25dp</dimen>
+
+    <dimen name="home_certificate_top_padding">25dp</dimen>
+    <dimen name="certificate_pager_spacing_huger">15dp</dimen>
+    <dimen name="home_certificate_validation_vertical_padding">12dp</dimen>
+    <dimen name="home_certificate_qr_side_padding">25dp</dimen>
+</resources>

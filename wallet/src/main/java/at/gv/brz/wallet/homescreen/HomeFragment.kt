@@ -29,20 +29,21 @@ import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import at.gv.brz.common.config.CampaignButtonType
-import at.gv.brz.common.config.CampaignType
+import at.gv.brz.common.config.*
+import at.gv.brz.common.data.ConfigSecureStorage
 import at.gv.brz.common.util.HorizontalMarginItemDecoration
 import at.gv.brz.common.util.UrlUtil
 import at.gv.brz.common.util.setSecureFlagToBlockScreenshots
 import at.gv.brz.common.views.hideAnimated
 import at.gv.brz.common.views.rotate
 import at.gv.brz.common.views.showAnimated
-import at.gv.brz.eval.CovidCertificateSdk
-import at.gv.brz.eval.data.state.DecodeState
-import at.gv.brz.eval.models.DccHolder
+import at.gv.brz.sdk.CovidCertificateSdk
+import at.gv.brz.sdk.data.state.DecodeState
+import at.gv.brz.sdk.models.DccHolder
 import at.gv.brz.wallet.BuildConfig
 import at.gv.brz.wallet.CertificatesViewModel
 import at.gv.brz.wallet.R
@@ -53,6 +54,7 @@ import at.gv.brz.wallet.detail.CertificateDetailFragment
 import at.gv.brz.wallet.faq.WalletFaqFragment
 import at.gv.brz.wallet.homescreen.pager.CertificatesPagerAdapter
 import at.gv.brz.wallet.list.CertificatesListFragment
+import at.gv.brz.wallet.notification.NotificationHelper
 import at.gv.brz.wallet.pdf.PdfImportState
 import at.gv.brz.wallet.pdf.PdfViewModel
 import at.gv.brz.wallet.qr.WalletQrScanFragment
@@ -67,7 +69,6 @@ import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
-import java.util.*
 import java.util.concurrent.atomic.AtomicLong
 
 class HomeFragment : Fragment() {
@@ -98,6 +99,8 @@ class HomeFragment : Fragment() {
 	private var currentCertificateCount: Int = 0
 	private var currentCertificateOrderString: String = ""
 
+	private var hasAddedNegativeButton = false
+
 	private val filePickerLauncher =
 		registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult: ActivityResult ->
 			if (activityResult.resultCode == AppCompatActivity.RESULT_OK) {
@@ -116,7 +119,21 @@ class HomeFragment : Fragment() {
 		setupButtons()
 		setupPager()
 		setupImportObservers()
-		view.announceForAccessibility(getString(at.gv.brz.common.R.string.wallet_main_loaded))
+		view.announceForAccessibility(getString(R.string.wallet_main_loaded))
+		handleTapOnCampaignNotification()
+	}
+
+	private fun handleTapOnCampaignNotification() {
+		certificatesViewModel.secureStorage.getNotificationCampaignLastTimeStampKey().let { notificationCampaignLastTimeStampKey->
+			if(notificationCampaignLastTimeStampKey.isNullOrEmpty()) return
+				val configSecureStorage = ConfigSecureStorage.getInstance(requireContext())
+				val campaign = configSecureStorage.getConfig()?.campaigns?.find {
+					it.id==certificatesViewModel.secureStorage.getNotificationCampaignID()
+				}
+				if (campaign != null) {
+					presentAlertForCampaign(campaign, certificatesViewModel.secureStorage.getNotificationCampaignTitle(), certificatesViewModel.secureStorage.getNotificationCampaignMessage(), notificationCampaignLastTimeStampKey, 0, false)
+				}
+		}
 	}
 
 	override fun onResume() {
@@ -127,6 +144,7 @@ class HomeFragment : Fragment() {
 		if (region == null) {
 			showRegionSelection()
 		}
+		isAddOptionsShowing = binding.homescreenOptionsOverlay.isVisible
 	}
 
 	override fun onPause() {
@@ -134,10 +152,12 @@ class HomeFragment : Fragment() {
 		certificateBoosterNotificationDialog?.dismiss()
 		certificateBoosterNotificationDialog = null
 		certificateBoosterNotificationHash = 0
+		certificatesViewModel.secureStorage.setHasModifiedCertificatesInSession(false)
 	}
 
 	override fun onDestroyView() {
 		super.onDestroyView()
+		certificatesViewModel.secureStorage.setHasModifiedCertificatesInSession(false)
 		_binding = null
 	}
 
@@ -307,6 +327,8 @@ class HomeFragment : Fragment() {
 			isAddOptionsShowing = false
 			launchPdfFilePicker()
 		}
+
+
 	}
 
 	private fun showQrScanFragment() {
@@ -509,7 +531,15 @@ class HomeFragment : Fragment() {
 		certificateBoosterNotificationHash = campaignNotificationResult.certificateCombinationHash
 		queuedCampaignNotifications = campaignNotificationResult.queuedNotifications.toMutableList()
 
-		presentAlertForNextQueuedCampaignNotification(campaignNotificationResult.certificateCombinationHash)
+		if(certificatesViewModel.secureStorage.getHasModifiedCertificatesInSession()) {
+			presentAlertForNextQueuedCampaignNotification(campaignNotificationResult.certificateCombinationHash)
+		}
+	}
+
+	private fun updateNotificationsAfterModification() {
+		viewLifecycleOwner.lifecycleScope.launch {
+			NotificationHelper().updateLocalNotificationAfterCertificateModification(requireContext())
+		}
 	}
 
 	private fun handleAutomaticTestCertificateRemoval(completion: (hasRemovedCertificates: Boolean) -> Unit) {
@@ -577,97 +607,145 @@ class HomeFragment : Fragment() {
 			if (campaignNotification != null) {
 				queuedCampaignNotifications.removeAt(0)
 
-				val languageKey = getString(R.string.language_key)
-				val notificationDialogBuilder = AlertDialog.Builder(requireContext(), R.style.CovidCertificate_AlertDialogStyle)
-				campaignNotification.title.let {
-					notificationDialogBuilder.setTitle(it)
-				}
-				campaignNotification.message?.let {
-					notificationDialogBuilder.setMessage(it)
-				}
-				notificationDialogBuilder.setCancelable(false)
+				presentAlertForCampaign(campaignNotification.campaign, campaignNotification.title, campaignNotification.message, campaignNotification.campaign.lastDisplayTimestampKeyForCertificate(campaignNotification.certificate),
+				certificateHash, true)
 
-				var hasAddedNegativeButton = false
-				campaignNotification.campaign.buttons?.forEach { button ->
-					when (button.type) {
-						CampaignButtonType.DISMISS, CampaignButtonType.DISMISS_WITH_ACTION -> {
-							if (hasAddedNegativeButton) {
-								notificationDialogBuilder.setNeutralButton(
-									button.getTitle(
-										languageKey
-									)
-								) { _, _ ->
-									certificateBoosterNotificationDialog?.dismiss()
-									certificateBoosterNotificationDialog = null
-
-									campaignNotification.campaign.lastDisplayTimestampKeyForCertificate(campaignNotification.certificate)?.let {
-										certificatesViewModel.notificationStorage.setCertificateCampaignLastDisplayTimestampForIdentifier(it, LocalDateTime.now().plusYears(100).toInstant(ZoneOffset.UTC).toEpochMilli())
-									}
-
-									if (button.type == CampaignButtonType.DISMISS_WITH_ACTION && button.urlString != null) {
-										UrlUtil.openUrl(requireContext(), button.urlString)
-									} else {
-										presentAlertForNextQueuedCampaignNotification(
-											certificateHash
-										)
-									}
-								}
-							} else {
-								hasAddedNegativeButton = true
-								notificationDialogBuilder.setNegativeButton(
-									button.getTitle(
-										languageKey
-									)
-								) { _, _ ->
-									certificateBoosterNotificationDialog?.dismiss()
-									certificateBoosterNotificationDialog = null
-
-									campaignNotification.campaign.lastDisplayTimestampKeyForCertificate(campaignNotification.certificate)?.let {
-										certificatesViewModel.notificationStorage.setCertificateCampaignLastDisplayTimestampForIdentifier(it, LocalDateTime.now().plusYears(100).toInstant(ZoneOffset.UTC).toEpochMilli())
-									}
-
-									if (button.type == CampaignButtonType.DISMISS_WITH_ACTION && button.urlString != null) {
-										UrlUtil.openUrl(requireContext(), button.urlString)
-									} else {
-										presentAlertForNextQueuedCampaignNotification(
-											certificateHash
-										)
-									}
-								}
-							}
-						}
-						CampaignButtonType.LATER, CampaignButtonType.LATER_WITH_ACTION -> {
-							if (campaignNotification.campaign.campaignType == CampaignType.REPEATING || campaignNotification.campaign.campaignType == CampaignType.REPEATING_ANY_CERTIFICATE || campaignNotification.campaign.campaignType == CampaignType.REPEATING_EACH_CERTIFICATE) {
-								notificationDialogBuilder.setPositiveButton(button.getTitle(languageKey)) { _, _ ->
-									certificateBoosterNotificationDialog?.dismiss()
-									certificateBoosterNotificationDialog = null
-
-									campaignNotification.campaign.lastDisplayTimestampKeyForCertificate(campaignNotification.certificate)?.let {
-										certificatesViewModel.notificationStorage.setCertificateCampaignLastDisplayTimestampForIdentifier(it, LocalDateTime.now().toInstant(
-											ZoneOffset.UTC).toEpochMilli())
-									}
-
-									if (button.type == CampaignButtonType.LATER_WITH_ACTION && button.urlString != null) {
-										UrlUtil.openUrl(requireContext(), button.urlString)
-									} else {
-										presentAlertForNextQueuedCampaignNotification(
-											certificateHash
-										)
-									}
-								}
-							}
-						}
-					}
-				}
-
-				val notificationDialog = notificationDialogBuilder.create()
-					.apply { window?.setSecureFlagToBlockScreenshots(BuildConfig.FLAVOR) }
-
-				this.certificateBoosterNotificationDialog = notificationDialog
-				notificationDialog.show()
 			} else {
 				certificateBoosterNotificationHash = 0
+				certificatesViewModel.secureStorage.setHasModifiedCertificatesInSession(false)
 			}
 		}
+		updateNotificationsAfterModification()
+	}
+
+	private fun presentAlertForCampaign(campaign: CampaignModel, title: String?, message: String?, lastDisplayTimestampKey: String?, certificateHash: Int, activateBoosterNotification:Boolean) {
+
+		val languageKey = getString(R.string.language_key)
+		val notificationDialogBuilder = AlertDialog.Builder(requireContext(), R.style.CovidCertificate_AlertDialogStyle)
+		notificationDialogBuilder.setTitle(title)
+		notificationDialogBuilder.setMessage(message)
+		notificationDialogBuilder.setCancelable(false)
+
+		campaign.buttons?.forEach { button ->
+			when (button.type) {
+
+				CampaignButtonType.DISMISS, CampaignButtonType.DISMISS_WITH_ACTION -> {
+					campaignActionDismiss(
+						notificationDialogBuilder,
+						button,
+						languageKey,
+						lastDisplayTimestampKey,
+						certificateHash)
+				}
+
+				CampaignButtonType.LATER, CampaignButtonType.LATER_WITH_ACTION -> {
+					campaignActionLater(campaign,
+						notificationDialogBuilder,
+						button,
+						languageKey,
+						lastDisplayTimestampKey,
+						certificateHash)
+				}
+			}
+		}
+		val notificationDialog = notificationDialogBuilder.create().apply { window?.setSecureFlagToBlockScreenshots(BuildConfig.FLAVOR) }
+		if(activateBoosterNotification) {
+			this.certificateBoosterNotificationDialog = notificationDialog
+		}
+		notificationDialog.show()
+		clearLocalNotificationDataAfterCampaignDisplay()
+	}
+
+	private fun campaignActionLater(
+		campaign: CampaignModel,
+		notificationDialogBuilder: AlertDialog.Builder,
+		button: CampaignButton,
+		languageKey: String,
+		lastDisplayTimestampKeyForCertificate: String?,
+		certificateHash: Int,
+	) {
+		if (campaign.campaignType == CampaignType.REPEATING || campaign.campaignType == CampaignType.REPEATING_ANY_CERTIFICATE || campaign.campaignType == CampaignType.REPEATING_EACH_CERTIFICATE) {
+			notificationDialogBuilder.setPositiveButton(button.getTitle(languageKey)) { _, _ ->
+				certificateBoosterNotificationDialog?.dismiss()
+				certificateBoosterNotificationDialog = null
+
+				lastDisplayTimestampKeyForCertificate?.let {
+					certificatesViewModel.notificationStorage.setCertificateCampaignLastDisplayTimestampForIdentifier(
+						it,
+						LocalDateTime.now().toInstant(
+							ZoneOffset.UTC).toEpochMilli())
+				}
+
+				if (button.type == CampaignButtonType.LATER_WITH_ACTION && button.urlString != null) {
+					UrlUtil.openUrl(requireContext(), button.urlString)
+				} else {
+					presentAlertForNextQueuedCampaignNotification(
+						certificateHash
+					)
+				}
+			}
+		}
+	}
+
+	private fun campaignActionDismiss(
+		notificationDialogBuilder: AlertDialog.Builder,
+		button: CampaignButton,
+		languageKey: String,
+		lastDisplayTimestampKeyForCertificate: String?,
+		certificateHash: Int,
+	) {
+		if (hasAddedNegativeButton) {
+			notificationDialogBuilder.setNeutralButton(
+				button.getTitle(
+					languageKey
+				)
+			) { _, _ ->
+				certificateBoosterNotificationDialog?.dismiss()
+				certificateBoosterNotificationDialog = null
+
+				lastDisplayTimestampKeyForCertificate?.let {
+					certificatesViewModel.notificationStorage.setCertificateCampaignLastDisplayTimestampForIdentifier(
+						it,
+						LocalDateTime.now().plusYears(100).toInstant(ZoneOffset.UTC).toEpochMilli())
+				}
+
+				if (button.type == CampaignButtonType.DISMISS_WITH_ACTION && button.urlString != null) {
+					UrlUtil.openUrl(requireContext(), button.urlString)
+				} else {
+					presentAlertForNextQueuedCampaignNotification(
+						certificateHash
+					)
+				}
+			}
+		} else {
+			hasAddedNegativeButton=true
+			notificationDialogBuilder.setNegativeButton(
+				button.getTitle(
+					languageKey
+				)
+			) { _, _ ->
+				certificateBoosterNotificationDialog?.dismiss()
+				certificateBoosterNotificationDialog = null
+
+				lastDisplayTimestampKeyForCertificate?.let {
+					certificatesViewModel.notificationStorage.setCertificateCampaignLastDisplayTimestampForIdentifier(
+						it,
+						LocalDateTime.now().plusYears(100).toInstant(ZoneOffset.UTC).toEpochMilli())
+				}
+
+				if (button.type == CampaignButtonType.DISMISS_WITH_ACTION && button.urlString != null) {
+					UrlUtil.openUrl(requireContext(), button.urlString)
+				} else {
+					presentAlertForNextQueuedCampaignNotification(
+						certificateHash
+					)
+				}
+			}
+		}
+	}
+
+	private fun clearLocalNotificationDataAfterCampaignDisplay() {
+		certificatesViewModel.secureStorage.setNotificationCampaignID(null)
+		certificatesViewModel.secureStorage.setNotificationCampaignLastTimeStampKey(null)
 	}
 }

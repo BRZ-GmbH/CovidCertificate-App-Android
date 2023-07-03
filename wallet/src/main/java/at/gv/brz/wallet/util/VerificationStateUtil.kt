@@ -11,7 +11,7 @@
 package at.gv.brz.wallet.util
 
 import androidx.annotation.ColorRes
-import at.gv.brz.eval.data.state.*
+import at.gv.brz.sdk.data.state.*
 import at.gv.brz.wallet.R
 
 @ColorRes

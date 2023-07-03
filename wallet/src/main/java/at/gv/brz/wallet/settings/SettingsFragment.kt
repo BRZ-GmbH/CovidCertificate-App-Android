@@ -11,12 +11,12 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import at.gv.brz.common.BuildConfig
-import at.gv.brz.common.R
+import at.gv.brz.wallet.BuildConfig
+import at.gv.brz.wallet.R
 import at.gv.brz.common.html.BuildInfo
 import at.gv.brz.common.util.AssetUtil
 import at.gv.brz.common.util.setSecureFlagToBlockScreenshots
-import at.gv.brz.eval.CovidCertificateSdk
+import at.gv.brz.sdk.CovidCertificateSdk
 import at.gv.brz.wallet.data.WalletSecureStorage
 import at.gv.brz.wallet.databinding.FragmentSettingsBinding
 import at.gv.brz.wallet.faq.WalletFaqFragment

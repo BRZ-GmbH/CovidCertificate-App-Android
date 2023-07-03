@@ -32,13 +32,13 @@ import at.gv.brz.brvc.model.ValidityTimeFormat
 import at.gv.brz.brvc.model.ValidityTimeResult
 import at.gv.brz.brvc.model.data.BusinessRuleCertificateType
 import at.gv.brz.common.util.setSecureFlagToBlockScreenshots
-import at.gv.brz.eval.models.CertType
-import at.gv.brz.eval.models.DccHolder
-import at.gv.brz.eval.utils.*
+import at.gv.brz.sdk.models.CertType
+import at.gv.brz.sdk.models.DccHolder
+import at.gv.brz.sdk.utils.*
 import at.gv.brz.common.util.makeSubStringBold
-import at.gv.brz.eval.businessRuleCertificateType
-import at.gv.brz.eval.data.state.*
-import at.gv.brz.eval.models.ValidationProfile
+import at.gv.brz.sdk.businessRuleCertificateType
+import at.gv.brz.sdk.data.state.*
+import at.gv.brz.sdk.models.ValidationProfile
 import at.gv.brz.wallet.BuildConfig
 import at.gv.brz.wallet.CertificatesViewModel
 import at.gv.brz.wallet.R
@@ -129,10 +129,10 @@ class CertificateDetailFragment : Fragment() {
 
 		if (dccHolder.businessRuleCertificateType() == BusinessRuleCertificateType.VACCINATION_EXEMPTION) {
 			binding.certificateDetailToolbar.setTitle(R.string.wallet_certificate_vaccination_exemption)
-			view.announceForAccessibility(getString(at.gv.brz.common.R.string.wallet_certificate_vaccination_exemption_loaded))
+			view.announceForAccessibility(getString(R.string.wallet_certificate_vaccination_exemption_loaded))
 		} else {
 			binding.certificateDetailToolbar.setTitle(R.string.wallet_certificate)
-			view.announceForAccessibility(getString(at.gv.brz.common.R.string.wallet_certificate_loaded))
+			view.announceForAccessibility(getString(R.string.wallet_certificate_loaded))
 		}
 
 		if (dccHolder.businessRuleCertificateType() == BusinessRuleCertificateType.VACCINATION_EXEMPTION) {

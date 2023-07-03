@@ -14,9 +14,9 @@ import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import at.gv.brz.eval.data.state.VerificationResultStatus
-import at.gv.brz.eval.models.CertType
-import at.gv.brz.eval.models.DccHolder
+import at.gv.brz.sdk.data.state.VerificationResultStatus
+import at.gv.brz.sdk.models.CertType
+import at.gv.brz.sdk.models.DccHolder
 import at.gv.brz.wallet.CertificatesViewModel
 import at.gv.brz.wallet.R
 import at.gv.brz.wallet.databinding.ItemCertificateListBinding

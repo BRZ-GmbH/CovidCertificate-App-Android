@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_add_certificate_option"
+    android:elevation="@dimen/default_elevation"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/spacing_small">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_add_certificate_option"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/dialog_directlink_title"
+            style="@style/CovidCertificate.Text.Bold.Emphasized"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_medium"
+            android:layout_marginTop="@dimen/spacing_medium_large"
+            android:text="@string/directlink_datepicker_title" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/blueish" />
+
+        <TextView
+            android:id="@+id/dialog_directlink_message"
+            style="@style/CovidCertificate.Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_medium"
+            android:text="@string/directlink_datepicker_message" />
+
+        <DatePicker
+            android:id="@+id/directlink_datepicker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner" />
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/dialog_button_cancel"
+                style="@style/CovidCertificate.Text.Bold.Blue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/spacing_medium_large"
+                android:text="@string/cancel_button"
+                android:textColor="@color/grey"
+                android:textStyle="normal" />
+
+
+            <TextView
+                android:id="@+id/dialog_button_retrieve"
+                style="@style/CovidCertificate.Text.Bold.Blue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/spacing_medium_large"
+                android:text="@string/directlink_datepicker_button_retrieve"
+                android:textColor="@color/green_dark" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</LinearLayout>

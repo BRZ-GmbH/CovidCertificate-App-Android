@@ -13,10 +13,10 @@ package at.gv.brz.wallet.detail
 import android.content.Context
 import android.content.res.Configuration
 import at.gv.brz.common.util.LocaleUtil
-import at.gv.brz.eval.data.AcceptedTestProvider
-import at.gv.brz.eval.data.AcceptedVaccineProvider
-import at.gv.brz.eval.models.DccHolder
-import at.gv.brz.eval.utils.*
+import at.gv.brz.sdk.data.AcceptedTestProvider
+import at.gv.brz.sdk.data.AcceptedVaccineProvider
+import at.gv.brz.sdk.models.DccHolder
+import at.gv.brz.sdk.utils.*
 import at.gv.brz.wallet.R
 import java.util.*
 import kotlin.collections.ArrayList

@@ -18,8 +18,8 @@ import androidx.annotation.StringRes
 import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import at.gv.brz.common.R
-import at.gv.brz.common.databinding.ItemFaqQuestionBinding
+import at.gv.brz.wallet.R
+import at.gv.brz.wallet.databinding.ItemFaqQuestionBinding
 import at.gv.brz.common.util.UrlUtil
 import at.gv.brz.wallet.databinding.FragmentHowToScanBinding
 

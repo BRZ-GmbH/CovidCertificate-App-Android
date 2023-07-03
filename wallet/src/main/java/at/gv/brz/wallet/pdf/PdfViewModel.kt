@@ -18,9 +18,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import at.gv.brz.common.qr.QRCodeReaderHelper
-import at.gv.brz.eval.data.state.DecodeState
-import at.gv.brz.eval.data.state.StateError
-import at.gv.brz.eval.decoder.CertificateDecoder
+import at.gv.brz.sdk.data.state.DecodeState
+import at.gv.brz.sdk.data.state.StateError
+import at.gv.brz.sdk.decoder.CertificateDecoder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File

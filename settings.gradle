@@ -9,11 +9,8 @@
  */
 
 include ':dgc-businessrules-validation-core-android'
-project(':dgc-businessrules-validation-core-android').projectDir = new File('./sdk/dgc-businessrules-validation-core-android/brvc')
+project(':dgc-businessrules-validation-core-android').projectDir = new File('./dgc-businessrules-validation-core-android/brvc')
 
-include ':sdk'
-project(':sdk').projectDir = new File('./sdk/sdk')
 
-include ':common'
 include ':wallet'
 rootProject.name = "Verifier"

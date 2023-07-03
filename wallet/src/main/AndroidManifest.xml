@@ -13,6 +13,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".MainApplication"
@@ -41,6 +43,24 @@
                 <data android:mimeType="application/pdf" />
             </intent-filter>
 
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="${smsImportLinkHost}"
+                    android:pathPrefix="/result"
+                    android:scheme="https" />
+            </intent-filter>
+            <!--<intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="${websiteImportLinkHost}"
+                    android:pathPrefix="/gruenerpass/download/qr-code/wallet"
+                    android:scheme="https" />
+            </intent-filter>-->
         </activity>
 
         <activity

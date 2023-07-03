@@ -12,6 +12,18 @@ package at.gv.brz.wallet
 
 import android.content.DialogInterface
 import android.content.Intent
+import android.app.Dialog
+import android.net.Uri
+import at.gv.brz.common.config.Birthdate
+import at.gv.brz.common.config.DirectLinkModel
+import at.gv.brz.sdk.data.state.DecodeState
+import at.gv.brz.sdk.data.state.StateError
+import at.gv.brz.sdk.decoder.CertificateDecoder
+import at.gv.brz.wallet.add.CertificateAddFragment
+import at.gv.brz.wallet.databinding.DialogDirectlinkDatepickerBinding
+import java.util.*
+import at.gv.brz.wallet.directlink.WalletDirectLinkViewModel
+import at.gv.brz.wallet.directlink.WalletDirectLinkViewModel.DirectLinkType.*
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -22,10 +34,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import at.gv.brz.common.config.ConfigModel
+import at.gv.brz.common.config.DirectLinkResult
 import at.gv.brz.common.util.PlatformUtil
 import at.gv.brz.common.util.UrlUtil
 import at.gv.brz.common.util.setSecureFlagToBlockScreenshots
-import at.gv.brz.eval.CovidCertificateSdk
+import at.gv.brz.sdk.CovidCertificateSdk
 import at.gv.brz.wallet.data.WalletSecureStorage
 import at.gv.brz.wallet.databinding.ActivityMainBinding
 import at.gv.brz.wallet.homescreen.HomeFragment
@@ -36,21 +49,29 @@ import at.gv.brz.wallet.util.DebugLogUtil
 import at.gv.brz.wallet.util.WalletAssetUtil
 import com.google.android.play.core.review.ReviewManagerFactory
 import java.lang.Integer.max
+import at.gv.brz.wallet.notification.NotificationHelper
 
 class MainActivity : AppCompatActivity() {
 
 	companion object {
 		private const val KEY_IS_INTENT_CONSUMED = "KEY_IS_INTENT_CONSUMED"
+		private const val KEY_IS_INTENT_CONSUMED_DIRECTLINK = "KEY_IS_INTENT_CONSUMED_DIRECTLINK"
 	}
 
 	private val certificateViewModel by viewModels<CertificatesViewModel>()
 	private val pdfViewModel by viewModels<PdfViewModel>()
+	private val directLinkViewModel by viewModels<WalletDirectLinkViewModel>()
 
 	private lateinit var binding: ActivityMainBinding
 	val secureStorage by lazy { WalletSecureStorage.getInstance(this) }
 
 	private var forceUpdateDialog: AlertDialog? = null
 	private var isIntentConsumed = false
+	private var isDirectLinkIntentConsumed = false
+
+	private var hasCheckedForcedUpdate = false
+	private var forceRefreshTrustlist = true
+	private var ignoreForcedUpdateBecauseOfPDFImport = false
 
 	private var hasCheckedForcedUpdate = false
 	private var forceRefreshTrustlist = true
@@ -126,13 +147,170 @@ class MainActivity : AppCompatActivity() {
 
 		if (savedInstanceState != null) {
 			isIntentConsumed = savedInstanceState.getBoolean(KEY_IS_INTENT_CONSUMED)
+			isDirectLinkIntentConsumed = savedInstanceState.getBoolean(
+				KEY_IS_INTENT_CONSUMED_DIRECTLINK)
 		}
+
 	}
 
 	override fun onNewIntent(intent: Intent?) {
 		super.onNewIntent(intent)
 		setIntent(intent)
 		isIntentConsumed = false
+		isDirectLinkIntentConsumed = false
+	}
+
+
+
+	private fun handleDirectLink(intent: Intent?) {
+		val appLinkAction: String? = intent?.action
+		val appLinkData: Uri? = intent?.data
+		if (Intent.ACTION_VIEW == appLinkAction && appLinkData != null) {
+			isDirectLinkIntentConsumed = true
+			when (val it=directLinkViewModel.checkDirectLinkType(appLinkData)){
+				is SmsLink -> {
+					showDatePicker(it.secret, it.signature)
+				}
+				/*is WebLink -> {
+					decodeQrCodeData(String().decodeBase64QrData(it.base64EncodedQRCodeData), onDecodeSuccess = {}, onDecodeError = {showInvalidDirectLink()})
+				}*/
+				is BypassTokenLink -> {
+					addCertificateFromByPassToken(it.secret, it.signature, it.bypassToken)
+				}
+				else -> {
+					showInvalidDirectLink()
+				}
+			}
+		}
+	}
+
+
+	private fun addCertificateFromByPassToken(secret:String, signature:String, bypassToken: String?){
+		val directLinkData = DirectLinkModel(
+			secret,
+			signature,
+			bypassToken = bypassToken,
+			request = arrayListOf("qr")
+		)
+		directLinkViewModel.loadCertificateWithBirthdateOrBypassToken(
+			directLinkData,
+			BuildConfig.smsImportLinkHost
+		)
+
+		directLinkViewModel.directLinkResponseLiveData.observe(this@MainActivity) {
+			when (it){
+				is DirectLinkResult.Valid -> {
+					decodeQrCodeData(it.qr, onDecodeSuccess = {}, onDecodeError = {showErrorDialog(secret, signature = signature, bypassToken = bypassToken, title = getString(R.string.directlink_error_title), message = getString(R.string.directlink_error_message_forbypasstoken))})
+				}
+				is DirectLinkResult.InvalidRequestData -> {
+					showErrorDialog(secret, signature, bypassToken = bypassToken, title = getString(R.string.directlink_error_title), message = getString(R.string.directlink_error_message_forbypasstoken))
+				}
+				is DirectLinkResult.NetworkError -> {
+					showErrorDialog(secret, signature, bypassToken = bypassToken, title = getString(R.string.error_network_title), message = getString(R.string.error_network_text))
+				}
+			}
+			directLinkViewModel.directLinkResponseLiveData.removeObservers(this@MainActivity)
+		}
+
+	}
+
+	private fun showDatePicker(secret:String, signature:String) {
+
+		val currentCalendar = Calendar.getInstance()
+		val dialog = Dialog(this)
+		val bindingDialog: DialogDirectlinkDatepickerBinding = DialogDirectlinkDatepickerBinding.inflate(layoutInflater)
+		dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+		dialog.setCancelable(false)
+		dialog.setContentView(bindingDialog.root)
+
+		bindingDialog.apply {
+			val datePicker = directlinkDatepicker
+			val buttonCancel = dialogButtonCancel
+			val buttonRetrieve = dialogButtonRetrieve
+			datePicker.maxDate = currentCalendar.timeInMillis
+
+			buttonRetrieve.setOnClickListener {
+				val directLinkData = DirectLinkModel(
+					secret,
+					signature,
+					birthdate = Birthdate(datePicker.dayOfMonth, datePicker.month + 1, datePicker.year),
+					request = arrayListOf("qr")
+				)
+
+				directLinkViewModel.loadCertificateWithBirthdateOrBypassToken(
+					directLinkData,
+					BuildConfig.smsImportLinkHost
+				)
+
+				directLinkViewModel.directLinkResponseLiveData.observe(this@MainActivity) {
+					when (it){
+						is DirectLinkResult.Valid -> {
+							decodeQrCodeData(it.qr, onDecodeSuccess = {}, onDecodeError = {showErrorDialog(secret,  signature, title = getString(R.string.directlink_error_title), message = getString(R.string.directlink_error_message))})
+						}
+						is DirectLinkResult.InvalidRequestData -> {
+							showErrorDialog(secret, signature, title = getString(R.string.directlink_error_title), message = getString(R.string.directlink_error_message))
+						}
+						is DirectLinkResult.NetworkError -> {
+							showErrorDialog(secret, signature, title = getString(R.string.error_network_title), message = getString(R.string.error_network_text))
+						}
+					}
+					dialog.dismiss()
+					directLinkViewModel.directLinkResponseLiveData.removeObservers(this@MainActivity)
+				}
+			}
+			buttonCancel.setOnClickListener {
+				dialog.dismiss()
+			}
+		}
+		dialog.show()
+	}
+
+	private fun decodeQrCodeData(qrCodeData: String, onDecodeSuccess: () -> Unit, onDecodeError: (StateError) -> Unit) {
+		when (val decodeState = CertificateDecoder.decode(qrCodeData)) {
+			is DecodeState.SUCCESS -> {
+				onDecodeSuccess.invoke()
+				supportFragmentManager.beginTransaction()
+					.setCustomAnimations(R.anim.slide_enter, R.anim.slide_exit, R.anim.slide_pop_enter, R.anim.slide_pop_exit)
+					.replace(R.id.fragment_container, CertificateAddFragment.newInstance(decodeState.dccHolder, false))
+					.addToBackStack(CertificateAddFragment::class.java.canonicalName)
+					.commit()
+			}
+			is DecodeState.ERROR -> onDecodeError.invoke(decodeState.error)
+		}
+	}
+
+	private fun showInvalidDirectLink(){
+		AlertDialog.Builder(this, R.style.CovidCertificate_AlertDialogStyle)
+			.setTitle(R.string.directlink_invalidlink_title)
+			.setMessage(R.string.directlink_invalidlink_message)
+			.setPositiveButton(R.string.directlink_invalidlink_button_ok) { dialog, _ ->
+				dialog.dismiss()
+			}
+			.setCancelable(true)
+			.create()
+			.apply { window?.setSecureFlagToBlockScreenshots(BuildConfig.FLAVOR) }
+			.show()
+	}
+
+	private fun showErrorDialog(secret:String, signature:String, bypassToken: String?=null, title:String, message:String) {
+		AlertDialog.Builder(this, R.style.CovidCertificate_AlertDialogStyle)
+			.setTitle(title)
+			.setMessage(message)
+			.setPositiveButton(R.string.directlink_error_button_tryagain) { dialog, _ ->
+				if(bypassToken==null){
+					showDatePicker(secret, signature)
+				} else {
+					addCertificateFromByPassToken(secret, signature, bypassToken)
+				}
+				dialog.dismiss()
+			}
+			.setNegativeButton(R.string.directlink_error_button_cancel)	{ dialog, _ ->
+				dialog.dismiss()
+			}
+			.setCancelable(true)
+			.create()
+			.apply { window?.setSecureFlagToBlockScreenshots(BuildConfig.FLAVOR) }
+			.show()
 	}
 
 	override fun onResume() {
@@ -143,6 +321,7 @@ class MainActivity : AppCompatActivity() {
 	override fun onSaveInstanceState(outState: Bundle) {
 		super.onSaveInstanceState(outState)
 		outState.putBoolean(KEY_IS_INTENT_CONSUMED, isIntentConsumed)
+		outState.putBoolean(KEY_IS_INTENT_CONSUMED_DIRECTLINK, isDirectLinkIntentConsumed)
 	}
 
 	private fun checkIntentForActions() {
@@ -156,6 +335,9 @@ class MainActivity : AppCompatActivity() {
 					}
 				}
 			}
+		}
+		if(!launchedFromHistory && !isDirectLinkIntentConsumed){
+			handleDirectLink(intent)
 		}
 	}
 
@@ -209,6 +391,14 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	private fun showHomeFragment() {
+		intent?.let {
+			if(it.hasExtra(NotificationHelper.KEY_NOTIFICATION_EXTRAS)) {
+				secureStorage.setNotificationCampaignID(it.getStringExtra(NotificationHelper.KEY_CAMPAIGN_ID))
+				secureStorage.setNotificationCampaignLastTimeStampKey(it.getStringExtra(NotificationHelper.KEY_LAST_DISPLAY_TIMESTAMP))
+				secureStorage.setNotificationCampaignTitle(it.getStringExtra(NotificationHelper.KEY_CAMPAIGN_TITLE))
+				secureStorage.setNotificationCampaignMessage(it.getStringExtra(NotificationHelper.KEY_CAMPAIGN_MESSAGE))
+			}
+		}
 		supportFragmentManager.beginTransaction()
 			.add(R.id.fragment_container, HomeFragment.newInstance())
 			.commit()
@@ -263,6 +453,8 @@ class MainActivity : AppCompatActivity() {
 			forceUpdateDialog.show()
 		}
 	}
+
+
 }
 
 /**

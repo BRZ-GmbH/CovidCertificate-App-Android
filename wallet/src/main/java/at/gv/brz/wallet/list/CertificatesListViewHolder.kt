@@ -16,7 +16,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import at.gv.brz.eval.models.DccHolder
+import at.gv.brz.sdk.models.DccHolder
 import at.gv.brz.wallet.R
 
 class CertificatesListViewHolder(

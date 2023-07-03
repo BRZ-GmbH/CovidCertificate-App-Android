@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import at.gv.brz.eval.utils.DEFAULT_DISPLAY_DATE_TIME_FORMATTER
-import at.gv.brz.eval.utils.prettyPrint
+import at.gv.brz.sdk.utils.DEFAULT_DISPLAY_DATE_TIME_FORMATTER
+import at.gv.brz.sdk.utils.prettyPrint
 import at.gv.brz.wallet.R
 import at.gv.brz.wallet.databinding.FragmentDebugLogBinding
 import at.gv.brz.wallet.databinding.ItemDebugLogBinding

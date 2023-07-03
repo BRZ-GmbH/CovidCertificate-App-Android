@@ -1,4 +1,4 @@
-[submodule "sdk"]
-    path = sdk
-    url = https://github.com/BRZ-GmbH/CovidCertificate-SDK-Android.git
+[submodule "dgc-businessrules-validation-core-android"]
+    path = dgc-businessrules-validation-core-android
+    url = https://github.com/BRZ-GmbH/dgc-businessrules-validation-core-android.git
     branch = main

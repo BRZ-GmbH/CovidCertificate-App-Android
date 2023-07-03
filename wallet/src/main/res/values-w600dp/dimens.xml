@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="certificate_pager_spacing_huger">50dp</dimen>
+    <dimen name="home_certificate_qr_side_padding">50dp</dimen>
+</resources>
