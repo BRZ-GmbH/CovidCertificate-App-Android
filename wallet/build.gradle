@@ -40,8 +40,8 @@ android {
 		applicationId "at.gv.brz.wallet"
 		minSdkVersion 23
 		targetSdkVersion 30
-		versionCode 110
-		versionName "2.3.6"
+		versionCode 109
+		versionName "2.3.7"
 
 		buildConfigField "long", "BUILD_TIME", readPropertyWithDefault('buildTimestamp', System.currentTimeMillis()) + 'L'
 
